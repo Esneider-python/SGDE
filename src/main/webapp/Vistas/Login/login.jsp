@@ -35,7 +35,7 @@
             </form>
 
             <div class="links">
-                <a href="#">¿Olvidaste tu contraseña?</a><br>
+                <a href="${pageContext.request.contextPath}/Vistas/Login/solicitarCorreo.jsp">¿Olvidaste tu contraseña?</a><br>
                 <a href="#">Registrarme</a>
             </div>
 

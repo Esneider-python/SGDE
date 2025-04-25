@@ -11,7 +11,7 @@ public class UsuarioDao {
         this.conexion = conexion;
     }
 
-    // INSERTAR USUARIO
+   
     // INSERTAR USUARIO Y OBTENER ID GENERADO
     public boolean insertarUsuario(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuarios (nombres, apellidos, telefono, correo, cedula, contrasena, rol_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -94,43 +94,22 @@ public class UsuarioDao {
         }
     }
 
-    // CAMBIAR CONTRASEÑA POR ID DE USUARIO
-    public boolean cambiarContrasena(int idUsuario, String nuevaContrasena) throws SQLException {
-        String sql = "UPDATE usuarios SET contrasena = ? WHERE id = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setString(1, nuevaContrasena);
-            ps.setInt(2, idUsuario);
-            return ps.executeUpdate() > 0;
+    public boolean actualizarContrasenaPorCorreo(String correo, String nuevaContrasena) throws SQLException {
+        String sql = "UPDATE usuarios SET contrasena = ? WHERE correo = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, nuevaContrasena);
+            stmt.setString(2, correo);
+            int filas = stmt.executeUpdate();
+            return filas > 0;
         }
     }
 
-    // MODIFICAR CONTRASEÑA DESDE PERFIL
-    public boolean cambiarContrasenaUsuario(String correo, String contrasenaActual, String nuevaContrasena)
-            throws SQLException {
-        String sqlVerificar = "SELECT * FROM usuarios WHERE correo = ? AND contrasena = ?";
-        try (PreparedStatement psVerificar = conexion.prepareStatement(sqlVerificar)) {
-            psVerificar.setString(1, correo);
-            psVerificar.setString(2, contrasenaActual);
-
-            try (ResultSet rs = psVerificar.executeQuery()) {
-                if (rs.next()) {
-                    String sqlActualizar = "UPDATE usuarios SET contrasena = ? WHERE correo = ?";
-                    try (PreparedStatement psActualizar = conexion.prepareStatement(sqlActualizar)) {
-                        psActualizar.setString(1, nuevaContrasena);
-                        psActualizar.setString(2, correo);
-                        return psActualizar.executeUpdate() > 0;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
     //VALIDAR CREDENCIALES
     public Usuario validarCredenciales(String correo, String contrasena) throws SQLException {
         String sql = "SELECT u.*, r.nombre_rol AS nombreRol FROM usuarios u JOIN rol r ON u.rol_id = r.id_rol WHERE u.correo = ? AND u.contrasena = ?";
 
-              try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, correo);
             ps.setString(2, contrasena);
 
@@ -176,5 +155,8 @@ public class UsuarioDao {
             return rs.next() && rs.getInt(1) > 0;
         }
     }
+
+
+    
 
 }
