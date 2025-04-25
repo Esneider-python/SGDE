@@ -24,13 +24,13 @@ public class CambiarContrasenaServlet extends HttpServlet {
 
         if (correoRecuperacion == null) {
             request.setAttribute("mensajeError", "Sesión expirada. Intenta recuperar la contraseña nuevamente.");
-            request.getRequestDispatcher("Vistas/Recuperacion/recuperarCorreo.jsp").forward(request, response);
+            request.getRequestDispatcher("Vistas/Login/solicitarCorreo.jsp").forward(request, response);
             return;
         }
 
         if (nuevaContrasena == null || !nuevaContrasena.equals(confirmarContrasena)) {
             request.setAttribute("mensajeError", "Las contraseñas no coinciden.");
-            request.getRequestDispatcher("Vistas/Recuperacion/cambiarContrasena.jsp").forward(request, response);
+            request.getRequestDispatcher("Vistas/Login/cambiarContrasena.jsp").forward(request, response);
             return;
         }
 
@@ -42,11 +42,13 @@ public class CambiarContrasenaServlet extends HttpServlet {
             session.removeAttribute("correoRecuperacion");
             session.removeAttribute("codigoRecuperacion");
 
-            request.setAttribute("mensajeExito", "Contraseña actualizada correctamente. Inicia sesión con tu nueva contraseña.");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            // Mostrar mensaje de éxito y redirigir después desde el JSP
+            request.setAttribute("mensajeExito", "Contraseña actualizada correctamente. Serás redirigido al inicio de sesión...");
+            request.getRequestDispatcher("Vistas/Login/cambiarContrasena.jsp").forward(request, response);
+
         } catch (Exception e) {
             request.setAttribute("mensajeError", "Error al actualizar la contraseña: " + e.getMessage());
-            request.getRequestDispatcher("Vistas/Recuperacion/cambiarContrasena.jsp").forward(request, response);
+            request.getRequestDispatcher("Vistas/Login/cambiarContrasena.jsp").forward(request, response);
         }
     }
 }
