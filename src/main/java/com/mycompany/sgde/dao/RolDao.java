@@ -77,4 +77,20 @@ public class RolDao {
             return ps.executeUpdate() > 0;
         }
     }
+
+    public Rol obtenerRolPorNombre(String nombreRol) throws SQLException {
+        String sql = "SELECT id_rol, nombre FROM rol WHERE nombre = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, nombreRol);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    int idRol = rs.getInt("id_rol");
+                    String nombre = rs.getString("nombre");
+                    return new Rol(idRol, nombre);
+                }
+            }
+        }
+        return null;
+    }
+
 }

@@ -15,14 +15,14 @@ public class RolServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String accion = request.getParameter("accion");
 
         try (Connection conexion = Conexion.getConexion()) {
             if (conexion == null) {
                 request.setAttribute("mensajeError", "Error al conectar con la base de datos.");
-                request.getRequestDispatcher("menuRol.jsp").forward(request, response);
+                request.getRequestDispatcher("Vistas/Rol/menuRol.jsp").forward(request, response);
                 return;
             }
 
@@ -31,17 +31,14 @@ public class RolServlet extends HttpServlet {
             switch (accion) {
                 case "crear":
                     crearRol(request, rolDao);
-                    request.setAttribute("mensajeExito", "Rol creado correctamente.");
                     break;
 
                 case "actualizar":
                     actualizarRol(request, rolDao);
-                    request.setAttribute("mensajeExito", "Rol actualizado correctamente.");
                     break;
 
                 case "eliminar":
                     eliminarRol(request, rolDao);
-                    request.setAttribute("mensajeExito", "Rol eliminado correctamente.");
                     break;
 
                 default:
@@ -53,24 +50,48 @@ public class RolServlet extends HttpServlet {
             request.setAttribute("mensajeError", "Error interno: " + e.getMessage());
         }
 
-        request.getRequestDispatcher("menuRol.jsp").forward(request, response);
+        request.getRequestDispatcher("Vistas/Rol/menuRol.jsp").forward(request, response);
     }
 
     private void crearRol(HttpServletRequest request, RolDao rolDao) throws Exception {
         String nombreRol = request.getParameter("nombreRol");
-        Rol rol = new Rol(nombreRol);
-        rolDao.insertarRol(rol);
+
+        Rol rolExistente = rolDao.obtenerRolPorNombre(nombreRol);
+
+        if (rolExistente != null) {
+            request.setAttribute("mensajeError", "El rol '" + nombreRol + "' ya existe. No se puede crear duplicado.");
+        } else {
+            Rol rol = new Rol(nombreRol);
+            rolDao.insertarRol(rol);
+            request.setAttribute("mensajeExito", "Rol creado correctamente.");
+        }
     }
 
     private void actualizarRol(HttpServletRequest request, RolDao rolDao) throws Exception {
         int idRol = Integer.parseInt(request.getParameter("idRol"));
-        String nombreRol = request.getParameter("nombreRol");
-        Rol rol = new Rol(idRol, nombreRol);
-        rolDao.actualizarRol(rol);
+        String nuevoNombreRol = request.getParameter("nuevoNombreRol");
+
+        Rol rolExistente = rolDao.obtenerPorId(idRol);
+
+        if (rolExistente == null) {
+            request.setAttribute("mensajeError", "No se encontró el rol con ID: " + idRol);
+        } else {
+            rolExistente.setNombreRol(nuevoNombreRol);
+            rolDao.actualizarRol(rolExistente);
+            request.setAttribute("mensajeExito", "Rol actualizado correctamente.");
+        }
     }
 
     private void eliminarRol(HttpServletRequest request, RolDao rolDao) throws Exception {
-        int idRol = Integer.parseInt(request.getParameter("idRol"));
-        rolDao.eliminarRol(idRol);
+        String nombreRol = request.getParameter("nombreRol");
+
+        Rol rolExistente = rolDao.obtenerRolPorNombre(nombreRol);
+
+        if (rolExistente == null) {
+            request.setAttribute("mensajeError", "No se puede eliminar: el rol '" + nombreRol + "' no existe.");
+        } else {
+            rolDao.eliminarRol(rolExistente.getIdRol());
+            request.setAttribute("mensajeExito", "Rol eliminado correctamente.");
+        }
     }
 }

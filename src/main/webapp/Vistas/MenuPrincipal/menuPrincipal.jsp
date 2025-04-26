@@ -33,7 +33,7 @@
                 <li><a href="#"><i>🗑️</i> Historial eliminaciones</a></li>
                 <li><a href="#"><i>👤</i> Usuarios</a></li>
                 <li><a href="#"><i>📋</i> Reportes</a></li>
-                <li><a href="#"><i>📋</i> Roles</a></li>
+                <li><a href="${pageContext.request.contextPath}/Vistas/Rol/menuRol.jsp"><i>📋</i> Roles</a></li>
             </ul>
 
             <div class="salir">
