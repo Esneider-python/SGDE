@@ -20,6 +20,7 @@
                     <button type="submit">🗑️ Eliminar rol</button>
                 </form>
             </div>
+
             <c:if test="${not empty mensajeExito}">
                 <div class="mensaje-exito">${mensajeExito}</div>
             </c:if>
@@ -27,6 +28,13 @@
             <c:if test="${not empty mensajeError}">
                 <div class="mensaje-error">${mensajeError}</div>
             </c:if>
+
+            <!-- Aquí agregamos el botón para volver al área principal -->
+            <div class="volver-menu">
+                <form action="${pageContext.request.contextPath}/Vistas/MenuPrincipal/menuPrincipal.jsp" method="get">
+                    <button type="submit">🏠 Volver al Área Principal</button>
+                </form>
+            </div>
 
         </div>
     </body>

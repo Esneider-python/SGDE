@@ -11,7 +11,6 @@ public class UsuarioDao {
         this.conexion = conexion;
     }
 
-   
     // INSERTAR USUARIO Y OBTENER ID GENERADO
     public boolean insertarUsuario(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuarios (nombres, apellidos, telefono, correo, cedula, contrasena, rol_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -104,7 +103,6 @@ public class UsuarioDao {
         }
     }
 
-
     //VALIDAR CREDENCIALES
     public Usuario validarCredenciales(String correo, String contrasena) throws SQLException {
         String sql = "SELECT u.*, r.nombre_rol AS nombreRol FROM usuarios u JOIN rol r ON u.rol_id = r.id_rol WHERE u.correo = ? AND u.contrasena = ?";
@@ -156,7 +154,19 @@ public class UsuarioDao {
         }
     }
 
-
-    
+    public Integer obtenerIdPorCedula(String cedula) {
+        String sql = "SELECT id_usuario FROM usuarios WHERE cedula = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, cedula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_usuario"); // Retorna el ID del usuario
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Retorna null si no se encontró el usuario
+    }
 
 }

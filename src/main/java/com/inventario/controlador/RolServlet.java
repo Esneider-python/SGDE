@@ -83,15 +83,16 @@ public class RolServlet extends HttpServlet {
     }
 
     private void eliminarRol(HttpServletRequest request, RolDao rolDao) throws Exception {
-        String nombreRol = request.getParameter("nombreRol");
+        int idRol = Integer.parseInt(request.getParameter("idRol")); // ← corregido: parseo del parámetro
 
-        Rol rolExistente = rolDao.obtenerRolPorNombre(nombreRol);
+        Rol rolExistente = rolDao.obtenerPorId(idRol); // ← usas tu método existente
 
         if (rolExistente == null) {
-            request.setAttribute("mensajeError", "No se puede eliminar: el rol '" + nombreRol + "' no existe.");
+            request.setAttribute("mensajeError", "No se puede eliminar: el rol con ID " + idRol + " no existe.");
         } else {
-            rolDao.eliminarRol(rolExistente.getIdRol());
+            rolDao.eliminarRol(idRol); // ← eliminas directo usando el ID
             request.setAttribute("mensajeExito", "Rol eliminado correctamente.");
         }
     }
+
 }

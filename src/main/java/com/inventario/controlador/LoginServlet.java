@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
                 // Si las credenciales son incorrectas, mostramos un mensaje
                 request.setAttribute("errorLogin", "Correo o contraseña incorrectos.");
                 request.setAttribute("correoIngresado", correo); // Para mantener el correo en el input
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("Index.jsp").forward(request, response);
             }
 
         } catch (ServletException | IOException | SQLException e) {

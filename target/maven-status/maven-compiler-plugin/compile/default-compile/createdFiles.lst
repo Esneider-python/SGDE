@@ -39,6 +39,7 @@ com\inventario\controlador\LoginServlet.class
 com\inventario\modelo\Elemento.class
 com\inventario\modelo\HistorialMovimiento.class
 com\inventario\modelo\ElementoTecnologico.class
+com\inventario\controlador\ColegioServlet.class
 com\inventario\controlador\RegistrarUsuarioServlet.class
 com\inventario\controlador\VerificarCodigoServlet.class
 com\inventario\modelo\Rol.class

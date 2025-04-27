@@ -38,6 +38,11 @@ button {
 button:hover {
     background-color: #0041c9;
 }
+.mensaje-exito:empty,
+.mensaje-error:empty {
+    display: none;
+}
+
 
 .mensaje-exito {
     background-color: #d4edda;

@@ -79,13 +79,13 @@ public class RolDao {
     }
 
     public Rol obtenerRolPorNombre(String nombreRol) throws SQLException {
-        String sql = "SELECT id_rol, nombre FROM rol WHERE nombre = ?";
+        String sql = "SELECT id_rol, nombre_rol FROM rol WHERE nombre_rol = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setString(1, nombreRol);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int idRol = rs.getInt("id_rol");
-                    String nombre = rs.getString("nombre");
+                    String nombre = rs.getString("nombre_rol");
                     return new Rol(idRol, nombre);
                 }
             }
