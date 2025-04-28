@@ -45,7 +45,7 @@ public class AulaDao {
                 if (rs.next()) {
                     Piso piso = new PisoDao().obtenerPorId(rs.getInt("piso_id"));
                     // Solo asignamos el ID de usuario, sin cargar datos adicionales
-                    Usuario usuario = new Usuario();
+                    Usuario usuario = new Usuario(idUsuarioRegistra);
                     usuario.setIdUsuario(rs.getInt("usuario_id"));
 
                     aula = new Aula(
@@ -75,7 +75,7 @@ public class AulaDao {
             while (rs.next()) {
                 Piso piso = new PisoDao().obtenerPorId(rs.getInt("piso_id"));
                 // Solo asignamos el ID de usuario
-                Usuario usuario = new Usuario();
+                Usuario usuario = new Usuario(idUsuarioRegistra);
                 usuario.setIdUsuario(rs.getInt("usuario_id"));
 
                 Aula aula = new Aula(

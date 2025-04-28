@@ -73,7 +73,7 @@ public class ColegioServlet extends HttpServlet {
         if (existeColegio) {
             enviarMensaje(request, response, "El colegio ya ha sido creado.", "Vistas/Colegio/registrarColegio.jsp");
         } else {
-            Usuario usuario = new Usuario();
+            Usuario usuario = new Usuario(idUsuarioRegistra);
             usuario.setIdUsuario(idUsuarioRegistra);
             Colegio colegio = new Colegio(nombreColegio, usuario);
             colegioDao.insertar(colegio);
@@ -109,7 +109,7 @@ public class ColegioServlet extends HttpServlet {
         }
 
         colegioExistente.setNombre(nombreColegio);
-        Usuario usuario = new Usuario();
+        Usuario usuario = new Usuario(idUsuarioRegistra);
         usuario.setIdUsuario(idUsuarioRegistra);
         colegioExistente.setUsuarioRegistra(usuario);
 

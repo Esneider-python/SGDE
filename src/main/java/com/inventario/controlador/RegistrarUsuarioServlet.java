@@ -36,7 +36,7 @@ public class RegistrarUsuarioServlet extends HttpServlet {
             return;
         }
 
-        Usuario usuario = new Usuario();
+        Usuario usuario = new Usuario(idUsuarioRegistra);
         usuario.setNombres(nombres);
         usuario.setApellidos(apellidos);
         usuario.setTelefono(telefono);

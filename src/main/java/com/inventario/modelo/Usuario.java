@@ -10,7 +10,7 @@ public class Usuario {
     private String contrasena;
     private int rolId;
     // Constructor vacío
-    public Usuario() {}
+    public Usuario(Integer idUsuarioRegistra) {}
 
     // Constructor completo
     public Usuario(int idUsuario, String nombres, String apellidos, String telefono, String correo, String cedula, String contrasena, int rolId, String nombreRol) {

@@ -6,7 +6,7 @@ public class Colegio {
     private String nombre;
     private Usuario usuarioRegistra;
 
-    public Colegio() {
+    public Colegio(Integer idColegio) {
     }
 
     public Colegio(int id, String nombre, Usuario usuarioRegistra) {
