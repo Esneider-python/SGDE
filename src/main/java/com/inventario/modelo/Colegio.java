@@ -1,9 +1,13 @@
 package com.inventario.modelo;
 
 public class Colegio {
+
     private int id;
     private String nombre;
     private Usuario usuarioRegistra;
+
+    public Colegio() {
+    }
 
     public Colegio(int id, String nombre, Usuario usuarioRegistra) {
         this.id = id;

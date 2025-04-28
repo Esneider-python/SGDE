@@ -42,4 +42,5 @@ com\inventario\modelo\ElementoTecnologico.class
 com\inventario\controlador\ColegioServlet.class
 com\inventario\controlador\RegistrarUsuarioServlet.class
 com\inventario\controlador\VerificarCodigoServlet.class
+com\inventario\controlador\SedeServlet.class
 com\inventario\modelo\Rol.class

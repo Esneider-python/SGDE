@@ -44,9 +44,8 @@ public class UsuarioDao {
         }
     }
 
-    // OBTENER USUARIO POR ID
     public Usuario obtenerUsuarioPorId(int id) throws SQLException {
-        String sql = "SELECT u.*, r.nombre AS nombreRol FROM usuarios u JOIN rol r ON u.rol = r.id WHERE u.id = ?";
+        String sql = "SELECT u.*, r.nombres AS nombreRol FROM usuarios u JOIN rol r ON u.rol_id = r.id_rol WHERE u.id_usuario = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {

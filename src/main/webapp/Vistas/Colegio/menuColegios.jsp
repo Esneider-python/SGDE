@@ -26,7 +26,7 @@
         <a href="${pageContext.request.contextPath}/Vistas/Colegio/eliminarColegio.jsp" class="boton">Eliminar Colegio</a>
         <a href="${pageContext.request.contextPath}/Vistas/Colegio/listarColegios.jsp" class="boton">Listar colegios</a>
         <br><!-- comment -->
-        <form action="${pageContext.request.contextPath}/Vistas/MenuPrincipal/menuPrincipal.jsp" method="get">
+        <form action="${pageContext.request.contextPath}/Vistas/MenuRegistros/menuRegistros.jsp" method="get">
             <button type="submit" class="boton">Volver al Menú</button>
         </form>
 

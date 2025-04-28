@@ -129,19 +129,19 @@ public class ColegioDao {
         return false; // Retorna false si no se encontró el colegio
     }
 
-    public Integer obtenerIdPorCedula(String cedula) {
-        String sql = "SELECT id_usuario FROM usuarios WHERE cedula = ?";
+    public Integer obtenerIdPorNombre(String nombreColegio) {
+        String sql = "SELECT id_colegio FROM colegio WHERE nombre_colegio = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, cedula);
+            stmt.setString(1, nombreColegio);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("id_usuario"); // Retorna el ID del usuario
+                    return rs.getInt("id_colegio"); // Retorna el ID del colegio
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Retorna null si no se encontró el usuario
+        return null; // Si no se encuentra, retorna null
     }
 
 }
