@@ -59,10 +59,10 @@ public class SedeServlet extends HttpServlet {
             Integer idColegio = colegioDao.obtenerIdPorNombre(nombreColegio);
 
             if (idUsuario != null && idColegio != null) {
-                Usuario usuario = new Usuario(idUsuarioRegistra);
+                Usuario usuario = new Usuario();
                 usuario.setIdUsuario(idUsuario);
 
-                Colegio colegio = new Colegio(idColegio);
+                Colegio colegio = new Colegio();
                 colegio.setId(idColegio);
 
                 Sede nuevaSede = new Sede(nombreSede, colegio, usuario);
@@ -81,87 +81,46 @@ public class SedeServlet extends HttpServlet {
     }
 
     // Método para actualizar una sede
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String accion = request.getParameter("accion");
+    private void actualizarSede(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idSede = Integer.parseInt(request.getParameter("idSede"));
+        String nombreSede = request.getParameter("nombre");
+        String nombreColegio = request.getParameter("colegioNombre");
+        String cedulaUsuario = request.getParameter("cedulaUsuario");
 
-        if ("actualizar".equals(accion)) {
-            String idSedeParam = request.getParameter("idSede");
-            String nuevoNombre = request.getParameter("nombre");
-            String colegioNombre = request.getParameter("colegioNombre");
-            String cedulaUsuario = request.getParameter("cedulaUsuario");
+        try (Connection conn = Conexion.getConexion()) {
+            UsuarioDao usuarioDao = new UsuarioDao(conn);
+            ColegioDao colegioDao = new ColegioDao(conn);
+            SedeDao sedeDao = new SedeDao();
 
-            // Validar los parámetros
-            if (idSedeParam == null || idSedeParam.trim().isEmpty()) {
-                request.setAttribute("mensaje", "El ID de la sede no puede estar vacío.");
-                request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
-                return;
-            }
+            Sede sedeExistente = sedeDao.obtenerPorId(idSede);
 
-            if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
-                request.setAttribute("mensaje", "El nombre de la sede no puede estar vacío.");
-                request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
-                return;
-            }
+            Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
+            Integer idColegio = colegioDao.obtenerIdPorNombre(nombreColegio);
 
-            if (colegioNombre == null || colegioNombre.trim().isEmpty()) {
-                request.setAttribute("mensaje", "El nombre del colegio no puede estar vacío.");
-                request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
-                return;
-            }
+            if (sedeExistente != null && idUsuario != null && idColegio != null) {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(idUsuario);
 
-            if (cedulaUsuario == null || cedulaUsuario.trim().isEmpty()) {
-                request.setAttribute("mensaje", "La cédula del usuario no puede estar vacía.");
-                request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
-                return;
-            }
+                Colegio colegio = new Colegio();
+                colegio.setId(idColegio);
 
-            try (Connection conn = Conexion.getConexion()) {
-                SedeDao sedeDao = new SedeDao(conn);
-                ColegioDao colegioDao = new ColegioDao(conn);
-                UsuarioDao usuarioDao = new UsuarioDao(conn);
+                Sede sedeActualizada = new Sede(idSede, nombreSede, colegio, usuario);
+                boolean actualizado = sedeDao.actualizar(sedeActualizada);
 
-                // Obtener el ID de la sede
-                int idSede = Integer.parseInt(idSedeParam);
-                Sede sede = sedeDao.obtenerPorId(idSede);
-                if (sede == null) {
-                    request.setAttribute("mensaje", "La sede no existe.");
-                    request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
-                    return;
+                if (actualizado) {
+                    request.setAttribute("mensaje", "Sede actualizada exitosamente.");
+                } else {
+                    request.setAttribute("mensaje", "No se pudo actualizar la sede.");
                 }
-
-                // Obtener el ID del colegio por nombre
-                Integer idColegio = colegioDao.obtenerIdPorNombre(colegioNombre);
-                if (idColegio == null) {
-                    request.setAttribute("mensaje", "El colegio no existe.");
-                    request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
-                    return;
-                }
-
-                // Obtener el ID del usuario a partir de la cédula
-                Integer idUsuarioRegistra = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
-                if (idUsuarioRegistra == null) {
-                    request.setAttribute("mensaje", "El usuario no existe.");
-                    request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
-                    return;
-                }
-
-                // Actualizar la sede
-                sede.setNombre(nuevoNombre);
-                sede.setColegio(new Colegio(idColegio));
-                sede.setUsuario(new Usuario(idUsuarioRegistra)); // Asignar el usuario que registra
-
-                sedeDao.actualizar(sede); // Llamar al método de actualización en el DAO
-
-                request.setAttribute("mensaje", "Sede actualizada exitosamente.");
-            } catch (Exception e) {
-                request.setAttribute("mensaje", "Ocurrió un error al actualizar la sede: " + e.getMessage());
-                // Aquí podrías registrar el error en un log
+            } else {
+                request.setAttribute("mensaje", "Error: Sede, Usuario o Colegio no encontrados.");
             }
-
-            // Redirigir a la vista
-            request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error al actualizar sede.");
         }
+
+        request.getRequestDispatcher("Vistas/Sede/menuSede.jsp").forward(request, response);
     }
 
     // Método para eliminar una sede

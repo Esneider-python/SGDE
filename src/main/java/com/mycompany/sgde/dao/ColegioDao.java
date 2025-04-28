@@ -45,7 +45,7 @@ public class ColegioDao {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Usuario usuario = new Usuario(idUsuarioRegistra);
+                    Usuario usuario = new Usuario();
                     usuario.setIdUsuario(rs.getInt("usuario_registra"));
 
                     colegio = new Colegio(
@@ -70,7 +70,7 @@ public class ColegioDao {
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Usuario usuario = new Usuario(idUsuarioRegistra);
+                Usuario usuario = new Usuario();
                 usuario.setIdUsuario(rs.getInt("usuario_registra"));
 
                 Colegio colegio = new Colegio(

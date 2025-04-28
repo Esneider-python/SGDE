@@ -10,6 +10,7 @@ public class UsuarioDao {
     public UsuarioDao(Connection conexion) {
         this.conexion = conexion;
     }
+ 
 
     // INSERTAR USUARIO Y OBTENER ID GENERADO
     public boolean insertarUsuario(Usuario usuario) throws SQLException {
