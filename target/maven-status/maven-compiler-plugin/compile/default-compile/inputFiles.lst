@@ -1,6 +1,7 @@
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\ElementoTecnologico.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\RegistrarUsuarioServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\Informe.java
+C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\AulaServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\AulaDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\Bloque.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\Colegio.java
@@ -20,6 +21,7 @@ C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\ElementoMobiliario
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\RolDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\VerificarCodigoServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\CambiarContrasenaServlet.java
+C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\PisoServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\CambioIdentificadorDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\HistorialMovimientoDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\EnviarCodigoServlet.java

@@ -15,6 +15,7 @@ com\mycompany\sgde\util\CorreoUtil.class
 com\inventario\controlador\LoginServlet.class
 com\inventario\controlador\ColegioServlet.class
 com\inventario\modelo\Rol.class
+com\inventario\controlador\AulaServlet.class
 com\inventario\modelo\Informe.class
 com\mycompany\sgde\controlador\PisoServlet.class
 com\inventario\modelo\Colegio.class

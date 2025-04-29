@@ -13,12 +13,12 @@ public class AulaDao {
 
     // Método para insertar un aula y recuperar su ID autogenerado
     public void insertar(Aula aula) {
-        String sql = "INSERT INTO aulas (piso_id, usuario_id) VALUES (?, ?)";
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO aulas (numero_aula, piso_id, usuario_id) VALUES (?,?, ?)";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, aula.getPiso().getId());
-            stmt.setInt(2, aula.getUsuarioRegistra().getIdUsuario());
+            stmt.setInt(1, aula.getNumeroAula());
+            stmt.setInt(2, aula.getPiso().getId());
+            stmt.setInt(3, aula.getUsuarioRegistra().getIdUsuario());
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -37,8 +37,7 @@ public class AulaDao {
         String sql = "SELECT * FROM aulas WHERE id_aula = ?";
         Aula aula = null;
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -49,9 +48,10 @@ public class AulaDao {
                     usuario.setIdUsuario(rs.getInt("usuario_id"));
 
                     aula = new Aula(
-                        rs.getInt("id_aula"),
-                        piso,
-                        usuario
+                            rs.getInt("id_aula"),
+                            rs.getInt("numero_aula"),
+                            piso,
+                            usuario
                     );
                 }
             }
@@ -68,9 +68,7 @@ public class AulaDao {
         String sql = "SELECT * FROM aulas";
         List<Aula> aulas = new ArrayList<>();
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Piso piso = new PisoDao().obtenerPorId(rs.getInt("piso_id"));
@@ -79,9 +77,10 @@ public class AulaDao {
                 usuario.setIdUsuario(rs.getInt("usuario_id"));
 
                 Aula aula = new Aula(
-                    rs.getInt("id_aula"),
-                    piso,
-                    usuario
+                        rs.getInt("id_aula"),
+                        rs.getInt("numero_aula"), // Obtener el numero_aula
+                        piso,
+                        usuario
                 );
                 aulas.add(aula);
             }
@@ -95,14 +94,14 @@ public class AulaDao {
 
     // Método para actualizar un aula
     public void actualizar(Aula aula) {
-        String sql = "UPDATE aulas SET piso_id = ?, usuario_id = ? WHERE id_aula = ?";
+        String sql = "UPDATE aulas SET numero_aula = ?, piso_id = ?, usuario_id = ? WHERE id_aula = ?";
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, aula.getPiso().getId());
-            stmt.setInt(2, aula.getUsuarioRegistra().getIdUsuario());
-            stmt.setInt(3, aula.getId());
+            stmt.setInt(1, aula.getNumeroAula());  // Actualizar numero_aula
+            stmt.setInt(2, aula.getPiso().getId());
+            stmt.setInt(3, aula.getUsuarioRegistra().getIdUsuario());
+            stmt.setInt(4, aula.getId());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -114,8 +113,7 @@ public class AulaDao {
     public void eliminar(int id) {
         String sql = "DELETE FROM aulas WHERE id_aula = ?";
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
