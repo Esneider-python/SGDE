@@ -10,6 +10,11 @@
 <body>
 
 <h1>Listado de Colegios Registrados</h1>
+<form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
+    <input type="hidden" name="accion" value="listar">
+    <button type="submit" class="boton">Listar Colegios</button>
+</form>
+
 
 <table>
     <tr>

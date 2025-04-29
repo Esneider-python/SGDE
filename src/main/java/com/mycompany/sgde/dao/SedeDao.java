@@ -136,4 +136,19 @@ public class SedeDao {
         return sedes;
     }
 
+    public boolean existeSede(int idSede) {
+        String sql = "SELECT COUNT(*) FROM sede WHERE id_sede = ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idSede);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

@@ -83,38 +83,45 @@ public class SedeServlet extends HttpServlet {
     // Método para actualizar una sede
     private void actualizarSede(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int idSede = Integer.parseInt(request.getParameter("idSede"));
-        String nombreSede = request.getParameter("nombre");
+        String nuevoNombre = request.getParameter("nombre");
         String nombreColegio = request.getParameter("colegioNombre");
         String cedulaUsuario = request.getParameter("cedulaUsuario");
 
         try (Connection conn = Conexion.getConexion()) {
             UsuarioDao usuarioDao = new UsuarioDao(conn);
             ColegioDao colegioDao = new ColegioDao(conn);
-            SedeDao sedeDao = new SedeDao();
+            SedeDao sedeDao = new SedeDao(); // Aquí corregido: SedeDao recibe la conexión
 
-            Sede sedeExistente = sedeDao.obtenerPorId(idSede);
+            // Verificar si la sede existe antes de actualizar
+            if (sedeDao.existeSede(idSede)) {
 
-            Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
-            Integer idColegio = colegioDao.obtenerIdPorNombre(nombreColegio);
+                Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
+                Integer idColegio = colegioDao.obtenerIdPorNombre(nombreColegio);
 
-            if (sedeExistente != null && idUsuario != null && idColegio != null) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(idUsuario);
+                if (idUsuario != null && idColegio != null) {
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(idUsuario);
 
-                Colegio colegio = new Colegio();
-                colegio.setId(idColegio);
+                    Colegio colegio = new Colegio();
+                    colegio.setId(idColegio);
 
-                Sede sedeActualizada = new Sede(idSede, nombreSede, colegio, usuario);
-                boolean actualizado = sedeDao.actualizar(sedeActualizada);
+                    Sede sedeActualizada = new Sede();
+                    sedeActualizada.setId(idSede);
+                    sedeActualizada.setNombre(nuevoNombre);
+                    sedeActualizada.setColegio(colegio);
+                    sedeActualizada.setUsuarioRegistra(usuario);
 
-                if (actualizado) {
+                    sedeDao.actualizar(sedeActualizada);
+
                     request.setAttribute("mensaje", "Sede actualizada exitosamente.");
                 } else {
-                    request.setAttribute("mensaje", "No se pudo actualizar la sede.");
+                    request.setAttribute("mensaje", "Error: Usuario o Colegio no encontrados para actualizar la sede.");
                 }
+
             } else {
-                request.setAttribute("mensaje", "Error: Sede, Usuario o Colegio no encontrados.");
+                request.setAttribute("mensaje", "Error: La sede con ID " + idSede + " no existe.");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("mensaje", "Error al actualizar sede.");
@@ -151,17 +158,17 @@ public class SedeServlet extends HttpServlet {
     }
 
     // Método para listar todas las sedes
-    private void listarSedes(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void listarSedes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection conn = Conexion.getConexion()) {
             SedeDao sedeDao = new SedeDao();
-
-            List<Sede> listaSedes = sedeDao.obtenerTodos(); // Este método debe existir en tu SedeDao
+            List<Sede> listaSedes = sedeDao.obtenerTodos();
 
             request.setAttribute("listaSedes", listaSedes);
             request.getRequestDispatcher("Vistas/Sede/listarSedes.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("Vistas/Sede/menuSede.jsp");
+            request.setAttribute("mensaje", "Error al listar sedes.");
+            request.getRequestDispatcher("Vistas/Sede/listarSedes.jsp").forward(request, response);
         }
     }
 }

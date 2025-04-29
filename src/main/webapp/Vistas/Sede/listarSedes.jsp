@@ -3,47 +3,51 @@
 <%@ page import="com.inventario.modelo.Sede" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Listar Sedes</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilosSedes.css">
-    </head>
-    <body>
-        <h1>Listado de Sedes</h1>
+<head>
+    <title>Listar Sedes</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilosSedes.css">
+</head>
+<body>
+    <h1>Listado de Sedes</h1>
 
+   <form action="${pageContext.request.contextPath}/SedeServlet" method="get">
+    <input type="hidden" name="accion" value="listar">
+    <button type="submit">Listar Sedes</button>
+</form>
+
+    <br>
+
+    <%
+        List<Sede> listaSedes = (List<Sede>) request.getAttribute("listaSedes");
+        if (listaSedes != null && !listaSedes.isEmpty()) {
+    %>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre Sede</th>
+            <th>ID Colegio</th>
+            <th>ID Usuario</th>
+        </tr>
         <%
-            List<Sede> listaSedes = (List<Sede>) request.getAttribute("listaSedes");
-
-            if (listaSedes != null && !listaSedes.isEmpty()) {
+            for (Sede sede : listaSedes) {
         %>
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>Nombre Sede</th>
-                <th>ID Colegio</th>
-                <th>ID Usuario</th>
-            </tr>
-            <%
-                for (Sede sede : listaSedes) {
-            %>
-            <tr>
-                <td><%= sede.getId()%></td>
-                <td><%= sede.getNombre()%></td>
-                <td><%= sede.getColegio().getId()%></td>
-                <td><%= sede.getUsuarioRegistra().getIdUsuario()%></td>
-            </tr>
-            <% } %>
-        </table>
-        <%
+        <tr>
+            <td><%= sede.getId() %></td>
+            <td><%= sede.getNombre() %></td>
+            <td><%= sede.getColegio().getId() %></td>
+            <td><%= sede.getUsuarioRegistra().getIdUsuario() %></td>
+        </tr>
+        <% } %>
+    </table>
+    <%
         } else {
-        %>
-        <p>No hay sedes disponibles.</p>
-        <%
-            }
-        %>
+    %>
+    <p>No hay sedes disponibles.</p>
+    <% } %>
 
-        <br>
-        <form action="${pageContext.request.contextPath}/Vistas/Sede/menuSede.jsp">
-            <button type="submit">Volver al Menú</button>
-        </form>
-    </body>
+    <br>
+    <form action="${pageContext.request.contextPath}/Vistas/Sede/menuSede.jsp">
+        <button type="submit">Volver al Menú</button>
+    </form>
+</body>
 </html>

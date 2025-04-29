@@ -1,5 +1,7 @@
 package com.inventario.controlador;
 
+import java.util.List;
+
 import com.inventario.modelo.Colegio;
 import com.inventario.modelo.Usuario;
 import com.mycompany.sgde.dao.ColegioDao;
@@ -14,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet("/ColegioServlet")
 public class ColegioServlet extends HttpServlet {
@@ -41,6 +45,10 @@ public class ColegioServlet extends HttpServlet {
                 case "eliminar":
                     eliminarColegio(request, response, colegioDao, usuarioDao);
                     break;
+                case "listar":
+                    listarColegios(request, response, colegioDao);
+                    break;
+
                 default:
                     enviarMensaje(request, response, "Acción no reconocida.", "Vistas/Colegio/menuColegio.jsp");
             }
@@ -145,19 +153,23 @@ public class ColegioServlet extends HttpServlet {
         }
 
         int filasEliminadas = colegioDao.eliminar(idColegio);
-        colegioDao.eliminar(idColegio);
-        response.sendRedirect("Vistas/Colegio/menuColegios.jsp?mensaje=eliminado");
 
         if (filasEliminadas > 0) {
-            request.setAttribute("mensaje", "Colegio eliminado exitosamente.");
+            enviarMensaje(request, response, "Colegio eliminado exitosamente.", "Vistas/Colegio/menuColegios.jsp");
         } else {
-            request.setAttribute("mensaje", "No se pudo eliminar el colegio.");
+            enviarMensaje(request, response, "No se pudo eliminar el colegio. Asegúrese de que no existan sedes asociadas.", "Vistas/Colegio/menuColegios.jsp");
         }
-
     }
 
     private void enviarMensaje(HttpServletRequest request, HttpServletResponse response, String mensaje, String vista) throws ServletException, IOException {
         request.setAttribute("mensaje", mensaje);
         request.getRequestDispatcher(vista).forward(request, response);
     }
+
+    private void listarColegios(HttpServletRequest request, HttpServletResponse response, ColegioDao colegioDao) throws ServletException, IOException {
+        List<Colegio> colegios = colegioDao.obtenerTodos();
+        request.setAttribute("colegios", colegios);
+        request.getRequestDispatcher("Vistas/Colegio/listarColegios.jsp").forward(request, response);
+    }
+
 }

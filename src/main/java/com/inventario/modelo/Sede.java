@@ -6,6 +6,8 @@ public class Sede {
     private Colegio colegio;
     private Usuario usuarioRegistra;
 
+    public Sede(){}
+    
     public Sede(int id, String nombre, Colegio colegio, Usuario usuarioRegistra) {
         this.id = id;
         this.nombre = nombre;

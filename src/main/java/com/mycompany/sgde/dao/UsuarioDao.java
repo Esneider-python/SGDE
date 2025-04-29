@@ -45,18 +45,19 @@ public class UsuarioDao {
         }
     }
 
-    public Usuario obtenerUsuarioPorId(int id) throws SQLException {
-        String sql = "SELECT u.*, r.nombres AS nombreRol FROM usuarios u JOIN rol r ON u.rol_id = r.id_rol WHERE u.id_usuario = ?";
-        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return construirUsuarioDesdeResultSet(rs);
-                }
+   public Usuario obtenerUsuarioPorId(int id) throws SQLException {
+    String sql = "SELECT u.*, r.nombre_rol AS nombreRol FROM usuarios u JOIN rol r ON u.rol_id = r.id_rol WHERE u.id_usuario = ?";
+    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return construirUsuarioDesdeResultSet(rs);
             }
         }
-        return null;
     }
+    return null;
+}
+
 
     // ACTUALIZAR USUARIO
     public boolean actualizarUsuario(Usuario usuario) throws SQLException {
