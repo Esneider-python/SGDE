@@ -4,20 +4,23 @@ import com.inventario.modelo.Bloque;
 import com.inventario.modelo.Sede;
 import com.inventario.modelo.Usuario;
 import com.mycompany.sgde.util.Conexion;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BloqueDao {
 
-    // Método para insertar un bloque y recuperar su ID autogenerado
+    // Insertar bloque
     public void insertar(Bloque bloque) {
-        String sql = "INSERT INTO bloques (sede_id, usuario_id) VALUES (?, ?)";
+        String sql = "INSERT INTO bloques (numero_bloque, sede_id, usuario_id) VALUES (?, ?, ?)";
+
         try (Connection conn = Conexion.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, bloque.getSede().getId());
-            stmt.setInt(2, bloque.getUsuarioRegistra().getIdUsuario());
+            stmt.setInt(1, bloque.getNumeroBloque());
+            stmt.setInt(2, bloque.getSede().getId());
+            stmt.setInt(3, bloque.getUsuarioRegistra().getIdUsuario());
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
@@ -31,7 +34,7 @@ public class BloqueDao {
         }
     }
 
-    // Método para obtener un bloque por su ID
+    // Obtener bloque por ID
     public Bloque obtenerPorId(int id) {
         String sql = "SELECT * FROM bloques WHERE id_bloque = ?";
         Bloque bloque = null;
@@ -40,16 +43,14 @@ public class BloqueDao {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    // Cargar objetos relacionados
+                    int numeroBloque = rs.getInt("numero_bloque");
                     Sede sede = new SedeDao().obtenerPorId(rs.getInt("sede_id"));
                     Usuario usuario = obtenerUsuarioPorId(rs.getInt("usuario_id"));
-                    bloque = new Bloque(
-                        rs.getInt("id_bloque"),
-                        sede,
-                        usuario
-                    );
+
+                    bloque = new Bloque(rs.getInt("id_bloque"), numeroBloque, sede, usuario);
                 }
             }
 
@@ -60,7 +61,7 @@ public class BloqueDao {
         return bloque;
     }
 
-    // Método para obtener todos los bloques
+    // Obtener todos los bloques
     public List<Bloque> obtenerTodos() {
         String sql = "SELECT * FROM bloques";
         List<Bloque> bloques = new ArrayList<>();
@@ -70,13 +71,12 @@ public class BloqueDao {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                int idBloque = rs.getInt("id_bloque");
+                int numeroBloque = rs.getInt("numero_bloque");
                 Sede sede = new SedeDao().obtenerPorId(rs.getInt("sede_id"));
                 Usuario usuario = obtenerUsuarioPorId(rs.getInt("usuario_id"));
-                Bloque bloque = new Bloque(
-                    rs.getInt("id_bloque"),
-                    sede,
-                    usuario
-                );
+
+                Bloque bloque = new Bloque(idBloque, numeroBloque, sede, usuario);
                 bloques.add(bloque);
             }
 
@@ -87,16 +87,17 @@ public class BloqueDao {
         return bloques;
     }
 
-    // Método para actualizar un bloque
+    // Actualizar bloque (incluye número de bloque)
     public void actualizar(Bloque bloque) {
-        String sql = "UPDATE bloques SET sede_id = ?, usuario_id = ? WHERE id_bloque = ?";
+        String sql = "UPDATE bloques SET numero_bloque = ?, sede_id = ?, usuario_id = ? WHERE id_bloque = ?";
 
         try (Connection conn = Conexion.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, bloque.getSede().getId());
-            stmt.setInt(2, bloque.getUsuarioRegistra().getIdUsuario());
-            stmt.setInt(3, bloque.getId());
+            stmt.setInt(1, bloque.getNumeroBloque());
+            stmt.setInt(2, bloque.getSede().getId());
+            stmt.setInt(3, bloque.getUsuarioRegistra().getIdUsuario());
+            stmt.setInt(4, bloque.getId());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -104,7 +105,7 @@ public class BloqueDao {
         }
     }
 
-    // Método para eliminar un bloque por su ID
+    // Eliminar bloque
     public void eliminar(int id) {
         String sql = "DELETE FROM bloques WHERE id_bloque = ?";
 
@@ -119,7 +120,7 @@ public class BloqueDao {
         }
     }
 
-    // Método auxiliar para obtener un Usuario por su ID
+    // Obtener usuario por ID (interno)
     private Usuario obtenerUsuarioPorId(int usuarioId) {
         String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
         Usuario usuario = null;
@@ -128,6 +129,7 @@ public class BloqueDao {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, usuarioId);
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     usuario = new Usuario(

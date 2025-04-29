@@ -11,7 +11,7 @@
         <div class="menu-container">
             <a href="${pageContext.request.contextPath}/Vistas/Colegio/menuColegios.jsp" class="menu-btn">Gestion Colegios</a>
             <a href="${pageContext.request.contextPath}/Vistas/Sede/menuSede.jsp" class="menu-btn"> Gestion Sedes</a>
-            <a href="crearBloque.jsp" class="menu-btn">Gestion Bloques</a>
+            <a href="${pageContext.request.contextPath}/Vistas/Bloque/menuBloque.jsp" class="menu-btn">Gestion Bloques</a>
             <a href="crearPiso.jsp" class="menu-btn">Gestion Pisos</a>
             <a href="crearAula.jsp" class="menu-btn">Gestion Aulas</a>
             <div class="volver-menu">

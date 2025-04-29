@@ -7,6 +7,7 @@ com\mycompany\sgde\dao\ColegioDao.class
 com\inventario\controlador\CerrarSesionServlet.class
 com\mycompany\sgde\resources\JakartaEE10Resource.class
 com\mycompany\sgde\dao\DocenteAulaDao.class
+com\inventario\controlador\BloqueServlet.class
 com\mycompany\sgde\JakartaRestConfiguration.class
 com\mycompany\sgde\util\CorreoUtil$1.class
 com\mycompany\sgde\dao\UsuarioDao.class
