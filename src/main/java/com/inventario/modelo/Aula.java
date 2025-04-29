@@ -23,12 +23,14 @@ public class Aula {
         this.usuarioRegistra = usuarioRegistra;
     }
 
+    public Aula() {
+    }
+
     public Aula(int numeroAula, Piso piso, Usuario usuarioRegistra) {
         this.numeroAula = numeroAula;
         this.piso = piso;
         this.usuarioRegistra = usuarioRegistra;
     }
-
 
     public Aula(Piso piso, Usuario usuarioRegistra) {
         this.piso = piso;

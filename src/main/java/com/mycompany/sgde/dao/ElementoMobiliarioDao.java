@@ -1,39 +1,29 @@
 package com.mycompany.sgde.dao;
- 
-import com.inventario.modelo.ElementosMobiliarios;
-import com.mycompany.sgde.util.Conexion;
+
 import java.sql.*;
 
 public class ElementoMobiliarioDao {
+    private final Connection conexion;
 
-    public void insertarMobiliario(int idElemento) {
+    public ElementoMobiliarioDao(Connection conexion) {
+        this.conexion = conexion;
+    }
+
+    public void insertarMobiliario(int idElemento) throws SQLException {
         String sql = "INSERT INTO elementos_mobiliarios(elemento_id) VALUES (?)";
-
-        try (Connection conn = Conexion.getConexion();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setInt(1, idElemento);
             stmt.executeUpdate();
-            System.out.println("🪑 Mobiliario insertado.");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-    public boolean existeMobiliario(Connection conn, int idElemento) throws SQLException {
-        String sqlCheck = "SELECT COUNT(*) FROM elementos_mobiliarios WHERE elemento_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sqlCheck)) {
+    public boolean existeMobiliario(int idElemento) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM elementos_mobiliarios WHERE elemento_id = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setInt(1, idElemento);
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next() && rs.getInt(1) > 0;
             }
         }
-    }
-
-    // En caso de que algún día quieras actualizar atributos específicos
-    public boolean actualizarDatosMobiliario(Connection conn, ElementosMobiliarios mobiliario) throws SQLException {
-        // Código aquí si hay campos en el futuro
-        return true;
     }
 }
