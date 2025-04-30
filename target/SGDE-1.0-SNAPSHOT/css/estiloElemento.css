@@ -68,3 +68,75 @@ select:focus {
     border-color: #5a90d6;
     outline: none;
 }
+
+.filtros {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.filtros input {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.contenedor-tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.tarjeta {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+    width: 280px;
+    transition: transform 0.2s;
+}
+
+.tarjeta:hover {
+    transform: scale(1.02);
+}
+
+.tecnologico {
+    border-left: 6px solid #007bff;
+}
+
+.mobiliario {
+    border-left: 6px solid #28a745;
+}
+
+.cabecera {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.contenido {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.acciones {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.acciones button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.acciones button:hover {
+    background-color: #0056b3;
+}

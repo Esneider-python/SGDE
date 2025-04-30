@@ -1,10 +1,13 @@
 package com.mycompany.sgde.dao;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import com.inventario.modelo.ElementoTecnologico;
 import java.sql.*;
 
-
 public class ElementoTecnologicoDao {
+
     private final Connection conexion;
 
     public ElementoTecnologicoDao(Connection conexion) {
@@ -41,6 +44,43 @@ public class ElementoTecnologicoDao {
             }
         }
     }
+    // Método para listar todos los elementos tecnológicos
+
+    // Método para listar todos los elementos tecnológicos
+    public List<ElementoTecnologico> listarElementos() throws SQLException {
+        List<ElementoTecnologico> elementos = new ArrayList<>();
+
+        String sql = """
+        SELECT e.id_elemento, e.nombre, e.estado, e.usuario_registra,
+               e.aula_id, e.identificador_unico, e.tipo_identificador, e.fecha_creacion,
+               et.marca, et.serie
+        FROM elementos_tecnologicos et
+        JOIN elementos e ON et.elemento_id = e.id_elemento
+    """;
+
+        try (PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                ElementoTecnologico elemento = new ElementoTecnologico();
+                elemento.setIdElemento(rs.getInt("id_elemento"));
+                elemento.setNombre(rs.getString("nombre"));
+                elemento.setEstado(rs.getString("estado"));
+                elemento.setUsuarioRegistra(rs.getInt("usuario_registra"));
+                elemento.setAulaId(rs.getInt("aula_id"));
+                elemento.setIdentificadorUnico(rs.getString("identificador_unico"));
+                elemento.setTipoIdentificador(rs.getString("tipo_identificador"));
+                elemento.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+                elemento.setMarca(rs.getString("marca"));
+                elemento.setSerie(rs.getString("serie"));
+
+                elementos.add(elemento);
+            }
+        }
+
+        return elementos;
+    }
+
 }
+
 
 // =====================

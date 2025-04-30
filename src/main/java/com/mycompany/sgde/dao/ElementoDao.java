@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ElementoDao {
+
     private final Connection conexion;
     private final ElementoTecnologicoDao elementoTecnologicoDao;
     private final ElementoMobiliarioDao elementoMobiliarioDao;
@@ -20,8 +21,8 @@ public class ElementoDao {
     }
 
     public int insertarElemento(Elemento elemento) {
-        String sql = "INSERT INTO elementos(nombre, estado, usuario_registra, aula_id, identificador_unico, tipo_identificador) " +
-                     "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO elementos(nombre, estado, usuario_registra, aula_id, identificador_unico, tipo_identificador) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, elemento.getNombre());
             stmt.setString(2, elemento.getEstado());
@@ -78,8 +79,7 @@ public class ElementoDao {
             return lista;
         }
 
-        try (PreparedStatement stmt = conexion.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 if (tipo.equalsIgnoreCase(TIPO_TECNOLOGICO)) {
                     ElementoTecnologico tec = new ElementoTecnologico();
@@ -231,5 +231,17 @@ public class ElementoDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<Elemento> listarTodos() throws SQLException {
+        List<Elemento> elementos = new ArrayList<>();
+
+        ElementoTecnologicoDao daoTec = new ElementoTecnologicoDao(conexion);
+        ElementoMobiliarioDao daoMob = new ElementoMobiliarioDao(conexion);
+
+        elementos.addAll(daoTec.listarElementos());
+        elementos.addAll(daoMob.listarElementos());
+
+        return elementos;
     }
 }

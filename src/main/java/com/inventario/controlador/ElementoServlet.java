@@ -10,6 +10,8 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/ElementoServlet")
 public class ElementoServlet extends HttpServlet {
@@ -22,38 +24,42 @@ public class ElementoServlet extends HttpServlet {
 
         try (Connection conexion = Conexion.getConexion()) {
             if (conexion == null) {
-                request.setAttribute("error", "No se pudo conectar con la base de datos.");
+                request.setAttribute("error", "❌ No se pudo conectar con la base de datos.");
                 request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
                 return;
             }
 
-            // Comienza la transacción
             conexion.setAutoCommit(false);
 
             try {
                 switch (accion) {
                     case "registrarTecnologico":
                         registrarTecnologico(request, conexion);
+                        request.setAttribute("mensaje", "✅ Elemento tecnológico registrado con éxito.");
                         break;
                     case "registrarMobiliario":
                         registrarMobiliario(request, conexion);
+                        request.setAttribute("mensaje", "✅ Elemento mobiliario registrado con éxito.");
                         break;
+                    case "listarTodos":
+                        listarTodosLosElementos(request, response);
+                        return;
+
                     default:
                         throw new IllegalArgumentException("Acción no válida.");
                 }
 
-                // Confirma los cambios
                 conexion.commit();
 
             } catch (Exception e) {
-                // Revierte cambios en caso de error
                 conexion.rollback();
-                throw e;
+                e.printStackTrace();
+                request.setAttribute("error", "❌ Error al registrar el elemento: " + e.getMessage());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Error: " + e.getMessage());
+            request.setAttribute("error", "❌ Error interno: " + e.getMessage());
         }
 
         request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
@@ -87,7 +93,6 @@ public class ElementoServlet extends HttpServlet {
 
         ElementoDao elementoDao = new ElementoDao(conexion);
         int idElemento = elementoDao.insertarElemento(tecnologico);
-
         if (idElemento <= 0) {
             throw new Exception("No se pudo insertar el elemento base.");
         }
@@ -121,7 +126,6 @@ public class ElementoServlet extends HttpServlet {
 
         ElementoDao elementoDao = new ElementoDao(conexion);
         int idElemento = elementoDao.insertarElemento(mobiliario);
-
         if (idElemento <= 0) {
             throw new Exception("No se pudo insertar el elemento base.");
         }
@@ -130,4 +134,31 @@ public class ElementoServlet extends HttpServlet {
         ElementoMobiliarioDao mobiliarioDao = new ElementoMobiliarioDao(conexion);
         mobiliarioDao.insertarMobiliario(idElemento);
     }
+
+    private void listarTodosLosElementos(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try (Connection conexion = Conexion.getConexion()) {
+            if (conexion == null) {
+                request.setAttribute("error", " No se pudo conectar con la base de datos.");
+                request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+                return;
+            }
+
+            ElementoTecnologicoDao tecnologicoDao = new ElementoTecnologicoDao(conexion);
+            ElementoMobiliarioDao mobiliarioDao = new ElementoMobiliarioDao(conexion);
+
+            List<Elemento> elementos = new ArrayList<>();
+            elementos.addAll(tecnologicoDao.listarElementos());
+            elementos.addAll(mobiliarioDao.listarElementos());
+
+            request.setAttribute("elementos", elementos);
+            request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", " Error al listar todos los elementos: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
+    }
+
 }
