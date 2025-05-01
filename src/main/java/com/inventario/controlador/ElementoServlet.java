@@ -10,6 +10,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,14 @@ public class ElementoServlet extends HttpServlet {
                     case "listarTodos":
                         listarTodosLosElementos(request, response);
                         return;
+                    case "actualizarGuardar":
+                        procesarActualizarElemento(request, response, conexion);
+                        conexion.commit();
+                        return;
+
+                    case "mostrarActualizar":
+                        mostrarFormularioActualizar(request, response, conexion);
+                        return;
 
                     default:
                         throw new IllegalArgumentException("Acción no válida.");
@@ -54,12 +63,12 @@ public class ElementoServlet extends HttpServlet {
             } catch (Exception e) {
                 conexion.rollback();
                 e.printStackTrace();
-                request.setAttribute("error", "❌ Error al registrar el elemento: " + e.getMessage());
+                request.setAttribute("error", " Error al registrar el elemento: " + e.getMessage());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "❌ Error interno: " + e.getMessage());
+            request.setAttribute("error", " Error interno: " + e.getMessage());
         }
 
         request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
@@ -158,6 +167,111 @@ public class ElementoServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("error", " Error al listar todos los elementos: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
+    }
+
+    private void mostrarFormularioActualizar(HttpServletRequest request, HttpServletResponse response, Connection conexion)
+            throws ServletException, IOException {
+        int idElemento = Integer.parseInt(request.getParameter("idElemento"));
+        String tipo = request.getParameter("tipoElemento");
+
+        try {
+            Object elemento;
+            if ("tecnologico".equals(tipo)) {
+                ElementoTecnologicoDao dao = new ElementoTecnologicoDao(conexion);
+                elemento = dao.obtenerPorId(idElemento);
+            } else {
+                ElementoMobiliarioDao dao = new ElementoMobiliarioDao(conexion);
+                elemento = dao.obtenerPorId(idElemento);
+            }
+
+            request.setAttribute("elemento", elemento);
+            request.setAttribute("tipo", tipo);
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/actualizarElemento.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error al cargar formulario de actualización.");
+            request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
+    }
+
+    private void procesarActualizarElemento(HttpServletRequest request, HttpServletResponse response, Connection conexion) throws ServletException, IOException {
+        try {
+            UsuarioDao usuarioDao = new UsuarioDao(conexion);
+            ElementoDao elementoDao = new ElementoDao(conexion);
+
+            int idElemento = Integer.parseInt(request.getParameter("idElemento"));
+            String nombre = request.getParameter("nombre");
+            String cedula = request.getParameter("cedulaUsuario");
+            Integer usuarioRegistra = usuarioDao.obtenerIdPorCedula(cedula);
+            int aulaId = Integer.parseInt(request.getParameter("aulaId"));
+            String tipoElemento = request.getParameter("tipoElemento");
+
+            if (usuarioRegistra == null) {
+                throw new IllegalArgumentException("❌ La cédula ingresada no está registrada.");
+            }
+
+            boolean exito = false;
+
+            if ("tecnologico".equals(tipoElemento)) {
+                ElementoTecnologicoDao tecnologicoDao = new ElementoTecnologicoDao(conexion);
+                ElementoTecnologico tecnologico = tecnologicoDao.obtenerPorId(idElemento);  // ← obtiene datos existentes
+
+                if (tecnologico == null) {
+                    throw new IllegalArgumentException("❌ No se encontró el elemento tecnológico con ID: " + idElemento);
+                }
+
+                // Solo modificamos lo necesario
+                tecnologico.setNombre(nombre);
+                tecnologico.setUsuarioRegistra(usuarioRegistra);
+                tecnologico.setAulaId(aulaId);
+                tecnologico.setMarca(request.getParameter("marca"));
+                tecnologico.setSerie(request.getParameter("serie"));
+
+                exito = elementoDao.actualizarElemento(tecnologico);
+
+            } else if ("mobiliario".equals(tipoElemento)) {
+                ElementoMobiliarioDao mobiliarioDao = new ElementoMobiliarioDao(conexion);
+                ElementosMobiliarios mobiliario = mobiliarioDao.obtenerPorId(idElemento);  // ← obtiene datos existentes
+
+                if (mobiliario == null) {
+                    throw new IllegalArgumentException("❌ No se encontró el elemento mobiliario con ID: " + idElemento);
+                }
+
+                // Solo modificamos lo necesario
+                mobiliario.setNombre(nombre);
+                mobiliario.setUsuarioRegistra(usuarioRegistra);
+                mobiliario.setAulaId(aulaId);
+
+                exito = elementoDao.actualizarElemento(mobiliario);
+            }
+
+            if (exito) {
+                request.setAttribute("mensaje", "✅ Elemento actualizado exitosamente.");
+            } else {
+                request.setAttribute("mensaje", "❌ No se pudo actualizar el elemento.");
+            }
+
+            listarTodosLosElementos(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "❌ Error al actualizar: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
+
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String accion = request.getParameter("accion");
+        if ("listarTodos".equals(accion)) {
+            listarTodosLosElementos(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Método GET no permitido para esta acción.");
         }
     }
 

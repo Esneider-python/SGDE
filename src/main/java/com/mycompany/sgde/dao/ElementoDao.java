@@ -167,7 +167,7 @@ public class ElementoDao {
     }
 
     public boolean actualizarElemento(Elemento elemento) {
-        String sqlUpdateElemento = "UPDATE elementos SET nombre = ?, usuario_registra = ? WHERE id_elemento = ?";
+        String sqlUpdateElemento = "UPDATE elementos SET nombre = ?, usuario_registra = ?, aula_id = ? WHERE id_elemento = ?";
 
         try (PreparedStatement stmtUpdate = conexion.prepareStatement(sqlUpdateElemento)) {
             boolean esTecnologico = elementoTecnologicoDao.existe(elemento.getIdElemento());
@@ -180,8 +180,17 @@ public class ElementoDao {
 
             stmtUpdate.setString(1, elemento.getNombre());
             stmtUpdate.setInt(2, elemento.getUsuarioRegistra());
-            stmtUpdate.setInt(3, elemento.getIdElemento());
-            stmtUpdate.executeUpdate();
+            stmtUpdate.setInt(3, elemento.getAulaId());
+            stmtUpdate.setInt(4, elemento.getIdElemento());
+
+            System.out.println("✅ DATOS ACTUALIZADOS: "
+                    + "id = " + elemento.getIdElemento()
+                    + ", nombre = " + elemento.getNombre()
+                    + ", aula = " + elemento.getAulaId()
+                    + ", usuario = " + elemento.getUsuarioRegistra());
+            
+            int filas = stmtUpdate.executeUpdate();
+            System.out.println("✅ Filas actualizadas en tabla elementos: " + filas);
 
             if (esTecnologico && elemento instanceof ElementoTecnologico) {
                 ElementoTecnologico tecnologico = (ElementoTecnologico) elemento;
@@ -190,7 +199,7 @@ public class ElementoDao {
 
             return true;
         } catch (SQLException e) {
-            System.out.println("Error al actualizar el elemento: " + e.getMessage());
+            System.out.println("error al actualizar " + (elemento instanceof ElementoTecnologico));
             return false;
         }
     }

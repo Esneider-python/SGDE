@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import com.inventario.modelo.ElementoTecnologico;
-import java.sql.*;
 
 public class ElementoTecnologicoDao {
 
@@ -31,7 +30,9 @@ public class ElementoTecnologicoDao {
             stmt.setString(1, tecnologico.getMarca());
             stmt.setString(2, tecnologico.getSerie());
             stmt.setInt(3, tecnologico.getIdElemento());
-            return stmt.executeUpdate() > 0;
+            int filas = stmt.executeUpdate();
+            System.out.println("🔄 filas actualizadas en elementos_tecnologicos: " + filas);
+            return filas > 0;
         }
     }
 
@@ -78,6 +79,35 @@ public class ElementoTecnologicoDao {
         }
 
         return elementos;
+    }
+
+    public ElementoTecnologico obtenerPorId(int idElemento) throws SQLException {
+        String sql = "SELECT e.id_elemento, e.nombre, e.estado, e.usuario_registra, e.aula_id, "
+                + "e.identificador_unico, e.tipo_identificador, e.fecha_creacion, "
+                + "t.marca, t.serie "
+                + "FROM elementos e "
+                + "INNER JOIN elementos_tecnologicos t ON e.id_elemento = t.elemento_id "
+                + "WHERE e.id_elemento = ?";
+
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, idElemento);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                ElementoTecnologico elemento = new ElementoTecnologico();
+                elemento.setIdElemento(rs.getInt("id_elemento"));
+                elemento.setNombre(rs.getString("nombre"));
+                elemento.setEstado(rs.getString("estado"));
+                elemento.setUsuarioRegistra(rs.getInt("usuario_registra"));
+                elemento.setAulaId(rs.getInt("aula_id"));
+                elemento.setIdentificadorUnico(rs.getString("identificador_unico"));
+                elemento.setTipoIdentificador(rs.getString("tipo_identificador"));
+                elemento.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+                elemento.setMarca(rs.getString("marca"));
+                elemento.setSerie(rs.getString("serie"));
+                return elemento;
+            }
+        }
+        return null;
     }
 
 }

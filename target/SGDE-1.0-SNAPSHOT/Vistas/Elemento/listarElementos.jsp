@@ -7,6 +7,11 @@
     </head>
     <body>
         <h2>Listado de Elementos</h2>
+        <% String mensaje = (String) request.getAttribute("mensaje"); %>
+        <% if (mensaje != null) {%>
+        <div class="alerta-exito"><%= mensaje%></div>
+        <% } %>
+
 
         <div class="filtros">
             <input type="text" id="filtroId" placeholder="Buscar por ID">
@@ -48,7 +53,13 @@
                     <button>🗑</button>
                     <button>🏠</button>
                     <button>➕</button>
-                    <button>✏️</button>
+                    <form action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarActualizar">
+                        <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="tecnologico">
+                        <button type="submit">✏️</button>
+                    </form>
+
                     <button>❗</button>
                 </div>
             </div>
@@ -73,7 +84,13 @@
                     <button>🗑</button>
                     <button>🏠</button>
                     <button>➕</button>
-                    <button>✏️</button>
+                    <form action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarActualizar">
+                        <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="mobiliario"> <!-- o "mobiliario" -->
+                        <button type="submit">✏️</button>
+                    </form>
+
                     <button>❗</button>
                 </div>
             </div>
@@ -83,7 +100,7 @@
                 }
             %>
         </div>
-          <form action="${pageContext.request.contextPath}/Vistas/Elemento/menuElemento.jsp" method="get">
+        <form action="${pageContext.request.contextPath}/Vistas/Elemento/menuElemento.jsp" method="get">
             <button type="submit">Volver al Menú</button>
         </form>
 

@@ -64,4 +64,28 @@ public class ElementoMobiliarioDao {
         return elementos;
     }
 
+    public ElementosMobiliarios obtenerPorId(int idElemento) throws SQLException {
+        String sql = "SELECT e.id_elemento, e.nombre, e.estado, e.usuario_registra, e.aula_id, "
+                + "e.identificador_unico, e.tipo_identificador, e.fecha_creacion "
+                + "FROM elementos e "
+                + "INNER JOIN elementos_mobiliarios m ON e.id_elemento = m.elemento_id "
+                + "WHERE e.id_elemento = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, idElemento);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                ElementosMobiliarios elemento = new ElementosMobiliarios();
+                elemento.setIdElemento(rs.getInt("id_elemento"));
+                elemento.setNombre(rs.getString("nombre"));
+                elemento.setEstado(rs.getString("estado"));
+                elemento.setUsuarioRegistra(rs.getInt("usuario_registra"));
+                elemento.setAulaId(rs.getInt("aula_id"));
+                elemento.setIdentificadorUnico(rs.getString("identificador_unico"));
+                elemento.setTipoIdentificador(rs.getString("tipo_identificador"));
+                elemento.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+                return elemento;
+            }
+        }
+        return null; // Si no se encuentra
+    }
 }
