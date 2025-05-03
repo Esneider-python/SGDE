@@ -27,7 +27,8 @@
         <main class="contenedor">
             <ul class="menu-lateral">
                 <li><a href="${pageContext.request.contextPath}/Vistas/MenuRegistros/menuRegistros.jsp"><i>🖊️</i> Registros</a></li>
-                <li><a href="#"><i>📄</i> Historial de movimientos</a></li>
+                <li><a href="${pageContext.request.contextPath}/HistorialMovimientoServlet"><i>📄</i> Historial de movimientos</a></li>
+
                 <li><a href="#"><i>📊</i> Informes</a></li>
                 <li><a href="${pageContext.request.contextPath}/Vistas/Elemento/menuElemento.jsp"><i>💻</i> Elementos</a></li>
                 <li><a href="#"><i>🗑️</i> Historial eliminaciones</a></li>

@@ -1,5 +1,7 @@
 package com.mycompany.sgde.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.inventario.modelo.HistorialMovimiento;
 
 import java.sql.*;
@@ -31,33 +33,6 @@ public class HistorialMovimientoDao {
                 throw new SQLException("❌ No se pudo registrar el movimiento en el historial.");
             }
         }
-    }
-
-    // OBTENER TODOS LOS MOVIMIENTOS
-    public List<HistorialMovimiento> obtenerTodos() {
-        List<HistorialMovimiento> movimientos = new ArrayList<>();
-        String sql = "SELECT * FROM historial_movimientos";
-
-        try (PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                HistorialMovimiento mov = new HistorialMovimiento(
-                        rs.getInt("id_historial"),
-                        rs.getInt("elemento_id"),
-                        rs.getString("tipo_elemento"),
-                        rs.getInt("aula_origen"),
-                        rs.getInt("aula_destino"),
-                        rs.getInt("usuario_movio"),
-                        rs.getTimestamp("fecha_movimiento")
-                );
-                movimientos.add(mov);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error al obtener todos los movimientos: " + e.getMessage());
-        }
-
-        return movimientos;
     }
 
     // OBTENER MOVIMIENTO POR ID
@@ -121,4 +96,31 @@ public class HistorialMovimientoDao {
             return false;
         }
     }
+    // OBTENER TODOS LOS MOVIMIENTOS
+
+    public List<HistorialMovimiento> obtenerTodos() {
+        List<HistorialMovimiento> lista = new ArrayList<>();
+        String sql = "SELECT * FROM historial_movimientos";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                HistorialMovimiento h = new HistorialMovimiento();
+                h.setIdHistorial(rs.getInt("id_historial_movimientos")); // Usa el nombre correcto
+                h.setElementoId(rs.getInt("elemento_id"));
+                h.setTipoElemento(rs.getString("tipo_elemento"));
+                h.setAulaOrigen(rs.getInt("aula_origen"));
+                h.setAulaDestino(rs.getInt("aula_destino"));
+                h.setUsuarioMovio(rs.getInt("usuario_movio"));
+                h.setFechaMovimiento(rs.getTimestamp("fecha_movimiento"));
+                lista.add(h);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("❌ Error al obtener todos los movimientos: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
 }

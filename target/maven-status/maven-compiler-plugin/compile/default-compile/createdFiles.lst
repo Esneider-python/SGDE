@@ -5,6 +5,7 @@ com\inventario\controlador\BloqueServlet.class
 com\mycompany\sgde\util\CorreoUtil$1.class
 com\mycompany\sgde\dao\ReporteDao.class
 com\inventario\controlador\RolServlet.class
+com\mycompany\sgde\util\ConexionListener.class
 com\inventario\controlador\CambiarContrasenaServlet.class
 com\inventario\modelo\Piso.class
 com\inventario\controlador\ElementoServlet.class
@@ -42,6 +43,7 @@ com\inventario\modelo\ElementosMobiliarios.class
 com\inventario\modelo\Bloque.class
 com\mycompany\sgde\dao\ElementoEliminadoDao.class
 com\mycompany\sgde\dao\AulaDao.class
+com\mycompany\sgde\servlets\HistorialMovimientoServlet.class
 com\inventario\modelo\Elemento.class
 com\inventario\modelo\HistorialMovimiento.class
 com\inventario\modelo\ElementoTecnologico.class

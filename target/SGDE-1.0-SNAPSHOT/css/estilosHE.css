@@ -1,0 +1,82 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Título principal */
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Estilo para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para la cabecera de la tabla */
+thead {
+    background-color: #007BFF;  /* Azul intenso */
+    color: white;
+}
+
+th {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+/* Estilo para las filas de la tabla */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para el botón */
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;  /* Azul intenso */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;  /* Azul más oscuro al pasar el ratón */
+}
+
+/* Estilo para el formulario */
+form {  
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Estilo para el mensaje de "No se encontraron registros" */
+p {
+    color: #777;
+    text-align: center;
+    font-size: 18px;
+}
