@@ -33,7 +33,7 @@ public class AulaServlet extends HttpServlet {
 
         UsuarioDao usuarioDao = new UsuarioDao(conn);
         PisoDao pisoDao = new PisoDao();
-        AulaDao aulaDao = new AulaDao();
+        AulaDao aulaDao = new AulaDao(conn);
 
         try {
             switch (accion) {

@@ -51,9 +51,14 @@
                 </div>
                 <div class="acciones">
                     <button>🗑</button>
-                    <button>🏠</button>
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarFormularioMover">
+                        <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="tecnologico"> <!-- o "tecnologico" si estás en el otro bloque -->
+                        <button type="submit">🏠 Mover</button>
+                    </form>
                     <button>➕</button>
-                    <form action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
                         <input type="hidden" name="accion" value="mostrarActualizar">
                         <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
                         <input type="hidden" name="tipoElemento" value="tecnologico">
@@ -82,9 +87,15 @@
                 </div>
                 <div class="acciones">
                     <button>🗑</button>
-                    <button>🏠</button>
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarFormularioMover">
+                        <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="mobiliario"> <!-- o "tecnologico" si estás en el otro bloque -->
+                        <button type="submit">🏠 Mover</button>
+                    </form>
+
                     <button>➕</button>
-                    <form action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
                         <input type="hidden" name="accion" value="mostrarActualizar">
                         <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
                         <input type="hidden" name="tipoElemento" value="mobiliario"> <!-- o "mobiliario" -->

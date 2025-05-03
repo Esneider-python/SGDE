@@ -113,7 +113,7 @@ public class BloqueDao {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
-            stmt.executeUpdate();
+             stmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

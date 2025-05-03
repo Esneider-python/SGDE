@@ -10,7 +10,6 @@ public class UsuarioDao {
     public UsuarioDao(Connection conexion) {
         this.conexion = conexion;
     }
- 
 
     // INSERTAR USUARIO Y OBTENER ID GENERADO
     public boolean insertarUsuario(Usuario usuario) throws SQLException {
@@ -45,19 +44,18 @@ public class UsuarioDao {
         }
     }
 
-   public Usuario obtenerUsuarioPorId(int id) throws SQLException {
-    String sql = "SELECT u.*, r.nombre_rol AS nombreRol FROM usuarios u JOIN rol r ON u.rol_id = r.id_rol WHERE u.id_usuario = ?";
-    try (PreparedStatement ps = conexion.prepareStatement(sql)) {
-        ps.setInt(1, id);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return construirUsuarioDesdeResultSet(rs);
+    public Usuario obtenerUsuarioPorId(int id) throws SQLException {
+        String sql = "SELECT u.*, r.nombre_rol AS nombreRol FROM usuarios u JOIN rol r ON u.rol_id = r.id_rol WHERE u.id_usuario = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return construirUsuarioDesdeResultSet(rs);
+                }
             }
         }
+        return null;
     }
-    return null;
-}
-
 
     // ACTUALIZAR USUARIO
     public boolean actualizarUsuario(Usuario usuario) throws SQLException {
@@ -156,18 +154,26 @@ public class UsuarioDao {
     }
 
     public Integer obtenerIdPorCedula(String cedula) {
+        if (cedula == null || cedula.trim().isEmpty()) {
+            System.err.println("Cédula inválida: vacía o nula.");
+            return null;
+        }
+
         String sql = "SELECT id_usuario FROM usuarios WHERE cedula = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setString(1, cedula);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("id_usuario"); // Retorna el ID del usuario
+                    return rs.getInt("id_usuario");
+                } else {
+                    System.out.println("No se encontró usuario con cédula: " + cedula);
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Error al obtener ID por cédula: " + cedula);
             e.printStackTrace();
         }
-        return null; // Retorna null si no se encontró el usuario
+        return null;
     }
 
 }

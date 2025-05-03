@@ -11,6 +11,12 @@ import java.util.List;
 
 public class AulaDao {
 
+    private Connection conexion;
+
+    public AulaDao(Connection conexion) {
+        this.conexion = conexion;
+    }
+
     // Método para insertar un aula y recuperar su ID autogenerado
     public void insertar(Aula aula) {
         String sql = "INSERT INTO aulas (numero_aula, piso_id, usuario_id) VALUES (?,?, ?)";
@@ -122,4 +128,19 @@ public class AulaDao {
             e.printStackTrace();
         }
     }
+
+    public int obtenerIdPorNumero(int numeroAula) {
+        String sql = "SELECT id_aula FROM aulas WHERE numero_aula = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, numeroAula);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id_aula");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Si no se encuentra
+    }
+
 }

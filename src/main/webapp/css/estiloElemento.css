@@ -5,11 +5,21 @@ body {
     color: #333;
 }
 
+
 h2 {
     text-align: center;
     color: #2a5d9f;
     margin-bottom: 30px;
 }
+
+.item{
+    max-width: 15%;
+    max-height: 10%;
+    background-color: #ffffff;
+    margin: 0px 0px 0px 0px;
+    padding: 1px;
+}
+
 
 form {
     max-width: 500px;
@@ -17,7 +27,7 @@ form {
     background-color: #ffffff;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 50, 120, 0.1);
+
 }
 
 label {
@@ -139,4 +149,59 @@ select:focus {
 
 .acciones button:hover {
     background-color: #0056b3;
+}
+.contenedor {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+.campo {
+    margin-bottom: 15px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.campo input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.botones button,
+.botones a {
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.botones a {
+    background-color: #6c757d;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.exito {
+    color: green;
+    font-weight: bold;
 }

@@ -188,7 +188,7 @@ public class ElementoDao {
                     + ", nombre = " + elemento.getNombre()
                     + ", aula = " + elemento.getAulaId()
                     + ", usuario = " + elemento.getUsuarioRegistra());
-            
+
             int filas = stmtUpdate.executeUpdate();
             System.out.println("✅ Filas actualizadas en tabla elementos: " + filas);
 
@@ -212,18 +212,6 @@ public class ElementoDao {
             return filasAfectadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean moverElemento(int idElemento, int nuevaAulaId) {
-        String sql = "UPDATE elementos SET aula_id = ? WHERE id_elemento = ?";
-        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setInt(1, nuevaAulaId);
-            stmt.setInt(2, idElemento);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error al mover el elemento de aula: " + e.getMessage());
             return false;
         }
     }
@@ -253,4 +241,57 @@ public class ElementoDao {
 
         return elementos;
     }
+
+    public int obtenerAulaIdPorElemento(int idElemento) throws SQLException {
+        String sql = "SELECT aula_id FROM elementos WHERE id_elemento = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, idElemento);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("aula_id");
+            }
+        }
+        return -1;
+    }
+
+    public boolean actualizarAula(int idElemento, int nuevoIdAula) throws SQLException {
+        String sql = "UPDATE elementos SET aula_id = ? WHERE id_elemento = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, nuevoIdAula);
+            stmt.setInt(2, idElemento);
+            int filasAfectadas = stmt.executeUpdate();
+            System.out.println("Se actualizaron " + filasAfectadas + " filas en la tabla elementos.");
+            return filasAfectadas > 0;
+        }
+    }
+
+    public boolean existeAula(int idAula) throws SQLException {
+        String sql = "SELECT 1 FROM aulas WHERE id_aula = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, idAula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); // Si hay resultado, el aula existe
+            }
+        }
+    }
+
+    public boolean existeElemento(int idElemento, String tipoElemento) throws SQLException {
+        String sql;
+
+        if ("tecnologico".equalsIgnoreCase(tipoElemento)) {
+            sql = "SELECT 1 FROM elementos_tecnologicos WHERE elemento_id = ?";
+        } else if ("mobiliario".equalsIgnoreCase(tipoElemento)) {
+            sql = "SELECT 1 FROM elementos_mobiliarios WHERE elemento_id = ?";
+        } else {
+            return false; // Tipo inválido
+        }
+
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, idElemento);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); // true si existe al menos un resultado
+            }
+        }
+    }
+
 }

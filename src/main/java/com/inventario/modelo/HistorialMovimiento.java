@@ -3,7 +3,9 @@ package com.inventario.modelo;
 import java.sql.Timestamp;
 
 public class HistorialMovimiento {
+
     private int idHistorial;
+    private int elementoId;
     private String tipoElemento; // "mobiliario" o "tecnologico"
     private int aulaOrigen;
     private int aulaDestino;
@@ -11,11 +13,14 @@ public class HistorialMovimiento {
     private Timestamp fechaMovimiento;
 
     // Constructor vacío
-    public HistorialMovimiento() {}
+    public HistorialMovimiento() {
+    }
 
     // Constructor completo
-    public HistorialMovimiento(int idHistorial, String tipoElemento, int aulaOrigen, int aulaDestino, int usuarioMovio, Timestamp fechaMovimiento) {
+    public HistorialMovimiento(int idHistorial, int elementoId, String tipoElemento,
+                               int aulaOrigen, int aulaDestino, int usuarioMovio, Timestamp fechaMovimiento) {
         this.idHistorial = idHistorial;
+        this.elementoId = elementoId;
         this.tipoElemento = tipoElemento;
         this.aulaOrigen = aulaOrigen;
         this.aulaDestino = aulaDestino;
@@ -24,7 +29,9 @@ public class HistorialMovimiento {
     }
 
     // Constructor sin ID ni fecha (para insertar nuevos)
-    public HistorialMovimiento(String tipoElemento, int aulaOrigen, int aulaDestino, int usuarioMovio) {
+    public HistorialMovimiento(int elementoId, String tipoElemento, int aulaOrigen,
+                               int aulaDestino, int usuarioMovio) {
+        this.elementoId = elementoId;
         this.tipoElemento = tipoElemento;
         this.aulaOrigen = aulaOrigen;
         this.aulaDestino = aulaDestino;
@@ -38,6 +45,14 @@ public class HistorialMovimiento {
 
     public void setIdHistorial(int idHistorial) {
         this.idHistorial = idHistorial;
+    }
+
+    public int getElementoId() {
+        return elementoId;
+    }
+
+    public void setElementoId(int elementoId) {
+        this.elementoId = elementoId;
     }
 
     public String getTipoElemento() {
@@ -84,6 +99,7 @@ public class HistorialMovimiento {
     public String toString() {
         return "HistorialMovimiento{" +
                 "idHistorial=" + idHistorial +
+                ", elementoId=" + elementoId +
                 ", tipoElemento='" + tipoElemento + '\'' +
                 ", aulaOrigen=" + aulaOrigen +
                 ", aulaDestino=" + aulaDestino +
