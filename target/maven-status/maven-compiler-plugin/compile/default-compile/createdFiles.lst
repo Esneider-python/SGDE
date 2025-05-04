@@ -1,6 +1,7 @@
 com\inventario\modelo\Sede.class
 com\inventario\modelo\DocenteAula.class
 com\mycompany\sgde\dao\ColegioDao.class
+com\inventario\controlador\HistorialMovimientoServlet.class
 com\inventario\controlador\BloqueServlet.class
 com\mycompany\sgde\util\CorreoUtil$1.class
 com\mycompany\sgde\dao\ReporteDao.class
@@ -13,13 +14,13 @@ com\mycompany\sgde\dao\InformeDao.class
 com\inventario\controlador\EnviarCodigoServlet.class
 com\inventario\modelo\Usuario.class
 com\mycompany\sgde\dao\ElementoDao.class
+com\inventario\controlador\PisoServlet.class
 com\mycompany\sgde\util\CorreoUtil.class
 com\inventario\controlador\LoginServlet.class
 com\inventario\controlador\ColegioServlet.class
 com\inventario\modelo\Rol.class
 com\inventario\controlador\AulaServlet.class
 com\inventario\modelo\Informe.class
-com\mycompany\sgde\controlador\PisoServlet.class
 com\inventario\modelo\Colegio.class
 com\mycompany\sgde\dao\RolDao.class
 com\inventario\controlador\CerrarSesionServlet.class
@@ -43,7 +44,6 @@ com\inventario\modelo\ElementosMobiliarios.class
 com\inventario\modelo\Bloque.class
 com\mycompany\sgde\dao\ElementoEliminadoDao.class
 com\mycompany\sgde\dao\AulaDao.class
-com\mycompany\sgde\servlets\HistorialMovimientoServlet.class
 com\inventario\modelo\Elemento.class
 com\inventario\modelo\HistorialMovimiento.class
 com\inventario\modelo\ElementoTecnologico.class
