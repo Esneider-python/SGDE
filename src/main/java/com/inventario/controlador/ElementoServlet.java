@@ -26,7 +26,7 @@ public class ElementoServlet extends HttpServlet {
 
         try (Connection conexion = Conexion.getConexion()) {
             if (conexion == null) {
-                request.setAttribute("error", "❌ No se pudo conectar con la base de datos.");
+                request.setAttribute("error", "No se pudo conectar con la base de datos.");
                 request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
                 return;
             }
@@ -37,11 +37,11 @@ public class ElementoServlet extends HttpServlet {
                 switch (accion) {
                     case "registrarTecnologico":
                         registrarTecnologico(request, conexion);
-                        request.setAttribute("mensaje", "✅ Elemento tecnológico registrado con éxito.");
+                        request.setAttribute("mensaje", "Elemento tecnológico registrado con éxito.");
                         break;
                     case "registrarMobiliario":
                         registrarMobiliario(request, conexion);
-                        request.setAttribute("mensaje", "✅ Elemento mobiliario registrado con éxito.");
+                        request.setAttribute("mensaje", " Elemento mobiliario registrado con éxito.");
                         break;
                     case "listarTodos":
                         listarTodosLosElementos(request, response);
@@ -217,7 +217,7 @@ public class ElementoServlet extends HttpServlet {
             String tipoElemento = request.getParameter("tipoElemento");
 
             if (usuarioRegistra == null) {
-                throw new IllegalArgumentException("❌ La cédula ingresada no está registrada.");
+                throw new IllegalArgumentException("La cédula ingresada no está registrada.");
             }
 
             boolean exito = false;
@@ -227,7 +227,7 @@ public class ElementoServlet extends HttpServlet {
                 ElementoTecnologico tecnologico = tecnologicoDao.obtenerPorId(idElemento);  // ← obtiene datos existentes
 
                 if (tecnologico == null) {
-                    throw new IllegalArgumentException("❌ No se encontró el elemento tecnológico con ID: " + idElemento);
+                    throw new IllegalArgumentException(" No se encontró el elemento tecnológico con ID: " + idElemento);
                 }
 
                 // Solo modificamos lo necesario
@@ -244,7 +244,7 @@ public class ElementoServlet extends HttpServlet {
                 ElementosMobiliarios mobiliario = mobiliarioDao.obtenerPorId(idElemento);  // ← obtiene datos existentes
 
                 if (mobiliario == null) {
-                    throw new IllegalArgumentException("❌ No se encontró el elemento mobiliario con ID: " + idElemento);
+                    throw new IllegalArgumentException("No se encontró el elemento mobiliario con ID: " + idElemento);
                 }
 
                 // Solo modificamos lo necesario
@@ -256,16 +256,16 @@ public class ElementoServlet extends HttpServlet {
             }
 
             if (exito) {
-                request.setAttribute("mensaje", "✅ Elemento actualizado exitosamente.");
+                request.setAttribute("mensaje", " Elemento actualizado exitosamente.");
             } else {
-                request.setAttribute("mensaje", "❌ No se pudo actualizar el elemento.");
+                request.setAttribute("mensaje", " No se pudo actualizar el elemento.");
             }
 
             listarTodosLosElementos(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("mensaje", "❌ Error al actualizar: " + e.getMessage());
+            request.setAttribute("mensaje", " Error al actualizar: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
         }
 
@@ -297,7 +297,7 @@ public class ElementoServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "❌ Error al cargar el formulario de movimiento: " + e.getMessage());
+            request.setAttribute("error", "Error al cargar el formulario de movimiento: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
         }
     }
@@ -314,7 +314,7 @@ public class ElementoServlet extends HttpServlet {
 
         if (idElementoStr == null || idAulaDestinoStr == null || cedulaUsuario == null || tipoElemento == null
                 || idElementoStr.isEmpty() || idAulaDestinoStr.isEmpty() || cedulaUsuario.isEmpty() || tipoElemento.isEmpty()) {
-            request.setAttribute("error", "❌ Todos los campos son obligatorios.");
+            request.setAttribute("error", " Todos los campos son obligatorios.");
             request.getRequestDispatcher("/Vistas/Elemento/Acciones/moverElemento.jsp").forward(request, response);
             return;
         }
@@ -345,7 +345,7 @@ public class ElementoServlet extends HttpServlet {
             }
 
             if (!elementoDao.existeAula(idAulaDestino)) {
-                request.setAttribute("error", "❌ El aula destino no existe.");
+                request.setAttribute("error", "El aula destino no existe.");
                 request.getRequestDispatcher("/Vistas/Elemento/Acciones/moverElemento.jsp").forward(request, response);
                 return;
             }
@@ -353,7 +353,7 @@ public class ElementoServlet extends HttpServlet {
             // Obtener el aula de origen
             int idAulaOrigen = elementoDao.obtenerAulaIdPorElemento(idElemento);
             if (idAulaOrigen == -1) {
-                request.setAttribute("error", "❌ No se pudo obtener el aula actual del elemento.");
+                request.setAttribute("error", "No se pudo obtener el aula actual del elemento.");
                 request.getRequestDispatcher("/Vistas/Elemento/Acciones/moverElemento.jsp").forward(request, response);
                 return;
             }
@@ -361,7 +361,7 @@ public class ElementoServlet extends HttpServlet {
             // Obtener ID del usuario
             int idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
             if (idUsuario == -1) {
-                request.setAttribute("error", "❌ Cédula no encontrada.");
+                request.setAttribute("error", " Cédula no encontrada.");
                 request.getRequestDispatcher("/Vistas/Elemento/Acciones/moverElemento.jsp").forward(request, response);
                 return;
             }
@@ -369,7 +369,7 @@ public class ElementoServlet extends HttpServlet {
             // Actualizar el aula del elemento
             boolean actualizado = elementoDao.actualizarAula(idElemento, idAulaDestino);
             if (!actualizado) {
-                throw new SQLException("❌ No se pudo actualizar el aula del elemento.");
+                throw new SQLException(" No se pudo actualizar el aula del elemento.");
             }
 
             // Registrar el movimiento
@@ -380,18 +380,18 @@ public class ElementoServlet extends HttpServlet {
 
             request.setAttribute("numeroAula", numeroAulaDestino);
             request.setAttribute("cedulaUsuario", cedulaUsuario);
-            request.setAttribute("mensaje", "✅ Elemento movido correctamente.");
+            request.setAttribute("mensaje", " Elemento movido correctamente.");
             request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
 
         } catch (Exception e) {
             try {
                 conexion.rollback();
-                System.out.println("⛔ Rollback ejecutado por error: " + e.getMessage());
+                System.out.println("Rollback ejecutado por error: " + e.getMessage());
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
             e.printStackTrace(); // Muestra la excepción real
-            request.setAttribute("error", "❌ Error al mover el elemento: " + e.getMessage());
+            request.setAttribute("error", " Error al mover el elemento: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Elemento/Acciones/moverElemento.jsp").forward(request, response);
         }
 

@@ -1,4 +1,4 @@
-package com.mycompany.sgde.controlador;
+package com.inventario.controlador;
 
 import com.inventario.modelo.Bloque;
 import com.inventario.modelo.Piso;

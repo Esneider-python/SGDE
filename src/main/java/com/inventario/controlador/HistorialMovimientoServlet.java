@@ -1,4 +1,4 @@
-package com.mycompany.sgde.servlets;
+package com.inventario.controlador;
 
 import com.inventario.modelo.HistorialMovimiento;
 import com.mycompany.sgde.dao.HistorialMovimientoDao;
@@ -22,7 +22,7 @@ public class HistorialMovimientoServlet extends HttpServlet {
         // Obtenemos la conexión desde el contexto
         conexion = (Connection) getServletContext().getAttribute("conexion");
         if (conexion == null) {
-            throw new ServletException("❌ No se pudo obtener la conexión desde el contexto.");
+            throw new ServletException(" No se pudo obtener la conexión desde el contexto.");
         }
     }
 
