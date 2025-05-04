@@ -34,15 +34,15 @@ SGDE/
 
 
 ## Funcionalidades implementadas:
-- [x] Inicio de sesion
+- [x] Inicio de sesion y cambio de contraseña.
 - [x] Registro de bloques, pisos, sedes, colegios,aulas, elementos tecnológicos y mobiliarios.
 - [x] Vista de registros en la base de datos  
 - [x] Actualización y eliminación de datos
-- [x] Movimiento de elementos entre aulas
-- [x] Reporte de elementos y visualizacion  de historial
-- [x] Cambio de identificador de elementos
-- [x] Generar informes
-- [x] historial de eliminaciones de elementos
+- [x] Movimiento de elementos entre aulas y visualizacion movimientos
+- [] Reporte de elementos y visualizacion  de historial
+- [] Cambio de identificador de elementos
+- [] Generar informes
+- [] historial de eliminaciones de elementos
 
 
 ## 🔗 Conexión a la base de datos
@@ -60,6 +60,7 @@ Apache Tomcat configurado en el IDE
 MySQL Server
 
 ## Repositorio 
+https://github.com/Esneider-python/SGDE.git
 
 ## Autor
 Nombre Jose Esneider Ortega Camargo
