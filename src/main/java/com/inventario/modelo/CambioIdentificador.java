@@ -17,7 +17,21 @@ public class CambioIdentificador {
     public CambioIdentificador() {
     }
 
-    // Constructor completo
+
+
+    // Constructor sin idCambio para inserciones
+    public CambioIdentificador(int idElemento, String identificadorAnterior,
+            String tipoIdentificadorAnterior, String identificadorNuevo,
+            String tipoIdentificadorNuevo, int usuarioModifica) {
+        this.idElemento = idElemento;
+        this.identificadorAnterior = identificadorAnterior;
+        this.tipoIdentificadorAnterior = tipoIdentificadorAnterior;
+        this.identificadorNuevo = identificadorNuevo;
+        this.tipoIdentificadorNuevo = tipoIdentificadorNuevo;
+        this.usuarioModifica = usuarioModifica;
+    }
+
+    // Constructor completo (para consultas)
     public CambioIdentificador(int idCambio, int idElemento, String identificadorAnterior,
             String tipoIdentificadorAnterior, String identificadorNuevo,
             String tipoIdentificadorNuevo, int usuarioModifica, Timestamp fechaModificacion) {
@@ -56,7 +70,7 @@ public class CambioIdentificador {
         this.identificadorAnterior = identificadorAnterior;
     }
 
-        public String getTipoIdentificadorAnterior() {
+    public String getTipoIdentificadorAnterior() {
         return tipoIdentificadorAnterior;
     }
 
@@ -88,11 +102,15 @@ public class CambioIdentificador {
         this.usuarioModifica = usuarioModifica;
     }
 
-    public Timestamp getFechaModificacion() {
-        return fechaModificacion;
-    }
-
     public void setFechaModificacion(Timestamp fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
+    
+    // Método para obtener el idUsuario
+
+// Método para obtener la fecha de modificación 
+    public Timestamp getFechaModificacion() {
+        return fechaModificacion; // Debería retornar el valor de fechaModificacion
+    }
+
 }

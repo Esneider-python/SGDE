@@ -23,6 +23,7 @@ public class ElementoServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String accion = request.getParameter("accion");
+        boolean responseForwarded = false; // Variable para controlar el flujo
 
         try (Connection conexion = Conexion.getConexion()) {
             if (conexion == null) {
@@ -41,52 +42,60 @@ public class ElementoServlet extends HttpServlet {
                         break;
                     case "registrarMobiliario":
                         registrarMobiliario(request, conexion);
-                        request.setAttribute("mensaje", " Elemento mobiliario registrado con éxito.");
+                        request.setAttribute("mensaje", "Elemento mobiliario registrado con éxito.");
                         break;
                     case "listarTodos":
                         listarTodosLosElementos(request, response);
-                        return;
+                        responseForwarded = true; // Marca que se ha enviado una respuesta
+                        break;
                     case "actualizarGuardar":
                         procesarActualizarElemento(request, response, conexion);
                         conexion.commit();
-                        return;
-
+                        responseForwarded = true; // Marca que se ha enviado una respuesta
+                        break;
                     case "mostrarActualizar":
                         mostrarFormularioActualizar(request, response, conexion);
-                        return;
+                        responseForwarded = true; // Marca que se ha enviado una respuesta
+                        break;
                     case "mostrarFormularioMover":
                         mostrarFormularioMover(request, response, conexion);
-                        return;
-
+                        responseForwarded = true; // Marca que se ha enviado una respuesta
+                        break;
                     case "moverElemento":
                         moverElemento(request, response, conexion);
-                        return;
+                        responseForwarded = true; // Marca que se ha enviado una respuesta
+                        break;
                     case "mostrarFormularioCambioIdentificador":
                         mostrarFormularioCambioIdentificador(request, response, conexion);
+                        responseForwarded = true; // Marca que se ha enviado una respuesta
                         break;
                     case "cambiarIdentificador":
                         cambiarIdentificador(request, response, conexion);
                         request.setAttribute("mensaje", "Identificador actualizado exitosamente.");
                         break;
-
                     default:
                         throw new IllegalArgumentException("Acción no válida.");
                 }
 
-                conexion.commit();
+                if (!responseForwarded) {
+                    conexion.commit();
+                }
 
             } catch (Exception e) {
                 conexion.rollback();
                 e.printStackTrace();
-                request.setAttribute("error", " Error al registrar el elemento: " + e.getMessage());
+                request.setAttribute("error", "Error al registrar el elemento: " + e.getMessage());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", " Error interno: " + e.getMessage());
+            request.setAttribute("error", "Error interno: " + e.getMessage());
         }
 
-        request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        // Solo intenta reenviar si no se ha enviado una respuesta
+        if (!responseForwarded) {
+            request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
     }
 
     private void registrarTecnologico(HttpServletRequest request, Connection conexion) throws Exception {
@@ -495,15 +504,45 @@ public class ElementoServlet extends HttpServlet {
         }
     }
 
+    private void verHistorialCambios(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try (Connection conexion = Conexion.getConexion()) {
+            if (conexion == null) {
+                request.setAttribute("mensaje", "No se pudo conectar con la base de datos.");
+                request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+                return;
+            }
+
+            CambioIdentificadorDAO cambioIdentificadorDao = new CambioIdentificadorDAO(conexion);
+            List<CambioIdentificador> historial = cambioIdentificadorDao.obtenerTodos();
+
+            request.setAttribute("historial", historial);
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/VerCambioIdentificadores.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error al cargar el historial de cambios: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String accion = request.getParameter("accion");
-        if ("listarTodos".equals(accion)) {
-            listarTodosLosElementos(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Método GET no permitido para esta acción.");
+
+        try (Connection conexion = Conexion.getConexion()) {
+            if ("listarTodos".equals(accion)) {
+                listarTodosLosElementos(request, response);
+            } else if ("verHistorialCambios".equals(accion)) {
+                verHistorialCambios(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "Método GET no permitido para esta acción.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("mensajeError", "Error al procesar la solicitud: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
         }
     }
 

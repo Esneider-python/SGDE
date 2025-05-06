@@ -22,6 +22,11 @@
         <form action="${pageContext.request.contextPath}/Vistas/Elemento/registrarMobiliario.jsp" method="get">
             <button type="submit">Registrar Elemento Mobiliario</button>
         </form>
+        <form action="${pageContext.request.contextPath}/ElementoServlet" method="get">
+            <input type="hidden" name="accion" value="verHistorialCambios">
+            <button type="submit">Ver historial cambio identificadores</button>
+        </form>
+
         <form action="${pageContext.request.contextPath}/Vistas/Elemento/listarElementos.jsp" method="get">
             <button type="submit">Ver elementos</button>
         </form>
