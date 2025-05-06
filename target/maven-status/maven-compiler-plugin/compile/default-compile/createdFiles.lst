@@ -26,6 +26,7 @@ com\mycompany\sgde\dao\RolDao.class
 com\inventario\controlador\CerrarSesionServlet.class
 com\mycompany\sgde\resources\JakartaEE10Resource.class
 com\mycompany\sgde\dao\DocenteAulaDao.class
+com\mycompany\sgde\dao\CambioIdentificadorDAO.class
 com\mycompany\sgde\JakartaRestConfiguration.class
 com\mycompany\sgde\dao\UsuarioDao.class
 com\inventario\modelo\Aula.class
@@ -33,7 +34,6 @@ com\mycompany\sgde\util\Conexion.class
 com\mycompany\sgde\dao\PisoDao.class
 com\mycompany\sgde\dao\SedeDao.class
 com\mycompany\sgde\dao\HistorialMovimientoDao.class
-com\mycompany\sgde\dao\CambioIdentificadorDao.class
 com\inventario\modelo\Reporte.class
 com\mycompany\sgde\dao\BloqueDao.class
 com\mycompany\sgde\dao\ElementoTecnologicoDao.class

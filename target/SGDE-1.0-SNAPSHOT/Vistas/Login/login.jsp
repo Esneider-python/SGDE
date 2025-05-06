@@ -36,7 +36,7 @@
 
             <div class="links">
                 <a href="${pageContext.request.contextPath}/Vistas/Login/solicitarCorreo.jsp">¿Olvidaste tu contraseña?</a><br>
-                <a href="#">Registrarme</a>
+                <a href="${pageContext.request.contextPath}/Vistas/Login/registro.jsp">Registrarme</a>
             </div>
 
             <a href="${pageContext.request.contextPath}/Index.jsp">← Volver al inicio</a>

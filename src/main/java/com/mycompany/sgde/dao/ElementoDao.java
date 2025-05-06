@@ -229,6 +229,20 @@ public class ElementoDao {
             return false;
         }
     }
+    public String obtenerIdentificadorPorId(int idElemento) throws SQLException {
+    String sql = "SELECT identificador_unico FROM elementos WHERE id_elemento = ?";
+    try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+        stmt.setInt(1, idElemento);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                System.out.println("Retornando identificador: " + rs.getString("identificador_unico"));
+                return rs.getString("identificador_unico");
+            }
+        }
+    }
+    return null; // Retorna null si no se encuentra
+}
+
 
     public List<Elemento> listarTodos() throws SQLException {
         List<Elemento> elementos = new ArrayList<>();

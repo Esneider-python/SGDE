@@ -1,7 +1,5 @@
 package com.mycompany.sgde.dao;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.inventario.modelo.HistorialMovimiento;
 
 import java.sql.*;

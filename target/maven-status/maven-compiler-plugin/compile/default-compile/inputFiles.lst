@@ -15,6 +15,7 @@ C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\Usuario.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\ElementoServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\RolServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\JakartaRestConfiguration.java
+C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\HistorialMovimientoServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\Aula.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\PisoDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\CambioIdentificador.java
@@ -35,7 +36,7 @@ C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\Reporte.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\ElementoMobiliarioDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\CambiarContrasenaServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\PisoServlet.java
-C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\CambioIdentificadorDao.java
+C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\CambioIdentificadorDAO.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\HistorialMovimientoDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\EnviarCodigoServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\modelo\HistorialMovimiento.java
@@ -46,4 +47,5 @@ C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\SedeDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\BloqueServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\ColegioDao.java
 C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\dao\UsuarioDao.java
+C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\util\ConexionListener.java
 C:\NetBeansProjects\SGDE\src\main\java\com\inventario\controlador\CerrarSesionServlet.java

@@ -1,9 +1,9 @@
 package com.inventario.modelo;
 
-
 import java.sql.Timestamp;
 
 public class CambioIdentificador {
+
     private int idCambio;
     private int idElemento;
     private String identificadorAnterior;
@@ -19,9 +19,8 @@ public class CambioIdentificador {
 
     // Constructor completo
     public CambioIdentificador(int idCambio, int idElemento, String identificadorAnterior,
-            String tipoIdentificadorAnterior,
-            String identificadorNuevo, String tipoIdentificadorNuevo,
-            int usuarioModifica, Timestamp fechaModificacion) {
+            String tipoIdentificadorAnterior, String identificadorNuevo,
+            String tipoIdentificadorNuevo, int usuarioModifica, Timestamp fechaModificacion) {
         this.idCambio = idCambio;
         this.idElemento = idElemento;
         this.identificadorAnterior = identificadorAnterior;
@@ -57,7 +56,7 @@ public class CambioIdentificador {
         this.identificadorAnterior = identificadorAnterior;
     }
 
-    public String getTipoIdentificadorAnterior() {
+        public String getTipoIdentificadorAnterior() {
         return tipoIdentificadorAnterior;
     }
 

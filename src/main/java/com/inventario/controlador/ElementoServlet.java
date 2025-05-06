@@ -61,6 +61,13 @@ public class ElementoServlet extends HttpServlet {
                     case "moverElemento":
                         moverElemento(request, response, conexion);
                         return;
+                    case "mostrarFormularioCambioIdentificador":
+                        mostrarFormularioCambioIdentificador(request, response, conexion);
+                        break;
+                    case "cambiarIdentificador":
+                        cambiarIdentificador(request, response, conexion);
+                        request.setAttribute("mensaje", "Identificador actualizado exitosamente.");
+                        break;
 
                     default:
                         throw new IllegalArgumentException("Acción no válida.");
@@ -397,7 +404,97 @@ public class ElementoServlet extends HttpServlet {
 
     }
 
-   
+    private void mostrarFormularioCambioIdentificador(HttpServletRequest request, HttpServletResponse response, Connection conexion)
+            throws ServletException, IOException {
+        try {
+            int idElemento = Integer.parseInt(request.getParameter("idElemento"));
+            String tipo = request.getParameter("tipoElemento");
+
+            Object elemento;
+
+            if ("tecnologico".equals(tipo)) {
+                ElementoTecnologicoDao dao = new ElementoTecnologicoDao(conexion);
+                elemento = dao.obtenerPorId(idElemento);
+            } else {
+                ElementoMobiliarioDao dao = new ElementoMobiliarioDao(conexion);
+                elemento = dao.obtenerPorId(idElemento);
+            }
+
+            if (elemento == null) {
+                throw new Exception("Elemento no encontrado.");
+            }
+
+            request.setAttribute("elemento", elemento);
+            request.setAttribute("tipoElemento", tipo);
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/cambiarIdentificador.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error al cargar el formulario de cambio de identificador: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
+    }
+
+    private void cambiarIdentificador(HttpServletRequest request, HttpServletResponse response, Connection conexion) throws Exception {
+        try {
+            // Obtenemos los datos del formulario JSP
+            int idElemento = Integer.parseInt(request.getParameter("idElemento"));
+            String tipoElemento = request.getParameter("tipoElemento"); // Puede omitirse si no se usa
+            String nuevoIdentificador = request.getParameter("identificadorNuevo");
+            String cedulaUsuario = request.getParameter("cedulaUsuario");
+            System.out.println("Cédula recibida: '" + cedulaUsuario + "'");
+            String tipoIdentificadorAnterior = request.getParameter("tipoIdentificadorAnterior");
+            String tipoIdentificadorNuevo = request.getParameter("tipoIdentificadorNuevo");
+            String identificadorAnterior = request.getParameter("identificadorActual");
+
+            // Validaciones básicas
+            if (nuevoIdentificador == null || nuevoIdentificador.trim().isEmpty()) {
+                throw new IllegalArgumentException("El nuevo identificador no puede estar vacío.");
+            }
+            if (identificadorAnterior == null || identificadorAnterior.trim().isEmpty()) {
+                throw new IllegalArgumentException("No se encontró el identificador actual del elemento (enviado por el formulario).");
+            }
+
+            // DAOs
+            UsuarioDao usuarioDao = new UsuarioDao(conexion);
+            ElementoDao elementoDao = new ElementoDao(conexion);
+            CambioIdentificadorDAO cambioDao = new CambioIdentificadorDAO(conexion);
+
+            // Validar cédula de usuario
+            Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
+            if (idUsuario == null) {
+                throw new IllegalArgumentException("La cédula ingresada no está registrada.");
+            }
+
+            // Actualizar identificador
+            boolean actualizado = elementoDao.actualizarIdentificador(idElemento, nuevoIdentificador, tipoIdentificadorNuevo);
+            if (!actualizado) {
+                throw new Exception("No se pudo actualizar el identificador.");
+            }
+
+            // Registrar cambio en la tabla cambio_identificador
+            cambioDao.insertar(idElemento, identificadorAnterior, tipoIdentificadorAnterior, nuevoIdentificador, tipoIdentificadorNuevo, idUsuario);
+
+            // Confirmar cambios
+            conexion.commit();
+
+            // Redireccionar con éxito
+            request.setAttribute("mensaje", "Identificador actualizado correctamente.");
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/cambiarIdentificador.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            try {
+                conexion.rollback();
+                System.out.println("Rollback ejecutado por error: " + e.getMessage());
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace(); // Log detallado
+            request.setAttribute("mensaje", "Error al cambiar el identificador: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/cambiarIdentificador.jsp").forward(request, response);
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

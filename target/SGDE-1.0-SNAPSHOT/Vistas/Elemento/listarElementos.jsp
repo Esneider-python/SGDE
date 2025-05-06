@@ -57,7 +57,13 @@
                         <input type="hidden" name="tipoElemento" value="tecnologico"> <!-- o "tecnologico" si estás en el otro bloque -->
                         <button type="submit">🏠 Mover</button>
                     </form>
-                    <button>➕</button>
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarFormularioCambioIdentificador">
+                        <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="tecnologico">
+                        <button type="submit">➕</button>
+                    </form>
+
                     <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
                         <input type="hidden" name="accion" value="mostrarActualizar">
                         <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
@@ -94,7 +100,13 @@
                         <button type="submit">🏠 Mover</button>
                     </form>
 
-                    <button>➕</button>
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarFormularioCambioIdentificador">
+                        <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="mobiliario">
+                        <button type="submit">➕</button>
+                    </form>
+
                     <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
                         <input type="hidden" name="accion" value="mostrarActualizar">
                         <input type="hidden" name="idElemento" value="<%=el.getIdElemento()%>">
