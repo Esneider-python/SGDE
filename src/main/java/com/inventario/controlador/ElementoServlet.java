@@ -73,6 +73,13 @@ public class ElementoServlet extends HttpServlet {
                         cambiarIdentificador(request, response, conexion);
                         request.setAttribute("mensaje", "Identificador actualizado exitosamente.");
                         break;
+
+                    case "mostrarFormularioReporte":
+                        mostrarFormularioReporte(request, response);
+                        break;
+                    case "reportarElemento":
+                        reportarElemento(request, response);
+
                     default:
                         throw new IllegalArgumentException("Acción no válida.");
                 }
@@ -522,6 +529,80 @@ public class ElementoServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("mensaje", "Error al cargar el historial de cambios: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+        }
+    }
+
+    private void mostrarFormularioReporte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String elementoId = request.getParameter("elementoId");
+        if (elementoId == null || elementoId.trim().isEmpty()) {
+            request.setAttribute("mensaje", "No se proporcionó un ID de elemento válido.");
+            request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("elementoId", elementoId);
+        request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+    }
+
+    private void reportarElemento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String elementoIdStr = request.getParameter("elementoId").trim();
+        String descripcion = request.getParameter("descripcion").trim();
+        String cedula = request.getParameter("cedula").trim();
+        String nuevoEstado = request.getParameter("estado").trim();
+
+        // Validar que no se envíen datos vacíos
+        if (elementoIdStr.isEmpty() || descripcion.isEmpty() || cedula.isEmpty() || nuevoEstado.isEmpty()) {
+            request.setAttribute("mensaje", "Por favor, complete todos los campos antes de enviar el reporte.");
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+            return;
+        }
+
+        try (Connection conexion = Conexion.getConexion()) {
+            if (conexion == null) {
+                request.setAttribute("mensaje", "No se pudo conectar con la base de datos.");
+                request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+                return;
+            }
+            conexion.setAutoCommit(false);
+
+            // Validar cédula y obtener el ID del usuario
+            UsuarioDao usuarioDAO = new UsuarioDao(conexion);
+            int usuarioId = usuarioDAO.obtenerIdPorCedula(cedula);
+            if (usuarioId == -1) {
+                request.setAttribute("mensaje", "La cédula ingresada no corresponde a ningún usuario registrado.");
+                request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+                return;
+            }
+
+            // Actualizar el estado del elemento
+            int elementoId = Integer.parseInt(elementoIdStr);
+            ElementoDao elementoDAO = new ElementoDao(conexion);
+            boolean actualizado = elementoDAO.actualizarEstadoElemento(elementoId, nuevoEstado);
+            if (!actualizado) {
+                request.setAttribute("mensaje", "No se pudo actualizar el estado del elemento.");
+                request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+                return;
+            }
+
+            // Registrar el reporte usando ReporteDAO
+            ReporteDao reporteDAO = new ReporteDao();
+            boolean reporteRegistrado = reporteDAO.registrarReporte(conexion, descripcion, elementoId, usuarioId);
+            if (!reporteRegistrado) {
+                request.setAttribute("mensaje", "No se pudo registrar el reporte.");
+                request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+                return;
+            }
+
+            // Confirmar la transacción manualmente
+            conexion.commit();
+
+            request.setAttribute("mensaje", "El reporte se registró correctamente.");
+            request.getRequestDispatcher("/Vistas/Elemento/Elemento/ListarElemento.jsp").forward(request, response);
+            return;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error al registrar el reporte: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+            return;
         }
     }
 

@@ -229,20 +229,20 @@ public class ElementoDao {
             return false;
         }
     }
+
     public String obtenerIdentificadorPorId(int idElemento) throws SQLException {
-    String sql = "SELECT identificador_unico FROM elementos WHERE id_elemento = ?";
-    try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-        stmt.setInt(1, idElemento);
-        try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                System.out.println("Retornando identificador: " + rs.getString("identificador_unico"));
-                return rs.getString("identificador_unico");
+        String sql = "SELECT identificador_unico FROM elementos WHERE id_elemento = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, idElemento);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    System.out.println("Retornando identificador: " + rs.getString("identificador_unico"));
+                    return rs.getString("identificador_unico");
+                }
             }
         }
+        return null; // Retorna null si no se encuentra
     }
-    return null; // Retorna null si no se encuentra
-}
-
 
     public List<Elemento> listarTodos() throws SQLException {
         List<Elemento> elementos = new ArrayList<>();
@@ -305,6 +305,16 @@ public class ElementoDao {
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next(); // true si existe al menos un resultado
             }
+        }
+    }
+
+    public boolean actualizarEstadoElemento(int elementoId, String nuevoEstado) throws SQLException {
+        String sql = "UPDATE elementos SET estado = ? WHERE id_elemento = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setString(1, nuevoEstado);
+            ps.setInt(2, elementoId);
+            int filasActualizadas = ps.executeUpdate();
+            return filasActualizadas > 0;
         }
     }
 

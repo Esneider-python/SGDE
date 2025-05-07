@@ -71,7 +71,13 @@
                         <button type="submit">✏️</button>
                     </form>
 
-                    <button>❗</button>
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarFormularioReporte">
+                        <input type="hidden" name="elementoId" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="tecnologico"> <!-- o "mobiliario" -->
+                        <button type="submit">❗</button>
+                    </form>
+
                 </div>
             </div>
             <%
@@ -113,8 +119,13 @@
                         <input type="hidden" name="tipoElemento" value="mobiliario"> <!-- o "mobiliario" -->
                         <button type="submit">✏️</button>
                     </form>
+                    <form class="item" action="${pageContext.request.contextPath}/ElementoServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="accion" value="mostrarFormularioReporte">
+                        <input type="hidden" name="elementoId" value="<%=el.getIdElemento()%>">
+                        <input type="hidden" name="tipoElemento" value="mobiliario"> <!-- o "mobiliario" -->
+                        <button type="submit">❗</button>
+                    </form>
 
-                    <button>❗</button>
                 </div>
             </div>
             <%
