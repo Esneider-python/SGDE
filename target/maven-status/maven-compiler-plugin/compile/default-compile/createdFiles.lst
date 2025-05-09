@@ -17,6 +17,7 @@ com\mycompany\sgde\dao\ElementoDao.class
 com\inventario\controlador\PisoServlet.class
 com\mycompany\sgde\util\CorreoUtil.class
 com\inventario\controlador\LoginServlet.class
+com\inventario\controlador\ReporteServlet.class
 com\inventario\controlador\ColegioServlet.class
 com\inventario\modelo\Rol.class
 com\inventario\controlador\AulaServlet.class

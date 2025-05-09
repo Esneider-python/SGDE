@@ -36,12 +36,12 @@ public class ReporteDao {
     }
 
     // ELIMINAR REPORTE
-    public boolean eliminarReporte(int idReporte) {
-        String sql = "DELETE FROM reporte WHERE id_reporte = ?";
+    public boolean eliminarReporte(int idElemento) {
+        String sql = "DELETE FROM reporte WHERE elemento_reportado = ?";
 
         try (Connection conexion = Conexion.getConexion(); PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-            ps.setInt(1, idReporte);
+            ps.setInt(1, idElemento);
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -107,4 +107,32 @@ public class ReporteDao {
             return ps.executeUpdate() > 0;
         }
     }
+    
+    public List<Reporte> obtenerTodos() {
+    String sql = "SELECT * FROM reporte";
+    List<Reporte> reportes = new ArrayList<>();
+
+    try (Connection conn = Conexion.getConexion();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            // Crear objeto Reporte usando los datos del ResultSet
+            Reporte reporte = new Reporte(
+                rs.getInt("id_reporte"),
+                rs.getTimestamp("fecha_hora_reporte"),
+                rs.getString("descripcion"),
+                rs.getInt("elemento_reportado"),
+                rs.getInt("usuario_reporta")
+            );
+            reportes.add(reporte);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return reportes;
+}
+
 }

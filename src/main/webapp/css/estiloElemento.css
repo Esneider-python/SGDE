@@ -5,57 +5,50 @@ body {
     color: #333;
 }
 
-
 h2 {
     text-align: center;
     color: #2a5d9f;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
-
-.item{
-    max-width: 15%;
-    max-height: 10%;
-    background-color: #ffffff;
-    margin: 0px 0px 0px 0px;
-    padding: 1px;
-}
-
 
 form {
-    max-width: 500px;
+    max-width: 400px;
     margin: 0 auto 20px auto;
     background-color: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 label {
     display: block;
     font-weight: bold;
-    margin-top: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
 }
 
 input[type="text"],
 input[type="number"],
 select {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
+    padding: 8px;
+    margin-bottom: 15px;
     border: 1px solid #c2d3e0;
     border-radius: 6px;
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 button {
     background-color: #2a5d9f;
     color: white;
-    padding: 10px 16px;
+    padding: 8px 14px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    margin-top: 20px;
-    font-size: 15px;
+    font-size: 14px;
+    margin-top: 15px;
     transition: background-color 0.3s ease;
 }
 
@@ -65,8 +58,7 @@ button:hover {
 
 button[type="button"] {
     margin-left: 10px;
-    padding: 10px 12px;
-    background-color: #6ca0dc;
+    padding: 8px 12px;
 }
 
 button[type="button"]:hover {
@@ -79,121 +71,8 @@ select:focus {
     outline: none;
 }
 
-.filtros {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.filtros input {
-    padding: 8px;
-    width: 200px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
-.contenedor-tarjetas {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-.tarjeta {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    padding: 15px;
-    width: 280px;
-    transition: transform 0.2s;
-}
-
-.tarjeta:hover {
-    transform: scale(1.02);
-}
-
-.tecnologico {
-    border-left: 6px solid #007bff;
-}
-
-.mobiliario {
-    border-left: 6px solid #28a745;
-}
-
-.cabecera {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.contenido {
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.acciones {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-around;
-}
-
-.acciones button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 6px 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.acciones button:hover {
-    background-color: #0056b3;
-}
-.contenedor {
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #ccc;
-}
-
 .campo {
-    margin-bottom: 15px;
-}
-
-.campo label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.campo input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-}
-
-.botones {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.botones button,
-.botones a {
-    padding: 10px 20px;
-    text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.botones a {
-    background-color: #6c757d;
+    margin-bottom: 10px;
 }
 
 .error {
@@ -204,4 +83,13 @@ select:focus {
 .exito {
     color: green;
     font-weight: bold;
+}
+
+.contenedor {
+    max-width: 400px;
+    margin: auto;
+    padding: 15px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }

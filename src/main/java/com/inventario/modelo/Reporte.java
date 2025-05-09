@@ -3,6 +3,7 @@ package com.inventario.modelo;
 import java.sql.Timestamp;
 
 public class Reporte {
+
     private int idReporte;
     private Timestamp fechaHoraReporte;
     private String descripcion;
@@ -10,8 +11,15 @@ public class Reporte {
     private int usuarioReporta;
 
     // CONSTRUCTOR SIN EL CAMPO FECHA, (FECHA AUTOMATICA EN LA BASE DE DATOS)
-    
     public Reporte(String descripcion, int elementoReportado, int usuarioReporta) {
+        this.descripcion = descripcion;
+        this.elementoReportado = elementoReportado;
+        this.usuarioReporta = usuarioReporta;
+    }
+
+    public Reporte(int idReporte, Timestamp fechaHoraReporte, String descripcion, int elementoReportado, int usuarioReporta) {
+        this.idReporte = idReporte;
+        this.fechaHoraReporte = fechaHoraReporte;
         this.descripcion = descripcion;
         this.elementoReportado = elementoReportado;
         this.usuarioReporta = usuarioReporta;

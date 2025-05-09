@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @WebServlet("/ElementoServlet")
 public class ElementoServlet extends HttpServlet {
 
@@ -80,6 +81,11 @@ public class ElementoServlet extends HttpServlet {
                     case "reportarElemento":
                         reportarElemento(request, response);
                         break;
+                    case "mostrarFormularioQuitarReporte":
+                        mostrarFormularioQuitarReporte(request, response);
+                        break;
+                    case "quitarReporte":
+                        quitarReporte(request, response);
 
                     case "MostrarFormEliminarElemento":
                         MostrarFormEliminarElemento(request, response);
@@ -553,6 +559,17 @@ public class ElementoServlet extends HttpServlet {
         request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
     }
 
+    private void mostrarFormularioQuitarReporte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String elementoId = request.getParameter("elementoId");
+        if (elementoId == null || elementoId.trim().isEmpty()) {
+            request.setAttribute("mensaje", "No se proporcionó un ID de elemento válido.");
+            request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
+            return;
+        }
+        request.setAttribute("elementoId", elementoId);
+        request.getRequestDispatcher("/Vistas/Elemento/Acciones/quitarReporte.jsp").forward(request, response);
+    }
+
     private void reportarElemento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String elementoIdStr = request.getParameter("elementoId").trim();
         String descripcion = request.getParameter("descripcion").trim();
@@ -606,11 +623,72 @@ public class ElementoServlet extends HttpServlet {
             conexion.commit();
 
             request.setAttribute("mensaje", "El reporte se registró correctamente.");
-            request.getRequestDispatcher("/Vistas/Elemento/listarElemento.jsp").forward(request, response);
+            request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
             return;
         } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("mensaje", "Error al registrar el reporte: " + e.getMessage());
+            request.setAttribute("mensaje", "Error al eliminar el reporte: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+            return;
+        }
+    }
+    
+    private void quitarReporte(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String elementoIdStr = request.getParameter("elementoId").trim();
+        String cedula = request.getParameter("cedula").trim();
+        String nuevoEstado = request.getParameter("estado").trim();
+
+        // Validar que no se envíen datos vacíos
+        if (elementoIdStr.isEmpty() || cedula.isEmpty() || nuevoEstado.isEmpty()) {
+            request.setAttribute("mensaje", "Por favor, complete todos los campos antes de enviar el reporte.");
+            request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+            return;
+        }
+
+        try (Connection conexion = Conexion.getConexion()) {
+            if (conexion == null) {
+                request.setAttribute("mensaje", "No se pudo conectar con la base de datos.");
+                request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+                return;
+            }
+            conexion.setAutoCommit(false);
+
+            // Validar cédula y obtener el ID del usuario
+            UsuarioDao usuarioDAO = new UsuarioDao(conexion);
+            int usuarioId = usuarioDAO.obtenerIdPorCedula(cedula);
+            if (usuarioId == -1) {
+                request.setAttribute("mensaje", "La cédula ingresada no corresponde a ningún usuario registrado.");
+                request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+                return;
+            }
+
+            // Actualizar el estado del elemento
+            int elementoId = Integer.parseInt(elementoIdStr);
+            ElementoDao elementoDAO = new ElementoDao(conexion);
+            boolean actualizado = elementoDAO.actualizarEstadoElemento(elementoId, nuevoEstado);
+            if (!actualizado) {
+                request.setAttribute("mensaje", "No se pudo eliminar el reporte al elemento.");
+                request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
+                return;
+            }
+
+            // Registrar el reporte usando ReporteDAO
+            ReporteDao reporteDAO = new ReporteDao();
+            boolean reporteEliminado = reporteDAO.eliminarReporte(elementoId);
+            if (!reporteEliminado) {
+                request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
+                return;
+            }
+
+            // Confirmar la transacción manualmente
+            conexion.commit();
+
+            request.setAttribute("mensaje", "El reporte se elimino correctamente.");
+            request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
+            return;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error al eliminar el reporte: " + e.getMessage());
             request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
             return;
         }
