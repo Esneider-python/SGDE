@@ -52,8 +52,10 @@
 
                 <div class="botones">
                     <button type="submit">Mover Elemento</button>
-                    <a href="${pageContext.request.contextPath}/Vistas/Elemento/menuElemento.jsp">Cancelar</a>
                 </div>
+                <a href="${pageContext.request.contextPath}/ElementoServlet?accion=listarTodos">
+                    <button type="button"> Cancelar</button>
+                </a>
             </form>
         </div>
     </body>

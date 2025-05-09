@@ -82,11 +82,17 @@ public class HistorialMovimientoDao {
     }
 
     // ELIMINAR MOVIMIENTO
-    public boolean eliminarMovimiento(int id) {
-        String sql = "DELETE FROM historial_movimientos WHERE id_historial = ?";
+
+    /**
+     *
+     * @param elementoId
+     * @return
+     */
+    public boolean eliminarMovimiento(int elementoId) {
+        String sql = "DELETE FROM historial_movimientos WHERE elemento_id = ?";
 
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+            stmt.setInt(1, elementoId);
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -120,5 +126,7 @@ public class HistorialMovimientoDao {
 
         return lista;
     }
+    
+     
 
 }

@@ -45,9 +45,8 @@ public class ElementoTecnologicoDao {
             }
         }
     }
-    // Método para listar todos los elementos tecnológicos
 
-    // Método para listar todos los elementos tecnológicos
+    // Método para listar todos los elementos tecnológicos que no están eliminados
     public List<ElementoTecnologico> listarElementos() throws SQLException {
         List<ElementoTecnologico> elementos = new ArrayList<>();
 
@@ -57,6 +56,7 @@ public class ElementoTecnologicoDao {
                et.marca, et.serie
         FROM elementos_tecnologicos et
         JOIN elementos e ON et.elemento_id = e.id_elemento
+        WHERE e.estado != 'Eliminado'
     """;
 
         try (PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
@@ -108,9 +108,17 @@ public class ElementoTecnologicoDao {
             }
         }
         return null;
+
     }
 
+    public boolean eliminarElementoTecnologico(int idElemento) throws SQLException {
+        // Primero eliminamos los hijos del elemento tecnológico
+        String eliminarHijosSQL = "DELETE FROM elementos_tecnologicos WHERE elemento_id = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(eliminarHijosSQL)) {
+            ps.setInt(1, idElemento);
+            ps.executeUpdate();
+        }
+        return false;
+
+    }
 }
-
-
-// =====================

@@ -30,8 +30,7 @@ public class ElementoMobiliarioDao {
             }
         }
     }
-    // 🔽 MÉTODO NUEVO PARA LISTAR ELEMENTOS MOBILIARIOS
-
+    // 🔽 MÉTODO MEJORADO PARA LISTAR ELEMENTOS MOBILIARIOS (EXCLUYENDO ELIMINADOS)
     public List<ElementosMobiliarios> listarElementos() throws SQLException {
         List<ElementosMobiliarios> elementos = new ArrayList<>();
 
@@ -40,6 +39,7 @@ public class ElementoMobiliarioDao {
                e.aula_id, e.identificador_unico, e.tipo_identificador, e.fecha_creacion
         FROM elementos_mobiliarios em
         JOIN elementos e ON em.elemento_id = e.id_elemento
+        WHERE e.estado != 'Eliminado'
     """;
 
         try (PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
@@ -87,5 +87,13 @@ public class ElementoMobiliarioDao {
             }
         }
         return null; // Si no se encuentra
+    }
+
+    public boolean eliminarMobiliario(int idElemento) throws SQLException {
+        String sql = "DELETE FROM elementos_mobiliarios WHERE elemento_id = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, idElemento);
+            return stmt.executeUpdate() > 0;
+        }
     }
 }

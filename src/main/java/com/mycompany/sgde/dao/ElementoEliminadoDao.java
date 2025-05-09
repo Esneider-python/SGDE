@@ -1,121 +1,50 @@
 package com.mycompany.sgde.dao;
-import com.inventario.modelo.ElementoEliminado;
-import com.mycompany.sgde.util.Conexion;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ElementoEliminadoDao {
 
-    // REGISTRAR ELEMENTO ELIMINADO
-    public boolean registrarEliminacion(ElementoEliminado elemento) {
+    private final Connection conexion;
+
+    public ElementoEliminadoDao(Connection conexion) {
+        this.conexion = conexion;
+    }
+
+    public boolean eliminarElemento(int idElemento) throws SQLException {
+        String sql = "DELETE FROM elementos WHERE id_elemento = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idElemento);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public boolean registrarElementoEliminado(int idElemento, String motivo, int idUsuario) throws SQLException {
+        if (idElemento <= 0 || idUsuario <= 0 || motivo == null || motivo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Los datos para registrar la eliminación no son válidos.");
+        }
+
         String sql = "INSERT INTO elementos_eliminados (elemento_id, motivo_eliminacion, usuario_elimino) VALUES (?, ?, ?)";
-
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, elemento.getElementoId());
-            stmt.setString(2, elemento.getMotivoEliminacion());
-            stmt.setInt(3, elemento.getUsuarioElimino());
-
-            int filas = stmt.executeUpdate();
-            return filas > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idElemento);
+            ps.setString(2, motivo.trim());
+            ps.setInt(3, idUsuario);
+            return ps.executeUpdate() > 0;
         }
     }
 
-    // OBTENER ELEMENTO ELIMINADO POR ID
-    public ElementoEliminado obtenerPorId(int id) {
-        String sql = "SELECT * FROM elementos_eliminados WHERE id_elemento_eliminado = ?";
-        ElementoEliminado eliminado = null;
-
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                eliminado = new ElementoEliminado(
-                    rs.getInt("id_elemento_eliminado"),
-                    rs.getInt("elemento_id"),
-                    rs.getString("motivo_eliminacion"),
-                    rs.getTimestamp("fecha_hora_eliminacion"),
-                    rs.getInt("usuario_elimino")
-                );
+    public boolean tieneHijos(int idElemento) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM elementos_tecnologicos WHERE id_elemento = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idElemento);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return eliminado;
-    }
-
-    // OBTENER TODOS LOS ELEMENTOS ELIMINADOS
-    public List<ElementoEliminado> obtenerTodos() {
-        String sql = "SELECT * FROM elementos_eliminados ORDER BY fecha_hora_eliminacion DESC";
-        List<ElementoEliminado> lista = new ArrayList<>();
-
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                ElementoEliminado eliminado = new ElementoEliminado(
-                    rs.getInt("id_elemento_eliminado"),
-                    rs.getInt("elemento_id"),
-                    rs.getString("motivo_eliminacion"),
-                    rs.getTimestamp("fecha_hora_eliminacion"),
-                    rs.getInt("usuario_elimino")
-                );
-                lista.add(eliminado);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return lista;
-    }
-
-    // ELIMINAR ELEMENTO ELIMINADO POR ID (opcional)
-    public boolean eliminarPorId(int id) {
-        String sql = "DELETE FROM elementos_eliminados WHERE id_elemento_eliminado = ?";
-
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, id);
-            int filas = stmt.executeUpdate();
-            return filas > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // ACTUALIZAR MOTIVO DE ELIMINACION (opcional)
-    public boolean actualizarMotivo(int id, String nuevoMotivo) {
-        String sql = "UPDATE elementos_eliminados SET motivo_eliminacion = ? WHERE id_elemento_eliminado = ?";
-
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, nuevoMotivo);
-            stmt.setInt(2, id);
-
-            int filas = stmt.executeUpdate();
-            return filas > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return false;
     }
 }
