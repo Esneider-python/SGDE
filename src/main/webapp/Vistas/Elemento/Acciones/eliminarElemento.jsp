@@ -31,7 +31,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-danger">Eliminar</button>
-                <a href="${pageContext.request.contextPath}/ElementoServlet?accion=listarElementos">
+                <a href="${pageContext.request.contextPath}/ElementoServlet?accion=listarTodos">
                     <button type="button" class="btn btn-secondary">Cancelar</button>
                 </a>
             </form>
