@@ -2,6 +2,8 @@ package com.mycompany.sgde.dao;
 
 import com.inventario.modelo.Usuario;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDao {
 
@@ -174,6 +176,44 @@ public class UsuarioDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    //metodo listar usuarios
+    public List<Usuario> obtenerTodosLosUsuarios() throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT id_usuario, nombres, apellidos, telefono, correo, cedula, contrasena, rol_id FROM usuarios";
+
+        try (PreparedStatement ps = conexion.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setNombres(rs.getString("nombres"));
+                usuario.setApellidos(rs.getString("apellidos"));
+                usuario.setTelefono(rs.getString("telefono"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setCedula(rs.getString("cedula"));
+                usuario.setContrasena(rs.getString("contrasena"));
+                usuario.setRolId(rs.getInt("rol_id"));
+                usuarios.add(usuario);
+            }
+        }
+
+        return usuarios;
+    }
+    // UsuarioDao.java
+
+    public String obtenerNombreRolPorId(int rolId) throws SQLException {
+        String sql = "SELECT nombre_rol FROM rol WHERE id_rol = ?";
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, rolId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("nombre_rol").toLowerCase();  // Convertimos a minúsculas para estandarizar
+                }
+            }
+        }
+        return null;  // Si no se encuentra el rol, retorna null
     }
 
 }

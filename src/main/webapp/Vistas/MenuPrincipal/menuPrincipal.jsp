@@ -32,7 +32,7 @@
                 <li><a href="#"><i>📊</i> Informes</a></li>
                 <li><a href="${pageContext.request.contextPath}/Vistas/Elemento/menuElemento.jsp"><i>💻</i> Elementos</a></li>
                 <li><a href="#"><i>🗑️</i> Historial eliminaciones</a></li>
-                <li><a href="#"><i>👤</i> Usuarios</a></li>
+                <li><a href="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp"><i>👤</i> Usuarios</a></li>
                 <li><a href="${pageContext.request.contextPath}/Vistas/Reportes/listarReportes.jsp"><i>📋</i> Reportes</a></li>
                 <li><a href="${pageContext.request.contextPath}/Vistas/Rol/menuRol.jsp"><i>📋</i> Roles</a></li>
             </ul>

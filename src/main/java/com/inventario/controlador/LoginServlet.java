@@ -23,13 +23,21 @@ public class LoginServlet extends HttpServlet {
         String contrasena = request.getParameter("contrasena");
 
         try {
-            Connection conn = Conexion.getConexion(); 
+            Connection conn = Conexion.getConexion();
             UsuarioDao usuarioDao = new UsuarioDao(conn);
             Usuario usuario = usuarioDao.validarCredenciales(correo, contrasena);
 
             if (usuario != null) {
                 HttpSession sesion = request.getSession();
                 sesion.setAttribute("usuarioLogueado", usuario);
+                
+                
+                //Obtener el nombre del rol usando el método del DAO
+                String rolUsuario = usuarioDao.obtenerNombreRolPorId(usuario.getRolId());
+                if (rolUsuario != null) {
+                    sesion.setAttribute("rol", rolUsuario);
+                }
+
                 response.sendRedirect("Vistas/MenuPrincipal/menuPrincipal.jsp");
             } else {
                 // Si las credenciales son incorrectas, mostramos un mensaje

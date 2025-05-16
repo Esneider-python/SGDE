@@ -21,11 +21,12 @@ CREATE TABLE usuarios (
     FOREIGN KEY (rol_id) REFERENCES rol(id_rol)
 );
 
--- Tabla de colegios
+-- Tabla de colegios// estado, nuevo campo
 CREATE TABLE colegio (
     id_colegio INT AUTO_INCREMENT PRIMARY KEY,
     nombre_colegio VARCHAR(100) NOT NULL,
     usuario_registra INT NOT NULL,
+    estado VARCHAR(10),
     FOREIGN KEY (usuario_registra) REFERENCES usuarios(id_usuario)
 );
 

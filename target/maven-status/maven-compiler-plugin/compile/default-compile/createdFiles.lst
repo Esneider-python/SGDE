@@ -5,6 +5,7 @@ com\inventario\controlador\HistorialMovimientoServlet.class
 com\inventario\controlador\BloqueServlet.class
 com\mycompany\sgde\util\CorreoUtil$1.class
 com\mycompany\sgde\dao\ReporteDao.class
+com\inventario\controlador\UsuarioServlet.class
 com\inventario\controlador\RolServlet.class
 com\mycompany\sgde\util\ConexionListener.class
 com\inventario\controlador\CambiarContrasenaServlet.class
