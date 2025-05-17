@@ -46,6 +46,10 @@
 
                 <button type="submit">Registrar</button>
             </form>
-           
+            <br><!-- comment -->
+            <form action="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp">
+                <button type="submit">Volver al Menú</button>
+            </form>
+
     </body>
 </html>

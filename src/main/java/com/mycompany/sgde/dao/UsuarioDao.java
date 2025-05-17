@@ -58,14 +58,10 @@ public class UsuarioDao {
         }
         return null;
     }
+// ACTUALIZAR USUARIO
 
-    // ACTUALIZAR USUARIO
     public boolean actualizarUsuario(Usuario usuario) throws SQLException {
-        boolean tieneContrasena = usuario.getContrasena() != null && !usuario.getContrasena().isEmpty();
-
-        String sql = tieneContrasena
-                ? "UPDATE usuarios SET nombres = ?, apellidos = ?, telefono = ?, correo = ?, cedula = ?, contrasena = ?, rol = ? WHERE id = ?"
-                : "UPDATE usuarios SET nombres = ?, apellidos = ?, telefono = ?, correo = ?, cedula = ?, rol = ? WHERE id = ?";
+        String sql = "UPDATE usuarios SET nombres = ?, apellidos = ?, telefono = ?, correo = ?, cedula = ? WHERE id_usuario = ?";
 
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setString(1, usuario.getNombres());
@@ -73,21 +69,15 @@ public class UsuarioDao {
             ps.setString(3, usuario.getTelefono());
             ps.setString(4, usuario.getCorreo());
             ps.setString(5, usuario.getCedula());
-
-            if (tieneContrasena) {
-                ps.setString(6, usuario.getContrasena());
-                ps.setInt(7, usuario.getRolId());
-            } else {
-                ps.setInt(6, usuario.getRolId());
-            }
+            ps.setInt(6, usuario.getIdUsuario());
 
             return ps.executeUpdate() > 0;
         }
     }
 
-    // ELIMIANR USUARIO POR ID
+// ELIMIANR USUARIO POR ID
     public boolean eliminarUsuario(int id) throws SQLException {
-        String sql = "DELETE FROM usuarios WHERE id = ?";
+        String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
@@ -213,7 +203,7 @@ public class UsuarioDao {
                 }
             }
         }
-        return null;  // Si no se encuentra el rol, retorna null
+        return null; // Si no se encuentra el rol, retorna null
     }
 
 }

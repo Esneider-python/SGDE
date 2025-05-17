@@ -24,13 +24,25 @@
                     <p><strong>Nombre:</strong> <%= usuario.getNombres()%></p>
                     <p><strong>Cédula:</strong> <%= usuario.getCedula()%></p>
                     <div class="button-group">
-                        <a href="${pageContext.request.contextPath}/UsuarioServlet?action=actualizar&id=<%= usuario.getIdUsuario()%>" class="btn btn-edit" title="Editar">
-                            <i class="fa fa-pen-to-square"></i> Editar
-                        </a>
-                        <a href="${pageContext.request.contextPath}/UsuarioServlet?action=eliminar&id=<%= usuario.getIdUsuario()%>" class="btn btn-delete" onclick="return confirm('¿Estás seguro de eliminar este usuario?')" title="Eliminar">
-                            <i class="fa fa-trash"></i> Eliminar
-                        </a>
-                        <a href="${pageContext.request.contextPath}/AsignarAulas.jsp?cedula=<%= usuario.getCedula()%>" class="btn btn-assign" title="Asignar Aulas">
+
+                        <form action="${pageContext.request.contextPath}/UsuarioServlet" method="get" style="display:inline;">
+                            <input type="hidden" name="action" value="mostrarFormularioActualizar">
+                            <input type="hidden" name="id" value="<%= usuario.getIdUsuario()%>">
+                            <button class="confirmar" type="submit" class="btn btn-edit" title="Editar">
+                                <i class="fa fa-pen-to-square"></i> Editar
+                            </button>
+                        </form>
+
+                        <form action="${pageContext.request.contextPath}/UsuarioServlet" method="post" style="display:inline;">
+                            <input type="hidden" name="action" value="eliminarUsuario">
+                            <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">
+                            <button class="confirmar" type="submit" class="btn btn-delete" title="Eliminar">
+                                <i class="fa fa-trash"></i> Eliminar
+                            </button>
+                        </form>
+
+
+                        <a class="confirmar" href="${pageContext.request.contextPath}/AsignarAulas.jsp?cedula=<%= usuario.getCedula()%>" class="btn btn-assign" title="Asignar Aulas">
                             <i class="fa fa-chalkboard-user"></i> Asignar Aulas
                         </a>
                         <a href="${pageContext.request.contextPath}/UsuarioServlet?action=quitarAsignaciones&id=<%= usuario.getIdUsuario()%>" class="btn btn-remove" title="Quitar Asignaciones">
@@ -52,5 +64,6 @@
                 <button type="submit">Ir menu usuario</button>
             </form>
         </div>
+
     </body>
 </html>
