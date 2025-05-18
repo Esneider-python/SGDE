@@ -1,6 +1,8 @@
 package com.inventario.controlador;
 
+import com.inventario.modelo.DocenteAula;
 import com.inventario.modelo.Usuario;
+import com.mycompany.sgde.dao.DocenteAulaDao;
 import com.mycompany.sgde.dao.UsuarioDao;
 import com.mycompany.sgde.util.Conexion;
 import jakarta.servlet.ServletException;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalTime;
 import java.util.List;
 
 @WebServlet("/UsuarioServlet")
@@ -279,6 +282,7 @@ public class UsuarioServlet extends HttpServlet {
         request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp").forward(request, response);
     }
 
+   
     // GET
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -396,7 +400,6 @@ public class UsuarioServlet extends HttpServlet {
     }
 
 }
-
 // Actualizar usuario
 // Eliminar usuario
 // Asignar rol

@@ -40,11 +40,14 @@
                                 <i class="fa fa-trash"></i> Eliminar
                             </button>
                         </form>
-
-
-                        <a class="confirmar" href="${pageContext.request.contextPath}/AsignarAulas.jsp?cedula=<%= usuario.getCedula()%>" class="btn btn-assign" title="Asignar Aulas">
-                            <i class="fa fa-chalkboard-user"></i> Asignar Aulas
-                        </a>
+                            
+                        <form action="${pageContext.request.contextPath}/AsignarDocenteAulaServlet" method="get" style="display:inline;">
+                            <input type="hidden" name="action" value="formularioAsignar">
+                            <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">
+                            <button class="confirmar" type="submit" class="btn btn-asignar" title="asignar">
+                                <i class="fa fa-chalkboard-user"></i> Asignar aula
+                            </button>
+                        </form>
                         <a href="${pageContext.request.contextPath}/UsuarioServlet?action=quitarAsignaciones&id=<%= usuario.getIdUsuario()%>" class="btn btn-remove" title="Quitar Asignaciones">
                             <i class="fa fa-user-slash"></i> Quitar Asignaciones
                         </a>
@@ -52,6 +55,7 @@
                             <i class="fa fa-eye"></i> Ver Asignaciones
                         </a>
                     </div>
+
                 </div>
                 <%
                     }
@@ -61,9 +65,8 @@
                 <% }%>
             </div>
             <form action="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp" method="get">
-                <button type="submit">Ir menu usuario</button>
+                <button class="btn-salir" type="submit">Ir menu usuario</button>
             </form>
         </div>
-
     </body>
 </html>

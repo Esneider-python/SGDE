@@ -1,6 +1,7 @@
 package com.inventario.modelo;
 
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 public class DocenteAula {
 
@@ -8,29 +9,23 @@ public class DocenteAula {
     private int idUsuario;
     private int idAula;
     private String dia;
-    private String horaInicio;
-    private String horaFin;
+    private LocalTime horaInicio;
+    private LocalTime horaFin;
     private Timestamp fechaAsignacion;
 
     public DocenteAula() {
     }
 
-    public DocenteAula(int id, int idUsuario, int idAula, String dia, String horaInicio, String horaFin, Timestamp fechaAsignacion) {
-        this.id = id;
+    public DocenteAula( int idUsuario, int idAula, String dia, LocalTime horaInicio, LocalTime horaFin) {
         this.idUsuario = idUsuario;
         this.idAula = idAula;
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.fechaAsignacion = fechaAsignacion;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getIdUsuario() {
@@ -57,19 +52,19 @@ public class DocenteAula {
         this.dia = dia;
     }
 
-    public String getHoraInicio() {
+    public LocalTime getHoraInicio() {
         return horaInicio;
     }
 
-    public void setHoraInicio(String horaInicio) {
+    public void setHoraInicio(LocalTime horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public String getHoraFin() {
+    public LocalTime getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(String horaFin) {
+    public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
     }
 
@@ -77,7 +72,4 @@ public class DocenteAula {
         return fechaAsignacion;
     }
 
-    public void setFechaAsignacion(Timestamp fechaAsignacion) {
-        this.fechaAsignacion = fechaAsignacion;
-    }
 }
