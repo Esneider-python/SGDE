@@ -28,7 +28,7 @@
                         <form action="${pageContext.request.contextPath}/UsuarioServlet" method="get" style="display:inline;">
                             <input type="hidden" name="action" value="mostrarFormularioActualizar">
                             <input type="hidden" name="id" value="<%= usuario.getIdUsuario()%>">
-                            <button class="confirmar" type="submit" class="btn btn-edit" title="Editar">
+                            <button class="confirmar color-verde" type="submit" class="btn btn-edit" title="Editar">
                                 <i class="fa fa-pen-to-square"></i> Editar
                             </button>
                         </form>
@@ -36,24 +36,34 @@
                         <form action="${pageContext.request.contextPath}/UsuarioServlet" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="eliminarUsuario">
                             <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">
-                            <button class="confirmar" type="submit" class="btn btn-delete" title="Eliminar">
+                            <button class="confirmar color-rojo" type="submit" class="btn btn-delete" title="Eliminar">
                                 <i class="fa fa-trash"></i> Eliminar
                             </button>
                         </form>
-                            
+
                         <form action="${pageContext.request.contextPath}/AsignarDocenteAulaServlet" method="get" style="display:inline;">
                             <input type="hidden" name="action" value="formularioAsignar">
                             <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">
-                            <button class="confirmar" type="submit" class="btn btn-asignar" title="asignar">
+                            <button class="confirmar color-naranja" type="submit" class="btn btn-asignar" title="asignar">
                                 <i class="fa fa-chalkboard-user"></i> Asignar aula
                             </button>
                         </form>
-                        <a href="${pageContext.request.contextPath}/UsuarioServlet?action=quitarAsignaciones&id=<%= usuario.getIdUsuario()%>" class="btn btn-remove" title="Quitar Asignaciones">
-                            <i class="fa fa-user-slash"></i> Quitar Asignaciones
-                        </a>
-                        <a href="${pageContext.request.contextPath}/VerAsignaciones.jsp?id=<%= usuario.getIdUsuario()%>" class="btn btn-view" title="Ver Asignaciones">
-                            <i class="fa fa-eye"></i> Ver Asignaciones
-                        </a>
+
+                        <form action="${pageContext.request.contextPath}/AsignarDocenteAulaServlet" method="get" style="display:inline;">
+                            <input type="hidden" name="action" value="#">
+                            <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">
+                            <button class="confirmar color-gris" type="submit" class="btn btn-asignar" title="asignar">
+                                <i class="fa fa-user-slash"></i> Quitar asignaciones
+                            </button>
+                        </form>  
+                         <form action="${pageContext.request.contextPath}/AsignarDocenteAulaServlet" method="get" style="display:inline;">
+                            <input type="hidden" name="action" value="verAsignaciones">
+                            <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">
+                            <button class="confirmar color-amarillo" type="submit" class="btn btn-asignar" title="asignar">
+                                <i class="fa fa-eye"></i> Ver asignaciones
+                            </button>
+                        </form>    
+
                     </div>
 
                 </div>

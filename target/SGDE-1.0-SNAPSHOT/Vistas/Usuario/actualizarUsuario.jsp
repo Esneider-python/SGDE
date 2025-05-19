@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <body>
-        <div class="container">
+        <div class="conta">
             <h1>Actualizar Usuario</h1>
 
             <!-- Mensaje de éxito o error -->
@@ -41,19 +41,19 @@
                     <label for="correo">Correo Electrónico:</label>
                     <input type="email" id="correo" name="correo" value="${usuario.correo}" required>
 
-                    <label for="correo">Cedula:</label>
+                    <label for="cedula">Cedula:</label>
                     <input type="cedula" id="cedula" name="cedula" value="${usuario.cedula}" required>
 
                     <div class="button-group">
-                        <button class="confirmar" type="submit" class="btn btn-save">
+                        <button class="con" type="submit" class="btn btn-save">
                             <i class="fa fa-save"></i> Guardar Cambios
                         </button>
                     </div>
                 </form>
-                    <br>
-                <form action="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp">
-                    <button class="cancelar" type="submit">Volver al Menú Piso</button>
-                </form>
+                <br>
+                <form class="form-r" action="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp">
+                    <button class="cancelar" type="submit">Cancelar</button>
+                </form> 
             </c:if>
 
             <!-- Mensaje si el usuario no fue encontrado -->
@@ -61,9 +61,7 @@
                 <div class="alert-error">
                     Usuario no encontrado.
                 </div>
-                <a href="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp" class="btn btn-back">
-                    <i class="fa fa-arrow-left"></i> Volver al Menú
-                </a>
+
             </c:if>
         </div>
     </body>

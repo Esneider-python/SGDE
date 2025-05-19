@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @WebServlet(name = "AsignarDocenteAulaServlet", urlPatterns = {"/AsignarDocenteAulaServlet"})
 public class AsignarDocenteAulaServlet extends HttpServlet {
@@ -156,6 +157,9 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
                 case "formularioAsignar":
                     formularioAsignar(request, response, con);
                     break;
+                case "verAsignaciones":
+                    verAsignaciones(request, response, con);
+                    break;
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
             }
@@ -208,5 +212,29 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
             request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp").forward(request, response);
         }
     }
+    
+    private void verAsignaciones(HttpServletRequest request, HttpServletResponse response, Connection con) throws ServletException, IOException {
+    String idUsuarioParam = request.getParameter("idUsuario");
+    
+    try {
+        int idUsuario = Integer.parseInt(idUsuarioParam.trim());
+        
+        DocenteAulaDao docenteAulaDao = new DocenteAulaDao();
+        List<DocenteAula> asignaciones = docenteAulaDao.obtenerAsignacionesPorUsuario(idUsuario);
+        
+        request.setAttribute("asignaciones", asignaciones);
+        request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+        
+    } catch (NumberFormatException e) {
+        request.setAttribute("mensaje", "El ID del usuario no es válido.");
+        request.setAttribute("tipoMensaje", "error");
+        request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        request.setAttribute("mensaje", "Error al acceder a las asignaciones: " + e.getMessage());
+        request.setAttribute("tipoMensaje", "error");
+        request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+    }
+}
 
 }

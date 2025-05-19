@@ -1,52 +1,73 @@
-<%@page import="com.inventario.modelo.DocenteAula"%>
-<%@page import="java.util.List"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.inventario.modelo.DocenteAula" %>
+<%@ page import="com.mycompany.sgde.dao.DocenteAulaDao" %>
+<%@ page import="com.mycompany.sgde.util.Conexion" %>
+<%
+    String mensaje = (String) request.getAttribute("mensaje");
+    String tipoMensaje = (String) request.getAttribute("tipoMensaje");
+%>
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver Asignaciones de Aulas</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estiloAsignar.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Asignaciones de Aulas</h1>
-        <table>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Asignaciones por Usuario</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/asignacion.css">
+    </head>
+    <body>
+    <div class="container-asignaciones">
+        <h2>Ver Asignaciones de Docente</h2>
+        
+        <%
+            if (mensaje != null) {
+        %>
+        <div class="<%=tipoMensaje.equals("exito") ? "mensaje-exito" : "mensaje-error"%>">
+            <%= mensaje%>
+        </div>
+        <%
+            }
+
+            List<DocenteAula> asignaciones = (List<DocenteAula>) request.getAttribute("asignaciones");
+            if (asignaciones != null && !asignaciones.isEmpty()) {
+        %>
+        <table class="table-asignaciones">
             <thead>
                 <tr>
-                    <th>ID Asignación</th>
+                    <th>ID</th>
                     <th>ID Usuario</th>
                     <th>ID Aula</th>
-                    <th>Día</th>
+                    <th>DÃ­a de la Semana</th>
                     <th>Hora Inicio</th>
                     <th>Hora Fin</th>
                 </tr>
             </thead>
             <tbody>
-                <%-- Aquí se deben insertar las filas de asignaciones desde el servlet --%>
-                <% 
-                List<DocenteAula> asignaciones = (List<DocenteAula>) request.getAttribute("asignaciones");
-                if (asignaciones != null) {
+                <%
                     for (DocenteAula asignacion : asignaciones) {
                 %>
                 <tr>
-                    <td><%= asignacion.getId() %></td>
-                    <td><%= asignacion.getIdUsuario() %></td>
-                    <td><%= asignacion.getIdAula() %></td>
-                    <td><%= asignacion.getDiaSemana() %></td>
-                    <td><%= asignacion.getHoraInicio() %></td>
-                    <td><%= asignacion.getHoraFin() %></td>
+                    <td><%= asignacion.getId()%></td>
+                    <td><%= asignacion.getIdUsuario()%></td>
+                    <td><%= asignacion.getIdAula()%></td>
+                    <td><%= asignacion.getDia()%></td>
+                    <td><%= asignacion.getHoraInicio()%></td>
+                    <td><%= asignacion.getHoraFin()%></td>
                 </tr>
                 <%
                     }
-                } else {
                 %>
-                <tr>
-                    <td colspan="6">No hay asignaciones registradas.</td>
-                </tr>
-                <% } %>
             </tbody>
         </table>
+        <%
+        } else if (request.getParameter("idUsuario") != null) {
+        %>
+        <p>No se encontraron asignaciones para el usuario especificado.</p>
+        <%
+            }
+        %>
+
+        <a href="<%=request.getContextPath()%>/Vistas/Usuario/menuUsuario.jsp" class="btn-volver">Volver al MenÃº</a>
     </div>
 </body>
+
 </html>

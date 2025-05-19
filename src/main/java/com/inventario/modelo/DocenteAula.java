@@ -16,7 +16,7 @@ public class DocenteAula {
     public DocenteAula() {
     }
 
-    public DocenteAula( int idUsuario, int idAula, String dia, LocalTime horaInicio, LocalTime horaFin) {
+    public DocenteAula(int idUsuario, int idAula, String dia, LocalTime horaInicio, LocalTime horaFin) {
         this.idUsuario = idUsuario;
         this.idAula = idAula;
         this.dia = dia;
@@ -24,8 +24,22 @@ public class DocenteAula {
         this.horaFin = horaFin;
     }
 
+    public DocenteAula(int id, int idUsuario, int idAula, String dia, LocalTime horaInicio, LocalTime horaFin, Timestamp fechaAsignacion) {
+        this.id = id;
+        this.idUsuario = idUsuario;
+        this.idAula = idAula;
+        this.dia = dia;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.fechaAsignacion = fechaAsignacion;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIdUsuario() {

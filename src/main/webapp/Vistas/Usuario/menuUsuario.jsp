@@ -4,7 +4,7 @@
 <html>
     <head>
         <title>Menú de Gestión de Usuarios</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estiloElemento.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/roles.css">
     </head>
     <body>
         <h2>Menú de Gestión de Usuarios</h2>
@@ -13,7 +13,7 @@
                 String mensaje = (String) request.getAttribute("mensaje");
                 if (mensaje != null && !mensaje.trim().isEmpty()) {
             %>
-            <p class="info"><%= mensaje %></p>
+            <p class="info"><%= mensaje%></p>
             <%
                 }
             %>
@@ -23,24 +23,29 @@
             // Verificación de roles permitidos
             if (session != null) {
                 String rol = (String) session.getAttribute("rol");
-                if (rol != null && (rol.equalsIgnoreCase("administrador") 
-                        || rol.equalsIgnoreCase("director") 
+                if (rol != null && (rol.equalsIgnoreCase("administrador")
+                        || rol.equalsIgnoreCase("director")
                         || rol.equalsIgnoreCase("rector"))) {
         %>
-        
-        <form action="${pageContext.request.contextPath}/Vistas/Usuario/registrarUsuario.jsp" method="get">
-            <button type="submit">Registrar usuario</button>
-        </form>
 
-        <form action="${pageContext.request.contextPath}/UsuarioServlet" method="get">
-            <input type="hidden" name="action" value="listarUsuarios">
-            <button type="submit">Ver Usuarios</button>
-        </form>
+        <div class="container" >
+            <form action="${pageContext.request.contextPath}/Vistas/Usuario/registrarUsuario.jsp" method="get">
+                <button class="confirmar color-rojo" type="submit">Registrar usuario</button>
+            </form>
+                <br>
 
-        <form action="${pageContext.request.contextPath}/Vistas/MenuPrincipal/menuPrincipal.jsp" method="get">
-            <button type="submit">Ir al Menú Principal</button>
-        </form>
+            <form action="${pageContext.request.contextPath}/UsuarioServlet" method="get">
+                <input type="hidden" name="action" value="listarUsuarios">
+                <button type="submit">Ver Usuarios</button>
+            </form>
+                <br>
 
+            <form action="${pageContext.request.contextPath}/Vistas/MenuPrincipal/menuPrincipal.jsp" method="get">
+                <button type="submit">Ir al Menú Principal</button>
+            </form>
+                <br>
+
+        </div>
         <%
                 } else {
                     // Usuario sin permisos

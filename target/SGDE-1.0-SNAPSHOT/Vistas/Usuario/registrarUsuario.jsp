@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estiloUsuario.css">
     </head>
     <body>
-        <div class="container">
+        <div class="conta-30">
             <div class="message">
                 <%
                     String mensaje = (String) request.getAttribute("mensaje");
@@ -21,7 +21,7 @@
             </div>
 
             <h2>Registrar Usuario</h2>
-            <form action="${pageContext.request.contextPath}/UsuarioServlet" method="post">
+            <form class="form-r" action="${pageContext.request.contextPath}/UsuarioServlet" method="post">
                 <input type="hidden" name="action" value="registrar">
                 <label for="nombres">Nombres:</label>
                 <input type="text" id="nombres" name="nombres" required>
@@ -44,12 +44,13 @@
                 <label for="rol_id">Código del Rol:</label>
                 <input type="number" id="rol_id" name="rol_id" required>
 
-                <button type="submit">Registrar</button>
+                <button class="confirmar" type="submit">Registrar</button>
             </form>
             <br><!-- comment -->
-            <form action="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp">
-                <button type="submit">Volver al Menú</button>
-            </form>
+            <form class="form-r" action="${pageContext.request.contextPath}/Vistas/Usuario/menuUsuario.jsp">
+                <button class="cancelar" type="submit">Cancelar</button>
+            </form> 
+
 
     </body>
 </html>

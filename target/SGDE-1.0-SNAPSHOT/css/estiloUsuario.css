@@ -7,7 +7,7 @@ body {
 h1{
     text-align: center;
     margin: 30px
-    
+
 }
 .form-container {
     width: 90%;
@@ -48,10 +48,6 @@ h1{
     transition: background-color 0.3s;
 }
 
-.form-container button:hover {
-    background-color: #0056b3;
-}
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -68,6 +64,25 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
+
+.conta {
+    width: 25%;
+    max-width: 1000px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+.conta-30 {
+    width: 30%;
+    margin: 0px auto;
+    background-color: #ffffff;
+    padding: 10px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
 
 h2 {
     color: #333;
@@ -109,12 +124,30 @@ input[type="number"]:focus {
     width: 100%;
     padding: 12px;
     background-color: #007bff;
-    color: #fff;
+    color: black;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
+}
+
+.color-verde{
+    background-color: green;
+
+}
+.color-amarillo{
+    background-color: yellow;
+}
+.color-rojo{
+    background-color: red;
+}
+.color-naranja{
+    background-color: orangered;
+}
+.color-gris{
+    background-color: grey;
+
 }
 .btn-salir{
     width: 20%;
@@ -138,11 +171,6 @@ input[type="number"]:focus {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
-button:hover {
-    background-color: #0056b3;
-}
-
 .info {
     color: #007bff;
     margin-top: 8px;
@@ -157,6 +185,7 @@ button:hover {
 
 
 .card-container {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 20px; /* espacio entre tarjetas */
@@ -165,11 +194,10 @@ button:hover {
 }
 
 .card {
-    background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     padding: 20px;
-    width: 280px; /* ancho fijo para cada tarjeta */
+    width: 220px; /* ancho fijo para cada tarjeta */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -190,63 +218,34 @@ button:hover {
 .button-group {
     margin-top: 15px;
     display: flex;
-    justify-content: space-between;
-    gap: 5px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: stretch;
 }
 
-.button-group a {
+
+.button-group button {
     flex: 1 1 auto;
-    background: red;
     text-align: center;
     padding: 8px 10px;
     font-size: 0.85rem;
-    border-radius: 5px;
     text-decoration: none;
-    color: black;
-    transition: background-color 0.3s ease;
 }
 
 .btn-edit {
     background-color: #007bff;
 }
 
-.btn-edit:hover {
-    background-color: #0056b3;
-}
-
 .btn-delete {
     background-color: #dc3545;
 }
 
-.btn-delete:hover {
-    background-color: #a71d2a;
-}
 
-.btn-assign {
-    background-color: #28a745;
-}
-
-.btn-assign:hover {
-    background-color: #1e7e34;
-}
 
 .btn-remove {
     background-color: #ffc107;
     color: #212529;
-}
-
-.btn-remove:hover {
-    background-color: #d39e00;
-    color: #fff;
-}
-
-.btn-view {
-    background-color: #17a2b8;
-}
-
-.btn-view:hover {
-    background-color: #117a8b;
 }
 
 .close {
@@ -257,12 +256,6 @@ button:hover {
     cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
 /* Para que los botones no se vean muy pequeños en móvil */
 @media (max-width: 350px) {
     .card {
@@ -275,7 +268,6 @@ button:hover {
 }
 
 
-// formulario asignar aula
 
 #dia_semana, input[type="time"] {
     width: 100%;
@@ -313,24 +305,9 @@ select:focus, input[type="time"]:focus {
     background-color: #007bff;
     color: #fff;
 }
-
-.button.asignar:hover {
-    background-color: #0056b3;
+.form-r{
+    width: 400px;
 }
-
-.button.cancelar {
-    background-color: red;
-    color: #fff;
-}
-
-.button.cancelar:hover {
-    background-color: #a71d2a;
-}
-
-
-
-//
-
 
 .formulario .campo {
     margin-bottom: 15px;
@@ -375,26 +352,9 @@ select:focus, input[type="time"]:focus {
     border: none;
 }
 
-.confirmar:hover {
-    background-color: #0056b3;
-}
 
 .can {
     margin-top: 10px;
     background-color: red;
     border: none;
-}
-
-.cancelar:hover {
-    background-color: #a71d2a;
-}
-
-.conta {
-    width: 60%;
-    max-width: 1000px;
-    margin: 40px auto;
-    background-color: #ffffff;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
