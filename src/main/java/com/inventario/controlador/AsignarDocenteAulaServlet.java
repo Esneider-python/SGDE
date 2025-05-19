@@ -32,15 +32,23 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
                 return;
             }
 
-            con.setAutoCommit(false);
-
-            if ("asignarDocenteAula".equals(action)) {
-                asignarDocenteAula(request, response, con);
-            } else {
-                request.setAttribute("mensaje", "Acción no válida. Por favor, intente nuevamente.");
-                request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp").forward(request, response);
+            if (action == null || action.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "La acción es requerida.");
+                return;
             }
 
+            con.setAutoCommit(false);
+
+            switch (action) {
+                case "asignarDocenteAula":
+                    asignarDocenteAula(request, response, con);
+                    break;
+                case "quitarAsignacion":
+                    quitarAsignacion(request, response, con);
+                    break;
+                default:
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("mensaje", "Ocurrió un error inesperado. Intente nuevamente.");
@@ -99,6 +107,7 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
             docenteAula.setDia(diaSemana);
             docenteAula.setHoraInicio(horaInicio);
             docenteAula.setHoraFin(horaFin);
+            docenteAula.setEstado("activo");
 
             DocenteAulaDao docenteAulaDao = new DocenteAulaDao();
             boolean asignado = docenteAulaDao.asignarAulaADocente(docenteAula);
@@ -135,7 +144,71 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
         } finally {
             if (!redirigir) {
                 // Redirige al menú después de asignar
-                request.getRequestDispatcher("/Vistas/Usuario/actualizarUsuario.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/UsuarioServlet?action=listarUsuarios");
+            }
+        }
+    }
+
+    //QUITAR ASIGNACION 
+    private void quitarAsignacion(HttpServletRequest request, HttpServletResponse response, Connection con) throws ServletException, IOException {
+        String tipoMensaje = "";
+        String mensaje = "";
+        boolean redirigir = false;
+        try {
+            // Obtener parámetros del formulario
+            String asignacionIdParam = request.getParameter("idAsignacion");
+
+            System.out.println("id usuario " + asignacionIdParam);
+            if (asignacionIdParam == null || asignacionIdParam.trim().isEmpty()) {
+                tipoMensaje = "error";
+                mensaje = "El ID de la asignación es requerido.";
+                request.setAttribute("tipoMensaje", tipoMensaje);
+                request.setAttribute("mensaje", mensaje);
+                request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+                return;
+            }
+
+            int asignacionId = Integer.parseInt(asignacionIdParam);
+
+            // Intentar eliminar la asignación
+            DocenteAulaDao docenteAulaDao = new DocenteAulaDao();
+            boolean actualizado = docenteAulaDao.actualizarEstadoAsignacion(asignacionId, "eliminado", con);
+
+            if (actualizado) {
+                con.commit();
+                tipoMensaje = "exito";
+                mensaje = "Asignación eliminada correctamente.";
+            } else {
+                con.rollback();
+                tipoMensaje = "error";
+                mensaje = "No se pudo eliminar la asignación. Intente nuevamente.";
+            }
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            tipoMensaje = "error";
+            mensaje = "Error de integridad de datos. Verifique que la asignación exista.";
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            tipoMensaje = "error";
+            mensaje = "Error en la base de datos: " + e.getMessage();
+        } catch (NumberFormatException e) {
+            tipoMensaje = "error";
+            mensaje = "El ID de la asignación no es válido.";
+        } finally {
+            if (!redirigir) {
+                // Redirige después de eliminar
+                request.setAttribute("tipoMensaje", tipoMensaje);
+                request.setAttribute("mensaje", mensaje);
+                request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
             }
         }
     }
@@ -212,29 +285,37 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
             request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp").forward(request, response);
         }
     }
-    
+
     private void verAsignaciones(HttpServletRequest request, HttpServletResponse response, Connection con) throws ServletException, IOException {
-    String idUsuarioParam = request.getParameter("idUsuario");
-    
-    try {
-        int idUsuario = Integer.parseInt(idUsuarioParam.trim());
-        
-        DocenteAulaDao docenteAulaDao = new DocenteAulaDao();
-        List<DocenteAula> asignaciones = docenteAulaDao.obtenerAsignacionesPorUsuario(idUsuario);
-        
-        request.setAttribute("asignaciones", asignaciones);
-        request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
-        
-    } catch (NumberFormatException e) {
-        request.setAttribute("mensaje", "El ID del usuario no es válido.");
-        request.setAttribute("tipoMensaje", "error");
-        request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
-    } catch (SQLException e) {
-        e.printStackTrace();
-        request.setAttribute("mensaje", "Error al acceder a las asignaciones: " + e.getMessage());
-        request.setAttribute("tipoMensaje", "error");
-        request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+        String idUsuarioParam = request.getParameter("idUsuario");
+
+        if (idUsuarioParam == null || idUsuarioParam.trim().isEmpty()) {
+            request.setAttribute("tipoMensaje", "error");
+            request.setAttribute("mensaje", "El ID del usuario es requerido.");
+            request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+            return;
+        }
+
+        try {
+            int idUsuario = Integer.parseInt(idUsuarioParam.trim());
+
+            System.out.println("id usuario detectado:   " + idUsuarioParam);
+            DocenteAulaDao docenteAulaDao = new DocenteAulaDao();
+            List<DocenteAula> asignaciones = docenteAulaDao.obtenerAsignacionesPorUsuario(idUsuario);
+
+            request.setAttribute("asignaciones", asignaciones);
+            request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("mensaje", "El ID del usuario no es válido.");
+            request.setAttribute("tipoMensaje", "error");
+            request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("mensaje", "Error al acceder a las asignaciones: " + e.getMessage());
+            request.setAttribute("tipoMensaje", "error");
+            request.getRequestDispatcher("/Vistas/Asignar/VerAsignacion.jsp").forward(request, response);
+        }
     }
-}
 
 }

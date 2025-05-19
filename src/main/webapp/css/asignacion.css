@@ -76,6 +76,22 @@ body {
     margin-top: 20px;
     transition: background-color 0.3s;
 }
+/* Botón Quitar */
+.btn-quitar {
+    background-color: red;
+    color: #ffffff;
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-quitar:hover {
+    background-color: #c82333;
+}
+
 
 .btn-volver:hover {
     background-color: #555;

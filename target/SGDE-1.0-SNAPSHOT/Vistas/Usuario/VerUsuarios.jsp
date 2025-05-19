@@ -49,13 +49,6 @@
                             </button>
                         </form>
 
-                        <form action="${pageContext.request.contextPath}/AsignarDocenteAulaServlet" method="get" style="display:inline;">
-                            <input type="hidden" name="action" value="#">
-                            <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">
-                            <button class="confirmar color-gris" type="submit" class="btn btn-asignar" title="asignar">
-                                <i class="fa fa-user-slash"></i> Quitar asignaciones
-                            </button>
-                        </form>  
                          <form action="${pageContext.request.contextPath}/AsignarDocenteAulaServlet" method="get" style="display:inline;">
                             <input type="hidden" name="action" value="verAsignaciones">
                             <input type="hidden" name="idUsuario" value="<%= usuario.getIdUsuario()%>">

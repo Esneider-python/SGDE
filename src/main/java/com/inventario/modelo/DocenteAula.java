@@ -12,18 +12,23 @@ public class DocenteAula {
     private LocalTime horaInicio;
     private LocalTime horaFin;
     private Timestamp fechaAsignacion;
+    private String estado;
 
     public DocenteAula() {
     }
 
-    public DocenteAula(int idUsuario, int idAula, String dia, LocalTime horaInicio, LocalTime horaFin) {
+    //constructor para registrar
+    public DocenteAula(int idUsuario, int idAula, String dia, LocalTime horaInicio, LocalTime horaFin, String estado) {
         this.idUsuario = idUsuario;
         this.idAula = idAula;
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
+        this.estado = estado;
+
     }
 
+    //constructor para consultar
     public DocenteAula(int id, int idUsuario, int idAula, String dia, LocalTime horaInicio, LocalTime horaFin, Timestamp fechaAsignacion) {
         this.id = id;
         this.idUsuario = idUsuario;
@@ -84,6 +89,14 @@ public class DocenteAula {
 
     public Timestamp getFechaAsignacion() {
         return fechaAsignacion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
 }

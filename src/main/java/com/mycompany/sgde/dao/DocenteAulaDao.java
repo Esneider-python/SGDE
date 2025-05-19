@@ -11,7 +11,7 @@ public class DocenteAulaDao {
 
     // Asigna un aula a un docente con horario
     public boolean asignarAulaADocente(DocenteAula da) {
-        String sql = "INSERT INTO docente_aula (id_usuario, id_aula, dia_semana, hora_inicio, hora_fin) VALUES ( ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO docente_aula (id_usuario, id_aula, dia_semana, hora_inicio, hora_fin, estado) VALUES ( ?, ?, ?, ?, ?,?)";
         try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, da.getIdUsuario());
@@ -20,6 +20,7 @@ public class DocenteAulaDao {
 
             stmt.setTime(4, Time.valueOf(da.getHoraInicio()));
             stmt.setTime(5, Time.valueOf(da.getHoraFin()));
+            stmt.setString(6, da.getEstado());
 
             return stmt.executeUpdate() > 0;
 
@@ -29,24 +30,10 @@ public class DocenteAulaDao {
         }
     }
 
-    // Elimina una asignación específica
-    public boolean eliminarAsignacion(int idDocenteAula) {
-        String sql = "DELETE FROM docente_aula WHERE id_docente_aula = ?";
-        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, idDocenteAula);
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar asignación: " + e.getMessage());
-            return false;
-        }
-    }
-
     // Obtiene las asignaciones de un usuario específico
     public List<DocenteAula> obtenerAsignacionesPorUsuario(int idUsuario) throws SQLException {
         List<DocenteAula> asignaciones = new ArrayList<>();
-        String sql = "SELECT * FROM docente_aula WHERE id_usuario = ?";
+        String sql = "SELECT * FROM docente_aula WHERE id_usuario = ? AND estado = 'activo' ";
         try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, idUsuario);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -65,4 +52,13 @@ public class DocenteAulaDao {
         return asignaciones;
     }
 
+    public boolean actualizarEstadoAsignacion(int asignacionId, String nuevoEstado, Connection con) throws SQLException {
+        String sql = "UPDATE docente_aula SET estado = ? WHERE id = ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, nuevoEstado);
+            stmt.setInt(2, asignacionId);
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0;
+        }
+    }
 }
