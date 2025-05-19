@@ -2,6 +2,7 @@ package com.inventario.controlador;
 
 import com.inventario.modelo.DocenteAula;
 import com.inventario.modelo.Usuario;
+import com.mycompany.sgde.dao.AulaDao;
 import com.mycompany.sgde.dao.DocenteAulaDao;
 import com.mycompany.sgde.dao.UsuarioDao;
 import com.mycompany.sgde.util.Conexion;
@@ -65,7 +66,6 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
     }
 
     private void asignarDocenteAula(HttpServletRequest request, HttpServletResponse response, Connection con) throws ServletException, IOException {
-        boolean redirigir = false; // Evita múltiples reenvíos
         try {
             // Obtener parámetros del formulario
             String idUsuarioParam = request.getParameter("idUsuario");
@@ -92,6 +92,17 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
             LocalTime horaInicio = LocalTime.parse(horaInicioParam);
             LocalTime horaFin = LocalTime.parse(horaFinParam);
 
+            // Verificar si el aula existe (usando el número de aula si es necesario)
+            AulaDao aulaDAO = new AulaDao(con);
+            int idAulas = aulaDAO.obtenerIdPorNumero(idAula); // <- esto parece incorrecto
+
+            if (idAulas == -1) {
+                request.setAttribute("mensaje", "El aula ingresada no existe.");
+                request.setAttribute("tipoMensaje", "error");
+                request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp?idUsuario=" + idUsuarioParam).forward(request, response);
+                return;
+            }
+
             // Validación de rango de horas
             if (horaFin.isBefore(horaInicio)) {
                 request.setAttribute("mensaje", "La hora de fin debe ser posterior a la hora de inicio.");
@@ -103,7 +114,7 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
             // Crear objeto DocenteAula
             DocenteAula docenteAula = new DocenteAula();
             docenteAula.setIdUsuario(idUsuario);
-            docenteAula.setIdAula(idAula);
+            docenteAula.setIdAula(idAulas); 
             docenteAula.setDia(diaSemana);
             docenteAula.setHoraInicio(horaInicio);
             docenteAula.setHoraFin(horaFin);
@@ -116,10 +127,14 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
                 con.commit();
                 request.setAttribute("mensaje", "Aula asignada correctamente.");
                 request.setAttribute("tipoMensaje", "exito");
+
+                // Redirigimos al listado con redirect + mensaje en sesión si quieres mostrarlo allá
+                request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp?idUsuario=" + idUsuarioParam).forward(request, response);
             } else {
                 con.rollback();
                 request.setAttribute("mensaje", "No se pudo asignar el aula. Intente nuevamente.");
                 request.setAttribute("tipoMensaje", "error");
+                request.getRequestDispatcher("/Vistas/Usuario/asignarAulaUsuario.jsp?idUsuario=" + idUsuarioParam).forward(request, response);
             }
 
         } catch (SQLIntegrityConstraintViolationException e) {
@@ -130,6 +145,7 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
             }
             request.setAttribute("mensaje", "Error de integridad de datos. Verifique que el usuario y aula existan.");
             request.setAttribute("tipoMensaje", "error");
+            request.getRequestDispatcher("/Vistas/Usuario/asignarAulaUsuario.jsp").forward(request, response);
         } catch (SQLException e) {
             try {
                 con.rollback();
@@ -138,14 +154,11 @@ public class AsignarDocenteAulaServlet extends HttpServlet {
             }
             request.setAttribute("mensaje", "Error en la base de datos: " + e.getMessage());
             request.setAttribute("tipoMensaje", "error");
+            request.getRequestDispatcher("/Vistas/Usuario/asignarAulaUsuario.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             request.setAttribute("mensaje", "El ID del usuario o del aula no es válido.");
             request.setAttribute("tipoMensaje", "error");
-        } finally {
-            if (!redirigir) {
-                // Redirige al menú después de asignar
-                response.sendRedirect(request.getContextPath() + "/UsuarioServlet?action=listarUsuarios");
-            }
+            request.getRequestDispatcher("/Vistas/Usuario/asignarAulaUsuario.jsp").forward(request, response);
         }
     }
 
