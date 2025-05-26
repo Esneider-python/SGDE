@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.inventario.modelo.Sede" %>
+<%@ page import="paquete.modelo.Sede" %>
 <!DOCTYPE html>
 <html>
 <head>

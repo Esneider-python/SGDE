@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page session="true" %>
-<%@ page import="com.inventario.modelo.Usuario" %>
+<%@ page import="paquete.modelo.Usuario" %>
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
     if (usuario == null) {

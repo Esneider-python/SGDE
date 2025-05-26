@@ -1,4 +1,4 @@
-<%@ page import="com.inventario.modelo.Colegio" %>
+<%@ page import="paquete.modelo.Colegio" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>

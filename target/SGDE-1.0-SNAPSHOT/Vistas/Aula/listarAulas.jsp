@@ -13,25 +13,27 @@
             <button type="submit">Listar Aulas</button>
         </form>
 
-    <c:if test="${not empty listaAulas}">
-        <table border="1">
-            <tr>
-                <th>Numero</th>
-                <th>ID Piso</th>
-                <th>ID Usuario</th>
-            </tr>
-            <c:forEach var="aula" items="${listaAulas}">
+        <c:if test="${not empty listaAulas}">
+            <table border="1">
                 <tr>
-                    <td>${aula.id}</td>
-                    <td>${aula.piso.id}</td>
-                    <td>${aula.usuarioRegistra.idUsuario}</td>
+                    <th>ID Aula</th>
+                    <th>Numero Aula</th>
+                    <th>ID Piso</th>
+                    <th>ID Usuario</th>
                 </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+                <c:forEach var="aula" items="${listaAulas}">
+                    <tr>
+                        <td>${aula.id}</td>
+                        <td>${aula.piso.id}</td>
+                        <td>${aula.piso.id}</td>
+                        <td>${aula.usuarioRegistra.idUsuario}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </c:if>
 
-    <form action="${pageContext.request.contextPath}/Vistas/Aula/menuAula.jsp">
-        <button type="submit">Volver al Menú Aula</button>
-    </form>
-</body>
+        <form action="${pageContext.request.contextPath}/Vistas/Aula/menuAula.jsp">
+            <button type="submit">Volver al Menú Aula</button>
+        </form>
+    </body>
 </html>

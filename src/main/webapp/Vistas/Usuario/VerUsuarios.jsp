@@ -1,4 +1,4 @@
-<%@page import="com.inventario.modelo.Usuario"%>
+<%@page import="paquete.modelo.Usuario"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html lang="es">

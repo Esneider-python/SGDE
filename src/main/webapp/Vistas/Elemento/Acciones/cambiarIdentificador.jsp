@@ -1,7 +1,7 @@
-<%@page import="com.inventario.modelo.ElementosMobiliarios"%>
-<%@page import="com.inventario.modelo.ElementoTecnologico"%>
-<%@page import="com.inventario.modelo.ElementoTecnologico" %>
-<%@page import="com.inventario.modelo.ElementosMobiliarios" %>
+<%@page import="paquete.modelo.ElementosMobiliarios"%>
+<%@page import="paquete.modelo.ElementoTecnologico"%>
+<%@page import="paquete.modelo.ElementoTecnologico" %>
+<%@page import="paquete.modelo.ElementosMobiliarios" %>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Object elementoObj = request.getAttribute("elemento");

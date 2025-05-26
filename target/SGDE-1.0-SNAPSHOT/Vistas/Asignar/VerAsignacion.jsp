@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.inventario.modelo.DocenteAula" %>
-<%@ page import="com.mycompany.sgde.dao.DocenteAulaDao" %>
-<%@ page import="com.mycompany.sgde.util.Conexion" %>
+<%@ page import="paquete.modelo.DocenteAula" %>
+<%@ page import="paquete.dao.DocenteAulaDao" %>
+<%@ page import="paquete.util.Conexion" %>
 <%
     String mensaje = (String) request.getAttribute("mensaje");
     String tipoMensaje = (String) request.getAttribute("tipoMensaje");

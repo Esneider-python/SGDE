@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.inventario.modelo.HistorialMovimiento" %>
+<%@ page import="paquete.modelo.HistorialMovimiento" %>
 <%@ page import="java.util.List" %>
 <html>
     <head>

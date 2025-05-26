@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.inventario.modelo.ElementoTecnologico, com.inventario.modelo.ElementosMobiliarios" %>
+<%@ page import="paquete.modelo.ElementoTecnologico, paquete.modelo.ElementosMobiliarios" %>
 <%
     Object elemento = request.getAttribute("elemento");
     String tipo = (String) request.getAttribute("tipo"); // "tecnologico" o "mobiliario"

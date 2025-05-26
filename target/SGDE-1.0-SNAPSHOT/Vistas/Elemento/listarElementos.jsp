@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.*, com.inventario.modelo.ElementoTecnologico, com.inventario.modelo.ElementosMobiliarios" %>
+<%@ page import="java.util.*, paquete.modelo.ElementoTecnologico, paquete.modelo.ElementosMobiliarios" %>
 <html>
     <head>
         <title>Lista de Elementos</title>

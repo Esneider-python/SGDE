@@ -301,10 +301,7 @@ select:focus, input[type="time"]:focus {
     transition: background-color 0.3s ease;
 }
 
-.button.asignar {
-    background-color: #007bff;
-    color: #fff;
-}
+
 .form-r{
     width: 400px;
 }
@@ -348,7 +345,6 @@ select:focus, input[type="time"]:focus {
 
 .con {
     margin-top:10px;
-    background-color: #007bff;
     border: none;
 }
 
@@ -357,4 +353,33 @@ select:focus, input[type="time"]:focus {
     margin-top: 10px;
     background-color: red;
     border: none;
+}
+
+
+
+
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Estilo normal del botón (habilitado) */
+#btnAsignar {
+    background-color: #007bff; /* verde, por ejemplo */
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo cuando está deshabilitado */
+#btnAsignar:disabled {
+    background-color: #ccc; /* gris claro */
+    color: #666;
+    cursor: not-allowed;
 }

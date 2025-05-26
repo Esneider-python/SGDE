@@ -25,12 +25,13 @@
                 <div class="campo">
                     <div class="campo">
                         <label for="id_aula">Aula:</label>
-                        <input type="text" name="id_aula" id="id_aula" required>
+                        <input type="text" name="id_aula" id="numAula" required>
+                        <span class="error-message" id="errorAula"></span>
                     </div>
                 </div>
                 <div class="campo">
                     <label for="dia_semana">Día de la Semana:</label>
-                    <select name="dia_semana" id="dia_semana" required>
+                    <select name="dia_semana" id="diaSemana" required>
                         <option value="">Seleccione un día</option>
                         <option value="Lunes">Lunes</option>
                         <option value="Martes">Martes</option>
@@ -42,19 +43,22 @@
                 </div>
                 <div class="campo">
                     <label for="hora_inicio">Hora de Inicio:</label>
-                    <input type="time" name="hora_inicio" id="hora_inicio" required>
+                    <input type="time" name="hora_inicio" id="horaInicio" required>
+                     <span class="error-message" id="errorHoraInicio"></span>
                 </div>
                 <div class="campo">
                     <label for="hora_fin">Hora de Fin:</label>
-                    <input type="time" name="hora_fin" id="hora_fin" required>
+                    <input type="time" name="hora_fin" id="horaFin" required>
+                    <span class="error-message" id="errorHoraFin"></span>
                 </div>
                 <div class="botones">
-                    <button class="con"  type="submit">Asignar</button>
+                    <button class="con" id="btnAsignar" type="submit" disabled>Asignar</button>
                 </div>
                 <div class="botones">
-                    <button class="can" type="button" onclick="window.history.back();">Cancelar Asignación</button>
+                    <button class="can" " type="button" onclick="window.history.back();">Cancelar Asignación</button>
                 </div>
             </form>
+            <script src="${pageContext.request.contextPath}/js/validacionAsignacion.js"></script>
         </div>
     </body>
 </html>
