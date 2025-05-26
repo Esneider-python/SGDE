@@ -16,7 +16,7 @@
     <c:if test="${not empty listaAulas}">
         <table border="1">
             <tr>
-                <th>ID</th>
+                <th>Numero</th>
                 <th>ID Piso</th>
                 <th>ID Usuario</th>
             </tr>
