@@ -1,0 +1,18 @@
+
+/* Estilo normal del botón (habilitado) */
+#btnHabilitado {
+    background-color: #007bff; /* verde, por ejemplo */
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo cuando está deshabilitado */
+#btnHabilitado:disabled {
+    background-color: #ccc; /* gris claro */
+    color: #666;
+    cursor: not-allowed;
+}
