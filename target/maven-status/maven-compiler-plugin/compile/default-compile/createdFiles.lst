@@ -19,6 +19,7 @@ paquete\controlador\BloqueServlet.class
 paquete\controlador\PisoServlet.class
 paquete\util\CorreoUtil$1.class
 paquete\modelo\Piso.class
+paquete\controlador\InformeServlet.class
 paquete\dao\PisoDao.class
 paquete\resources\JakartaEE10Resource.class
 paquete\modelo\ElementoTecnologico.class

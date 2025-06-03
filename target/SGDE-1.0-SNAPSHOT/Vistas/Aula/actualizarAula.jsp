@@ -31,6 +31,6 @@
             <button type="submit">Volver al Menú Aula</button>
         </form>
 
-        <script src="${pageContext.request.contextPath}/js/Validaciones/ValidacionAula.js"></script> 
+        <script src="${pageContext.request.contextPath}/js/Validaciones/Aula/actualizarAula.js"></script> 
     </body>
 </html>

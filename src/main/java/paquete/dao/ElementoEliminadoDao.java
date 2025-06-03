@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import paquete.modelo.ElementoEliminado;
 
 public class ElementoEliminadoDao {
 
@@ -47,4 +50,34 @@ public class ElementoEliminadoDao {
         }
         return false;
     }
+
+    public List<ElementoEliminado> obtenerElementosEliminados(String cedula, String fechaInicio, String fechaFin) throws SQLException {
+        List<ElementoEliminado> elementos = new ArrayList<>();
+        String sql = """
+        SELECT ee.id_elemento_eliminado, ee.elemento_id, ee.motivo_eliminacion ,ee.fecha_hora_eliminacion
+        FROM elementos_eliminados ee
+        JOIN usuarios u ON u.id_usuario = u.id_usuario
+        WHERE u.cedula = ? AND ee.fecha_hora_eliminacion BETWEEN ? AND ?
+    """;
+
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+
+            stmt.setString(1, cedula);
+            stmt.setString(2, fechaInicio);
+            stmt.setString(3, fechaFin);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ElementoEliminado e = new ElementoEliminado();
+                e.setIdElementoEliminado(rs.getInt("id_elemento_eliminado"));
+                e.setElementoId(rs.getInt("elemento_id"));
+                e.setMotivoEliminacion(rs.getString("motivo_eliminacion"));
+                e.setFechaHoraEliminacion(rs.getTimestamp("fecha_hora_eliminacion"));
+                elementos.add(e);
+            }
+        }
+
+        return elementos;
+    }
+
 }

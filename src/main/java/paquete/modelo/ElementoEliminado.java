@@ -1,5 +1,7 @@
 package paquete.modelo;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class ElementoEliminado {
@@ -79,4 +81,6 @@ public class ElementoEliminado {
                 ", usuarioElimino=" + usuarioElimino +
                 '}';
     }
+    
+
 }
