@@ -308,35 +308,40 @@ public class ElementoDao {
         }
     }
 
-    public List<Elemento> obtenerElementosVigentes(String cedula, String fechaInicio, String fechaFin) throws SQLException {
-        List<Elemento> elementos = new ArrayList<>();
-        String sql = """
+   public List<Elemento> obtenerElementosVigentes(String cedula, String fechaInicio, String fechaFin) throws SQLException {
+    List<Elemento> elementos = new ArrayList<>();
+    String sql = """
         SELECT e.id_elemento, e.nombre, e.estado, e.fecha_creacion, e.aula_id
         FROM elementos e
-        JOIN aulas a ON a.id_aula = a.id_aula
-        JOIN usuarios u ON u.id_usuario = u.id_usuario
-        WHERE u.cedula = ? AND e.fecha_creacion BETWEEN ? AND ? AND e.estado = 'bueno'
+        JOIN aulas a ON e.aula_id = a.id_aula
+        JOIN docente_aula da ON a.id_aula = da.id_aula
+        JOIN usuarios u ON da.id_usuario = u.id_usuario
+        WHERE u.cedula = ? 
+          AND e.fecha_creacion BETWEEN ? AND ?
+          AND e.estado = 'bueno'
     """;
-        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+    try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+        stmt.setString(1, cedula);
+        stmt.setString(2, fechaInicio);
+        stmt.setString(3, fechaFin);
 
-            stmt.setString(1, cedula);
-            stmt.setString(2, fechaInicio);
-            stmt.setString(3, fechaFin);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Elemento e = new Elemento();
-                e.setIdElemento(rs.getInt("id_elemento"));
-                e.setNombre(rs.getString("nombre"));
-                e.setEstado(rs.getString("estado"));
-                e.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
-                e.setAulaId(rs.getInt("aula_id"));
-                elementos.add(e);
-            }
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Elemento e = new Elemento();
+            e.setIdElemento(rs.getInt("id_elemento"));
+            e.setNombre(rs.getString("nombre"));
+            e.setEstado(rs.getString("estado"));
+            e.setFechaCreacion(rs.getTimestamp("fecha_creacion"));
+            e.setAulaId(rs.getInt("aula_id"));
+            elementos.add(e);
         }
-
-        return elementos;
     }
+
+    return elementos;
+}
+
+    //1. Ajustar para mostrar el nombre de la sede que contiene elementos
+    // 2. ajustar para que no repita dos veces la misma lista de elementos
 
     public List<Elemento> obtenerElementosGenerales(String cedula, String fechaInicio, String fechaFin) throws SQLException {
         List<Elemento> elementos = new ArrayList<>();
@@ -357,7 +362,7 @@ public class ElementoDao {
 
             while (rs.next()) {
                 Elemento e = new Elemento();
-                e.setIdElemento(rs.getInt("id"));
+                e.setIdElemento(rs.getInt("id_elemento"));
                 e.setNombre(rs.getString("nombre"));
                 e.setEstado(rs.getString("estado"));
                 e.setFechaCreacion(rs.getTimestamp("fecha_creacion"));

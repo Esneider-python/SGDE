@@ -43,11 +43,10 @@ public class InformeServlet extends HttpServlet {
             conexion.setAutoCommit(false);
 
             UsuarioDao userDao = new UsuarioDao(conexion);
-            int idUsuario = userDao.obtenerIdPorCedula(cedula);
-
-            if (idUsuario == -1) {
+            Integer idUsuario = userDao.obtenerIdPorCedula(cedula);
+            if (idUsuario == null) {
                 request.setAttribute("error", "Cédula no válida. No se encontró el usuario.");
-                request.getRequestDispatcher("/Vistas/Elemento/menuElemento.jsp").forward(request, response);
+                request.getRequestDispatcher("/Vistas/Informe/Informe.jsp").forward(request, response);
                 return;
             }
 
@@ -80,7 +79,8 @@ public class InformeServlet extends HttpServlet {
 
         } catch (Exception ex) {
             Logger.getLogger(InformeServlet.class.getName()).log(Level.SEVERE, null, ex);
-            throw new ServletException("Error al generar el informe", ex);
+            request.setAttribute("error", "Ocurrió un error al generar el informe. Verifica los datos ingresados.");
+            request.getRequestDispatcher("/Vistas/Informe/Informe.jsp").forward(request, response);
         }
     }
 
@@ -128,7 +128,7 @@ public class InformeServlet extends HttpServlet {
         document.add(new Paragraph(titulo.toUpperCase(), FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16)));
         document.add(new Paragraph(" "));
 
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100);
         table.addCell("ID");
         table.addCell("Motivo");
@@ -144,3 +144,10 @@ public class InformeServlet extends HttpServlet {
         document.close();
     }
 }
+
+
+
+//  Nota.
+//  1.ajustar el informe de elementos en aula, para que solo muestre los 
+//  elementos dentro de las aulas asignadas al usuario
+//  3.validar si al generar un informe no hay informacion que mostrar entonces no generar el pdf
