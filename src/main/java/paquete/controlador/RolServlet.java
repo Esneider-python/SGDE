@@ -95,4 +95,37 @@ public class RolServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String accion = request.getParameter("action");
+
+        try (Connection conexion = Conexion.getConexion()) {
+            if (conexion == null) {
+                request.setAttribute("mensajeError", "Error al conectar con la base de datos.");
+                request.getRequestDispatcher("Vistas/Rol/menuRol.jsp").forward(request, response);
+                return;
+            }
+
+            RolDao rolDao = new RolDao(conexion);
+
+            if ("verRoles".equalsIgnoreCase(accion)) {
+                listarRoles(request, rolDao);
+                request.getRequestDispatcher("Vistas/Rol/listarRoles.jsp").forward(request, response);
+            } else {
+                request.setAttribute("mensajeError", "Acción GET no reconocida.");
+                request.getRequestDispatcher("Vistas/Rol/menuRol.jsp").forward(request, response);
+            }
+
+        } catch (Exception e) {
+            request.setAttribute("mensajeError", "Error interno: " + e.getMessage());
+            request.getRequestDispatcher("Vistas/Rol/menuRol.jsp").forward(request, response);
+        }
+    }
+
+    private void listarRoles(HttpServletRequest request, RolDao rolDao) throws Exception {
+        request.setAttribute("listaRoles", rolDao.obtenerTodos());
+    }
+
 }

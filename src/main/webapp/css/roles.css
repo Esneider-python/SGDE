@@ -6,7 +6,7 @@ body {
     padding: 0;
 }
 
-.container {
+.container  {
     max-width: 600px;
     margin: 60px auto;
     padding: 30px;
@@ -15,6 +15,34 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+.cont  {
+    width: 100%;
+    padding: 0px;
+    height: 80%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.conta  {
+    display: flex;
+    flex-direction: column; /* Botones apilados verticalmente */
+    justify-content: center; /* Centrado vertical */
+    align-items: center;     /* Centrado horizontal */
+    height: 100%;           /* Ocupa toda la pantalla */
+    gap: 10px;               /* Espacio entre botones */
+    padding: 20px;
+}
+
+.conta80  {
+    display: flex;
+    flex-direction: column; /* Botones apilados verticalmente */
+    align-items: center;     /* Centrado horizontal */
+    gap: 10px;               /* Espacio entre botones */
+    padding: 0px;
+}
+
 
 h1 {
     margin-bottom: 30px;
@@ -34,6 +62,21 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
+
+.boton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
 
 button:hover {
     background-color: #0041c9;
@@ -60,4 +103,58 @@ button:hover {
     padding: 10px;
     margin: 15px 0;
     border-radius: 5px;
+}
+
+
+
+.formu {
+    padding: 20px;
+    margin: 0 auto 20px auto;
+    width: 100%;
+    max-width: 400px;
+    border: none;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #007BFF;
+    color: white;
+}
+
+p {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 15px;
 }

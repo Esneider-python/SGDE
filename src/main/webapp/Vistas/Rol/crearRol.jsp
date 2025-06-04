@@ -30,7 +30,12 @@
                 <button type="submit">Crear rol</button>
             </form>
             <br>
-            <a href="menuRol.jsp">← Volver al menú</a>
+            <div class="volver-menu">
+                <form action="${pageContext.request.contextPath}/Vistas/Rol/menuRol.jsp" method="get">
+                    <button type="submit">🏠 Volver al menu</button>
+                </form>
+            </div>
+
         </div>
     </body>
 </html>

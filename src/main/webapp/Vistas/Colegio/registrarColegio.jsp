@@ -18,7 +18,7 @@
             <input type="text" name="nombre_colegio" placeholder="Nombre del Colegio" required>
             <input type="text" name="cedula_usuario" placeholder="Cédula del Usuario" required>
 
-            <input type="submit" value="Registrar">
+            <button type="submit" value="Registrar">Registrar</button>
         </form>
             <br>
         <form action="${pageContext.request.contextPath}/Vistas/Colegio/menuColegios.jsp" method="get">

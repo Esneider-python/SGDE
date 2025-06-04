@@ -2,25 +2,27 @@
 <html>
     <head>
         <title>Eliminar Piso</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estiloPiso.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/roles.css">
     </head>
     <body>
-        <h2>Eliminar Piso</h2>
+        <div class="container">
+            <h2>Eliminar Piso</h2>
 
-        <form action="${pageContext.request.contextPath}/PisoServlet" method="post">
-            <input type="hidden" name="accion" value="eliminar">
+            <form action="${pageContext.request.contextPath}/PisoServlet" method="post">
+                <input type="hidden" name="accion" value="eliminar">
 
-            <label>ID del piso a eliminar:</label>
-            <input type="number" name="idPiso" required><br>
+                <label>ID del piso a eliminar:</label>
+                <input type="number" name="idPiso" required><br>
 
-            <label>Cédula del usuario:</label>
-            <input type="text" name="cedulaUsuario" required><br>
+                <label>Cédula del usuario:</label>
+                <input type="text" name="cedulaUsuario" required><br>
 
-            <button type="submit">Eliminar</button>
-        </form>
+                <button type="submit">Eliminar</button>
+            </form>
 
-        <form action="${pageContext.request.contextPath}/Vistas/Piso/menuPiso.jsp">
-            <button type="submit">Volver al Menú Piso</button>
-        </form>
+            <form action="${pageContext.request.contextPath}/Vistas/Piso/menuPiso.jsp">
+                <button type="submit">Volver al Menú Piso</button>
+            </form>
+        </div>
     </body>
 </html>

@@ -6,29 +6,31 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilosSedes.css">
     </head>
     <body>
-        <h1>Actualizar Información de Sede</h1>
+        <div class="container">
+            <h1>Actualizar Información de Sede</h1>
 
-        <form action="${pageContext.request.contextPath}/SedeServlet" method="post">
-            <input type="hidden" name="accion" value="actualizar">
+            <form action="${pageContext.request.contextPath}/SedeServlet" method="post">
+                <input type="hidden" name="accion" value="actualizar">
 
-            <label>ID Sede:</label>
-            <input type="number" name="idSede" required><br>
+                <label>ID Sede:</label>
+                <input type="number" name="idSede" required><br>
 
-            <label>Nuevo Nombre de la Sede:</label>
-            <input type="text" name="nombre" required><br>
+                <label>Nuevo Nombre de la Sede:</label>
+                <input type="text" name="nombre" required><br>
 
-            <label>Nombre Colegio:</label>
-            <input type="text" name="colegioNombre" required><br>
+                <label>Nombre Colegio:</label>
+                <input type="text" name="colegioNombre" required><br>
 
-            <label>Nueva cedula Usuario que registra:</label>
-            <input type="text" name="cedulaUsuario" required><br>
+                <label>Nueva cedula Usuario que registra:</label>
+                <input type="text" name="cedulaUsuario" required><br>
 
-            <button type="submit">Actualizar</button>
-        </form>
+                <button type="submit">Actualizar</button>
+            </form>
 
-        <br>
-        <form action="${pageContext.request.contextPath}/Vistas/Sede/menuSede.jsp">
-            <button type="submit">Volver al Menú</button>
-        </form>
+            <br>
+            <form action="${pageContext.request.contextPath}/Vistas/Sede/menuSede.jsp">
+                <button type="submit">Volver al Menú</button>
+            </form>
+        </div>
     </body>
 </html>

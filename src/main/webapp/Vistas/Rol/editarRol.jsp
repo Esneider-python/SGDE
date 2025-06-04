@@ -10,7 +10,7 @@
     <body>
         <div class="container">
             <h1>Editar rol</h1>
-            
+
             <!-- Mostrar mensajes -->
             <c:if test="${not empty mensajeError}">
                 <div class="mensajeError">${mensajeError}</div>
@@ -35,7 +35,12 @@
                 <button type="submit">Actualizar rol</button>
             </form>
             <br>
-            <a href="menuRol.jsp">← Volver al menú</a>
+            <div class="volver-menu">
+                <form action="${pageContext.request.contextPath}/Vistas/Rol/menuRol.jsp" method="get">
+                    <button type="submit"> Volver al menu</button>
+                </form>
+            </div>
+
         </div>
     </body>
 </html>

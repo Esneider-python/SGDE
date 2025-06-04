@@ -16,3 +16,62 @@
     color: #666;
     cursor: not-allowed;
 }
+
+
+/* Estilo normal del botón (habilitado) */
+#btnHabilitado1 {
+    background-color: #007bff; /* verde, por ejemplo */
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo cuando está deshabilitado */
+#btnHabilitado1:disabled {
+    background-color: #ccc; /* gris claro */
+    color: #666;
+    cursor: not-allowed;
+}
+
+
+/* Estilo normal del botón (habilitado) */
+#btnHabilitado2 {
+    background-color: #007bff; /* verde, por ejemplo */
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+} 
+
+/* Estilo cuando está deshabilitado */
+#btnHabilitado2:disabled {
+    background-color: #ccc; /* gris claro */
+    color: #666;
+    cursor: not-allowed;
+}
+
+
+/* Estilo normal del botón (habilitado) */
+#btnHabilitado3 {
+    background-color: #007bff; /* verde, por ejemplo */
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo cuando está deshabilitado */
+#btnHabilitado3:disabled {
+    background-color: #ccc; /* gris claro */
+    color: #666;
+    cursor: not-allowed;
+}
+
+

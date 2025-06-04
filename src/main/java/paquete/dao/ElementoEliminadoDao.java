@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import paquete.modelo.ElementoEliminado;
+import paquete.util.Conexion;
 
 public class ElementoEliminadoDao {
 
@@ -54,14 +55,13 @@ public class ElementoEliminadoDao {
     public List<ElementoEliminado> obtenerElementosEliminados(String cedula, String fechaInicio, String fechaFin) throws SQLException {
         List<ElementoEliminado> elementos = new ArrayList<>();
         String sql = """
-        SELECT ee.id_elemento_eliminado, ee.elemento_id, ee.motivo_eliminacion ,ee.fecha_hora_eliminacion
+        SELECT ee.id_elemento_eliminado, ee.elemento_id, ee.motivo_eliminacion, ee.fecha_hora_eliminacion
         FROM elementos_eliminados ee
-        JOIN usuarios u ON u.id_usuario = u.id_usuario
+        JOIN usuarios u ON ee.usuario_elimino = u.id_usuario
         WHERE u.cedula = ? AND ee.fecha_hora_eliminacion BETWEEN ? AND ?
     """;
 
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-
             stmt.setString(1, cedula);
             stmt.setString(2, fechaInicio);
             stmt.setString(3, fechaFin);
@@ -78,6 +78,35 @@ public class ElementoEliminadoDao {
         }
 
         return elementos;
+    }
+
+    public List<ElementoEliminado> obtenerTodos() {
+        List<ElementoEliminado> lista = new ArrayList<>();
+        String sql = """
+        SELECT ee.id_elemento_eliminado, el.id_elemento, ee.motivo_eliminacion, 
+               ee.fecha_hora_eliminacion, ee.usuario_elimino
+        FROM elementos_eliminados ee
+        JOIN elementos el ON ee.elemento_id = el.id_elemento
+        ORDER BY ee.fecha_hora_eliminacion DESC
+    """;
+
+        try (Connection con = Conexion.getConexion(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                ElementoEliminado e = new ElementoEliminado();
+                e.setIdElementoEliminado(rs.getInt("id_elemento_eliminado"));
+                e.setElementoId(rs.getInt("id_elemento"));
+                e.setMotivoEliminacion(rs.getString("motivo_eliminacion"));
+                e.setFechaHoraEliminacion(rs.getTimestamp("fecha_hora_eliminacion"));
+                e.setUsuarioElimino(rs.getInt("usuario_elimino")); // ⚠️ aquí se mantiene como int
+                lista.add(e);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return lista;
     }
 
 }

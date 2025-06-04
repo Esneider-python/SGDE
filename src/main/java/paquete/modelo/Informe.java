@@ -21,6 +21,8 @@ public class Informe {
         this.tipoInforme = tipoInforme;
         this.usuarioGenerador = usuarioGenerador;
     }
+     public Informe() {
+    }
 
     // Getters y Setters
     public int getIdInforme() {

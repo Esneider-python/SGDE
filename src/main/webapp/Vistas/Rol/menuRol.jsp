@@ -11,13 +11,17 @@
             <h1>Gestión de Roles</h1>
             <div class="botones-acciones">
                 <form action="${pageContext.request.contextPath}/Vistas/Rol/crearRol.jsp" method="get">
-                    <button type="submit">➕ Crear nuevo rol</button>
+                    <button type="submit"> Crear nuevo rol</button>
                 </form>
                 <form action="${pageContext.request.contextPath}/Vistas/Rol/editarRol.jsp" method="get">
-                    <button type="submit">✏️ Actualizar rol</button>
+                    <button type="submit">️ Actualizar rol</button>
                 </form>
                 <form action="${pageContext.request.contextPath}/Vistas/Rol/eliminarRol.jsp" method="get">
-                    <button type="submit">🗑️ Eliminar rol</button>
+                    <button type="submit">️ Eliminar rol</button>
+                </form>
+                <form action="${pageContext.request.contextPath}/RolServlet" method="get">
+                     <input type="hidden" name="action" value="verRoles">
+                    <button type="submit">️ Ver roles</button>
                 </form>
             </div>
 

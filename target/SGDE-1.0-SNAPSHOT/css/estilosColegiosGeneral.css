@@ -23,7 +23,7 @@ h1 {
 
 button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
@@ -33,7 +33,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #007bff;
 }
 
 input[type="text"], input[type="email"], input[type="number"], select {
@@ -46,7 +46,7 @@ input[type="text"], input[type="email"], input[type="number"], select {
 }
 
 form {
-    max-width: 600px;
+    max-width: 400px;
     margin: 0 auto;
 }
 
@@ -81,7 +81,7 @@ table th, table td {
 }
 
 table th {
-    background-color: #4CAF50;
+     background-color: #007bff;
     color: white;
 }
 

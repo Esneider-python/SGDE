@@ -20,7 +20,7 @@
             <label>usuario elimina:</label><br>
             <input type="number" name="usuario_elimina" required><br><br>
 
-            <input type="submit" value="Eliminar">
+            <button type="submit" value="Eliminar">Eliminar</button>
             <br><!-- <> -->
             <br><!-- comment -->
         </form>

@@ -9,7 +9,7 @@ body {
 }
 
 h1 {
-    color: #0056b3;
+    color: black;
     margin-bottom: 20px;
 }
 
@@ -38,7 +38,7 @@ select {
 }
 
 button {
-    background-color: #4da6ff; /* azul claro */
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -53,23 +53,45 @@ button:hover {
 }
 
 table {
-    margin: 20px auto;
+    margin: 2px auto;
     border-collapse: collapse;
-    width: 80%;
+    width: 98%;
 }
 
 table, th, td {
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
+    color: black;
 }
 
 th, td {
     padding: 12px;
     text-align: center;
+    color: black;
 }
 
 th {
-    background-color: #e6f2ff;
-    color: #0056b3;
+    background-color: #007bff;
+    color: black;
+}
+.container{
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+}
+.conta{
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
 }
 
 .menu-container {
@@ -90,3 +112,4 @@ th {
     text-align: center;
     font-size: 18px;
 }
+

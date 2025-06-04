@@ -23,11 +23,10 @@
 
             <label>ID Usuario que actualiza:</label><br>
             <input type="number" name="cedula_usuario" required><br><br>
-
-            <input type="submit" value="Actualizar">
+            <button type="submit" value="Actualizar">Actualizar</button>
 
         </form>
-            <br>
+        <br>
         <form action="${pageContext.request.contextPath}/Vistas/Colegio/menuColegios.jsp" method="get">
             <button type="submit" class="boton">Volver al Menú</button>
         </form>

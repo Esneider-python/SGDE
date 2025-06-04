@@ -59,14 +59,29 @@ public class InformeServlet extends HttpServlet {
             switch (tipoInforme) {
                 case "anual_aula" -> {
                     List<Elemento> elementos = daoElemento.obtenerElementosVigentes(cedula, fechaInicio, fechaFin);
+                    if (elementos == null || elementos.isEmpty()) {
+                        request.setAttribute("error", "No hay elementos vigentes en el aula para el período especificado.");
+                        request.getRequestDispatcher("/Vistas/Informe/Informe.jsp").forward(request, response);
+                        return;
+                    }
                     generarPdfElementos(response, elementos, "Informe Anual de Artículos Vigentes en Aula");
                 }
                 case "anual_eliminados" -> {
                     List<ElementoEliminado> elementos = daoEliminado.obtenerElementosEliminados(cedula, fechaInicio, fechaFin);
+                    if (elementos == null || elementos.isEmpty()) {
+                        request.setAttribute("error", "No hay elementos eliminados en el período especificado.");
+                        request.getRequestDispatcher("/Vistas/Informe/Informe.jsp").forward(request, response);
+                        return;
+                    }
                     generarPdfElementosEliminados(response, elementos, "Informe Anual de Artículos Eliminados");
                 }
                 case "general_sede" -> {
                     List<Elemento> elementos = daoElemento.obtenerElementosGenerales(cedula, fechaInicio, fechaFin);
+                    if (elementos == null || elementos.isEmpty()) {
+                        request.setAttribute("error", "No hay elementos en la sede para el período especificado.");
+                        request.getRequestDispatcher("/Vistas/Informe/Informe.jsp").forward(request, response);
+                        return;
+                    }
                     generarPdfElementos(response, elementos, "Informe General de Artículos en la Sede");
                 }
                 default -> {
@@ -143,11 +158,20 @@ public class InformeServlet extends HttpServlet {
         document.add(table);
         document.close();
     }
+
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String accion = request.getParameter("action");
+
+        if ("verInformes".equals(accion)) {
+            InformeDao dao = new InformeDao();
+            List<Informe> informes = dao.obtenerTodosLosInformes();
+            request.setAttribute("informes", informes);
+            request.getRequestDispatcher("/Vistas/Informe/listaInforme.jsp").forward(request, response);
+        }
+    }
+
 }
-
-
-
-//  Nota.
-//  1.ajustar el informe de elementos en aula, para que solo muestre los 
-//  elementos dentro de las aulas asignadas al usuario
-//  3.validar si al generar un informe no hay informacion que mostrar entonces no generar el pdf
