@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/mysql-connector-j-8.0.33.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/jakarta.servlet-api-6.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/slf4j-api-2.0.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/jakarta.activation-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/jakarta.el-api-5.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/itextpdf-5.5.13.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/jakarta.servlet.jsp.jstl-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/slf4j-simple-2.0.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/SGDE-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-3.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/target/SGDE-1.0-SNAPSHOT/WEB-INF/lib/jakarta.mail-2.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
