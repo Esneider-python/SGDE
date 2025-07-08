@@ -12,7 +12,9 @@
                 <input type="hidden" name="accion" value="eliminar">
 
                 <label>Número del bloque:</label>
-                <input type="number" name="numeroBloque" required><br>
+                <input type="number" name="numeroBloque" required
+                       value="<%= request.getParameter("numeroBloque") != null ? request.getParameter("numeroBloque") : ""%>"
+                       readonly><br>
 
                 <label>Cédula del usuario:</label>
                 <input type="text" name="cedulaUsuario" required><br>
