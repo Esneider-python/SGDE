@@ -18,21 +18,36 @@
                 <table border="1">
                     <tr>
                         <th>ID Aula</th>
-                        <th>Numero Aula</th>
+                        <th>Número Aula</th>
                         <th>ID Piso</th>
                         <th>ID Usuario</th>
+                        <th>Acciones</th>
                     </tr>
                     <c:forEach var="aula" items="${listaAulas}">
                         <tr>
                             <td>${aula.id}</td>
-                            <td>${aula.piso.id}</td>
+                            <td>${aula.numeroAula}</td>
                             <td>${aula.piso.id}</td>
                             <td>${aula.usuarioRegistra.idUsuario}</td>
+                            <td>
+                                <!-- Botón Actualizar -->
+                                <form action="${pageContext.request.contextPath}/Vistas/Aula/actualizarAula.jsp" method="get" style="display:inline;">
+                                    <input type="hidden" name="id" value="${aula.id}">
+                                    <button type="submit">Actualizar</button>
+                                </form>
+                               
+                                <!-- Botón Eliminar: redirige a eliminarAula.jsp -->
+                                <form action="${pageContext.request.contextPath}/Vistas/Aula/eliminarAula.jsp" method="get" style="display:inline;">
+                                    <input type="hidden" name="idAula" value="${aula.id}">
+                                    <button type="submit">Eliminar</button>
+                                </form>
+
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>
             </c:if>
-                <br>
+            <br>
 
             <form action="${pageContext.request.contextPath}/Vistas/Aula/menuAula.jsp">
                 <button type="submit">Volver al Menú Aula</button>

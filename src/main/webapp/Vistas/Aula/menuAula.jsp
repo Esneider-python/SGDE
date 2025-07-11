@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Menú Aula</title>
@@ -11,14 +12,9 @@
             <form action="${pageContext.request.contextPath}/Vistas/Aula/registrarAula.jsp">
                 <button type="submit">Registrar Aula</button>
             </form>
-            <form action="${pageContext.request.contextPath}/Vistas/Aula/actualizarAula.jsp">
-                <button type="submit">Actualizar Aula</button>
-            </form>
-            <form action="${pageContext.request.contextPath}/Vistas/Aula/eliminarAula.jsp">
-                <button type="submit">Eliminar Aula</button>
-            </form>
+            
             <form action="${pageContext.request.contextPath}/Vistas/Aula/listarAulas.jsp">
-                <button type="submit">Listar Aulas</button>
+                <button type="submit">Ver Aulas</button>
             </form>
 
             <form action="${pageContext.request.contextPath}/Vistas/MenuRegistros/menuRegistros.jsp">
