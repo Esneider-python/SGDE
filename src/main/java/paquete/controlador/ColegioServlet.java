@@ -16,8 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet("/ColegioServlet")
 public class ColegioServlet extends HttpServlet {
@@ -39,6 +37,13 @@ public class ColegioServlet extends HttpServlet {
                 case "registrar":
                     registrarColegio(request, response, colegioDao, usuarioDao);
                     break;
+                case "cargarFormularioActualizar":
+                    cargarFormularioActualizar(request, response, colegioDao);
+                    return;
+                case "cargarFormularioEliminar":
+                    cargarFormularioEliminar(request, response, colegioDao);
+                    return;
+
                 case "actualizar":
                     actualizarColegio(request, response, colegioDao, usuarioDao);
                     break;
@@ -114,7 +119,7 @@ public class ColegioServlet extends HttpServlet {
         if (idUsuarioRegistra == null) {
             enviarMensaje(request, response, "El usuario no existe.", "Vistas/Colegio/actualizarColegio.jsp");
             return;
-        }   
+        }
 
         colegioExistente.setNombre(nombreColegio);
         Usuario usuario = new Usuario();
@@ -125,62 +130,112 @@ public class ColegioServlet extends HttpServlet {
         enviarMensaje(request, response, "Colegio actualizado exitosamente.", "Vistas/Colegio/actualizarColegio.jsp");
     }
 
-   private void eliminarColegio(HttpServletRequest request, HttpServletResponse response, ColegioDao colegioDao, UsuarioDao usuarioDao) throws ServletException, IOException {
-    try {
-        String idColegioParam = request.getParameter("id_colegio");
-        String cedulaParam = request.getParameter("usuario_elimina");
-
-        // Validar que se haya proporcionado el ID del colegio
-        if (idColegioParam == null || idColegioParam.trim().isEmpty()) {
-            enviarMensaje(request, response, "Debe proporcionar el ID del colegio a eliminar.", "Vistas/Colegio/registrarColegio.jsp");
-            return;
-        }
-
-        // Validar que se haya proporcionado la cédula del usuario que elimina
-        if (cedulaParam == null || cedulaParam.trim().isEmpty()) {
-            enviarMensaje(request, response, "Debe proporcionar la cédula del usuario que elimina.", "Vistas/Colegio/registrarColegio.jsp");
-            return;
-        }
-
-        // Convertir el ID del colegio a entero
-        int idColegio;
+    private void eliminarColegio(HttpServletRequest request, HttpServletResponse response, ColegioDao colegioDao, UsuarioDao usuarioDao) throws ServletException, IOException {
         try {
-            idColegio = Integer.parseInt(idColegioParam);
-        } catch (NumberFormatException e) {
-            enviarMensaje(request, response, "El ID del colegio debe ser un número válido.", "Vistas/Colegio/eliminarColegio.jsp");
-            return;
+            String idColegioParam = request.getParameter("id_colegio");
+            String cedulaParam = request.getParameter("usuario_elimina");
+
+            // Validar que se haya proporcionado el ID del colegio
+            if (idColegioParam == null || idColegioParam.trim().isEmpty()) {
+                enviarMensaje(request, response, "Debe proporcionar el ID del colegio a eliminar.", "Vistas/Colegio/registrarColegio.jsp");
+                return;
+            }
+
+            // Validar que se haya proporcionado la cédula del usuario que elimina
+            if (cedulaParam == null || cedulaParam.trim().isEmpty()) {
+                enviarMensaje(request, response, "Debe proporcionar la cédula del usuario que elimina.", "Vistas/Colegio/registrarColegio.jsp");
+                return;
+            }
+
+            // Convertir el ID del colegio a entero
+            int idColegio;
+            try {
+                idColegio = Integer.parseInt(idColegioParam);
+            } catch (NumberFormatException e) {
+                enviarMensaje(request, response, "El ID del colegio debe ser un número válido.", "Vistas/Colegio/eliminarColegio.jsp");
+                return;
+            }
+
+            // Verificar si el colegio existe
+            Colegio colegioExistente = colegioDao.obtenerPorId(idColegio);
+            if (colegioExistente == null) {
+                enviarMensaje(request, response, "El colegio con el ID proporcionado no existe.", "Vistas/Colegio/eliminarColegio.jsp");
+                return;
+            }
+
+            // Obtener el ID del usuario que elimina
+            Integer idUsuarioElimina = usuarioDao.obtenerIdPorCedula(cedulaParam);
+            if (idUsuarioElimina == null) {
+                enviarMensaje(request, response, "El usuario que intenta eliminar no existe.", "Vistas/Colegio/menuColegios.jsp");
+                return;
+            }
+
+            // Intentar eliminar el colegio
+            int filasEliminadas = colegioDao.eliminar(idColegio);
+
+            if (filasEliminadas > 0) {
+                enviarMensaje(request, response, "Colegio eliminado exitosamente.", "Vistas/Colegio/menuColegios.jsp");
+            } else {
+                enviarMensaje(request, response, "No se pudo eliminar el colegio. Asegúrese de que no existan sedes asociadas.", "Vistas/Colegio/menuColegios.jsp");
+            }
+
+        } catch (Exception e) {
+            // Capturar cualquier excepción inesperada y mostrar el mensaje
+            String mensajeError = "Ocurrió un error al intentar eliminar el colegio: " + e.getMessage();
+            e.printStackTrace(); // Registro en la consola para depuración
+            enviarMensaje(request, response, mensajeError, "Vistas/Colegio/eliminarColegio.jsp");
         }
-
-        // Verificar si el colegio existe
-        Colegio colegioExistente = colegioDao.obtenerPorId(idColegio);
-        if (colegioExistente == null) {
-            enviarMensaje(request, response, "El colegio con el ID proporcionado no existe.", "Vistas/Colegio/eliminarColegio.jsp");
-            return;
-        }
-
-        // Obtener el ID del usuario que elimina
-        Integer idUsuarioElimina = usuarioDao.obtenerIdPorCedula(cedulaParam);
-        if (idUsuarioElimina == null) {
-            enviarMensaje(request, response, "El usuario que intenta eliminar no existe.", "Vistas/Colegio/menuColegios.jsp");
-            return;
-        }
-
-        // Intentar eliminar el colegio
-        int filasEliminadas = colegioDao.eliminar(idColegio);
-
-        if (filasEliminadas > 0) {
-            enviarMensaje(request, response, "Colegio eliminado exitosamente.", "Vistas/Colegio/menuColegios.jsp");
-        } else {
-            enviarMensaje(request, response, "No se pudo eliminar el colegio. Asegúrese de que no existan sedes asociadas.", "Vistas/Colegio/menuColegios.jsp");
-        }
-
-    } catch (Exception e) {
-        // Capturar cualquier excepción inesperada y mostrar el mensaje
-        String mensajeError = "Ocurrió un error al intentar eliminar el colegio: " + e.getMessage();
-        e.printStackTrace(); // Registro en la consola para depuración
-        enviarMensaje(request, response, mensajeError, "Vistas/Colegio/eliminarColegio.jsp");
     }
-}
+
+    private void cargarFormularioActualizar(HttpServletRequest request, HttpServletResponse response, ColegioDao colegioDao) throws ServletException, IOException {
+        String idParam = request.getParameter("id_colegio");
+
+        if (idParam == null || idParam.trim().isEmpty()) {
+            enviarMensaje(request, response, "ID del colegio requerido.", "Vistas/Colegio/menuColegios.jsp");
+            return;
+        }
+
+        try {
+            int idColegio = Integer.parseInt(idParam);
+            Colegio colegio = colegioDao.obtenerPorId(idColegio);
+
+            if (colegio == null) {
+                enviarMensaje(request, response, "Colegio no encontrado.", "Vistas/Colegio/menuColegios.jsp");
+                return;
+            }
+
+            request.setAttribute("colegio", colegio);
+            request.getRequestDispatcher("Vistas/Colegio/actualizarColegio.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            enviarMensaje(request, response, "ID inválido.", "Vistas/Colegio/menuColegios.jsp");
+        }
+    }
+
+    private void cargarFormularioEliminar(HttpServletRequest request, HttpServletResponse response, ColegioDao colegioDao) throws ServletException, IOException {
+        String idParam = request.getParameter("id_colegio");
+
+        if (idParam == null || idParam.trim().isEmpty()) {
+            enviarMensaje(request, response, "ID del colegio requerido para eliminar.", "Vistas/Colegio/menuColegios.jsp");
+            return;
+        }
+
+        try {
+            int idColegio = Integer.parseInt(idParam);
+            Colegio colegio = colegioDao.obtenerPorId(idColegio);
+
+            if (colegio == null) {
+                enviarMensaje(request, response, "Colegio no encontrado.", "Vistas/Colegio/menuColegios.jsp");
+                return;
+            }
+
+            request.setAttribute("colegio", colegio);
+            request.getRequestDispatcher("Vistas/Colegio/eliminarColegio.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            enviarMensaje(request, response, "ID inválido.", "Vistas/Colegio/menuColegios.jsp");
+        }
+    }
 
     private void enviarMensaje(HttpServletRequest request, HttpServletResponse response, String mensaje, String vista) throws ServletException, IOException {
         request.setAttribute("mensaje", mensaje);

@@ -11,7 +11,6 @@
 
         <h1>Listado de Colegios Registrados</h1>
 
-
         <div class="container">
             <form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
                 <input type="hidden" name="accion" value="listar">
@@ -23,6 +22,7 @@
                     <th>ID</th>
                     <th>Nombre del Colegio</th>
                     <th>ID Usuario Registra</th>
+                    <th>Acciones</th> <!-- Nueva columna -->
                 </tr>
 
                 <%
@@ -34,18 +34,36 @@
                     <td><%= colegio.getId()%></td>
                     <td><%= colegio.getNombre()%></td>
                     <td><%= colegio.getUsuarioRegistra().getIdUsuario()%></td>
+                    <td>
+                        <!-- Botón Actualizar -->
+                        <form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
+                            <input type="hidden" name="accion" value="cargarFormularioActualizar">
+                            <input type="hidden" name="id_colegio" value="<%= colegio.getId()%>">
+                            <button type="submit">Actualizar</button>
+                        </form>
+
+
+
+
+                        <!-- Botón Eliminar -->
+                        <form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
+                            <input type="hidden" name="accion" value="cargarFormularioEliminar">
+                            <input type="hidden" name="id_colegio" value="<%= colegio.getId()%>">
+                            <button type="submit">Eliminar</button>
+                        </form>
+
+                    </td>
                 </tr>
                 <%
                     }
                 } else {
                 %>
                 <tr>
-                    <td colspan="3">No hay colegios registrados.</td>
+                    <td colspan="4">No hay colegios registrados.</td>
                 </tr>
                 <%
                     }
                 %>
-
             </table>
 
             <br>
@@ -53,7 +71,5 @@
                 <button type="submit" class="boton">Volver al Menú</button>
             </form>
         </div>
-
-
     </body>
 </html>
