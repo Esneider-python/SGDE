@@ -211,7 +211,8 @@ public class ColegioServlet extends HttpServlet {
             enviarMensaje(request, response, "ID inválido.", "Vistas/Colegio/menuColegios.jsp");
         }
     }
-
+    
+    //Formulario mostrar eliminar
     private void cargarFormularioEliminar(HttpServletRequest request, HttpServletResponse response, ColegioDao colegioDao) throws ServletException, IOException {
         String idParam = request.getParameter("id_colegio");
 

@@ -1,4 +1,9 @@
+<%@page import="paquete.modelo.Sede"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Sede sede = (Sede) request.getAttribute("sede");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +17,7 @@
         <input type="hidden" name="accion" value="eliminar">
 
         <label>ID de la Sede a eliminar:</label>
-        <input type="number" name="idSede" required><br>
+        <input type="number" name="idSede" required  value="<%= sede.getId() %>" readonly><br>
 
         <button type="submit">Eliminar</button>
     </form>
