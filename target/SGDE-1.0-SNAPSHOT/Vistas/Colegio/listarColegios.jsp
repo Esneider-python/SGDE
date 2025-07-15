@@ -42,9 +42,6 @@
                             <button type="submit">Actualizar</button>
                         </form>
 
-
-
-
                         <!-- Botón Eliminar -->
                         <form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
                             <input type="hidden" name="accion" value="cargarFormularioEliminar">
