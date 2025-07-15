@@ -1,4 +1,8 @@
+<%@page import="paquete.modelo.Sede"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Sede sede = (Sede) request.getAttribute("sede");
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,13 +17,13 @@
                 <input type="hidden" name="accion" value="actualizar">
 
                 <label>ID Sede:</label>
-                <input type="number" name="idSede" required><br>
+                <input type="number" name="idSede" required  value="<%= sede.getId() %>" readonly><br>
 
                 <label>Nuevo Nombre de la Sede:</label>
-                <input type="text" name="nombre" required><br>
+                <input type="text" name="nombre" required value="<%= sede.getNombre() %>"><br>
 
-                <label>Nombre Colegio:</label>
-                <input type="text" name="colegioNombre" required><br>
+                <label>ID Colegio:</label>
+                <input type="text" name="colegio_id" required value="<%= sede.getColegio().getId() %>" readonly><br>
 
                 <label>Nueva cedula Usuario que registra:</label>
                 <input type="text" name="cedulaUsuario" required><br>

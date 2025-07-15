@@ -28,6 +28,7 @@
                     <th>Nombre Sede</th>
                     <th>ID Colegio</th>
                     <th>ID Usuario</th>
+                    <th>Accion</th>
                 </tr>
                 <%
                     for (Sede sede : listaSedes) {
@@ -37,6 +38,21 @@
                     <td><%= sede.getNombre()%></td>
                     <td><%= sede.getColegio().getId()%></td>
                     <td><%= sede.getUsuarioRegistra().getIdUsuario()%></td>
+                    <<td>
+                         <!-- Botón Actualizar -->
+                        <form action="${pageContext.request.contextPath}/SedeServlet" method="post">
+                            <input type="hidden" name="accion" value="cargarFormularioActualizarSede">
+                            <input type="hidden" name="id_sede" value="<%= sede.getId()%>">
+                            <button type="submit">Actualizar</button>
+                        </form>
+
+                        <!-- Botón Eliminar -->
+                        <form action="${pageContext.request.contextPath}/SedeServlet" method="post">
+                            <input type="hidden" name="accion" value="cargarFormularioEliminarSede">
+                            <input type="hidden" name="id_sede" value="<%= sede.getId()%>">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>>
                 </tr>
                 <% } %>
             </table>

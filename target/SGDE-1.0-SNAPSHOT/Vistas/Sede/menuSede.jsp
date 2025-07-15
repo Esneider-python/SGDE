@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/roles.css">
     </head>
     <body>
-        
+
         <!-- Mostrar mensaje de operación (si existe) -->
         <%
             String mensaje = (String) request.getAttribute("mensaje");
@@ -25,22 +25,13 @@
                 <form action="${pageContext.request.contextPath}/Vistas/Sede/registrarSede.jsp">
                     <button type="submit">Registrar Sede</button>
                 </form>
-                    <br>
-
-                <form action="${pageContext.request.contextPath}/Vistas/Sede/actualizarSede.jsp">
-                    <button type="submit">Actualizar Sede</button>
-                </form>
-                    <br>
+                <br>
 
                 <form action="${pageContext.request.contextPath}/Vistas/Sede/listarSedes.jsp">
                     <button type="submit">Listar Sedes</button>
                 </form>
-                    <br>
+                <br>
 
-                <form action="${pageContext.request.contextPath}/Vistas/Sede/eliminarSede.jsp">
-                    <button type="submit">Eliminar Sede</button>
-                </form>
-                    <br>
             </div>
             <br>
             <form action="${pageContext.request.contextPath}/Vistas/MenuRegistros/menuRegistros.jsp">
