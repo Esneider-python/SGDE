@@ -44,9 +44,15 @@ public class PisoServlet extends HttpServlet {
                     actualizarPiso(request, usuarioDao, bloqueDao, pisoDao);
                     request.setAttribute("mensaje", "Piso actualizado correctamente.");
                     break;
+                case "mostrarFormularioActualizar":
+                    cargarFormularioActualizar(request, response, pisoDao);
+                    break;
+                case "mostrarFormularioEliminar":
+                    mostrarFormularioEliminar(request, response, pisoDao);
+                    break;
                 case "eliminar":
                     eliminarPiso(request, usuarioDao, pisoDao);
-                    request.setAttribute("mensaje", "Piso eliminado correctamente.");
+                    request.getRequestDispatcher("/Vistas/Piso/menuPiso.jsp").forward(request, response);
                     break;
                 case "listar":
                     List<Piso> lista = pisoDao.obtenerTodos();
@@ -60,8 +66,6 @@ public class PisoServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("error", "Error: " + e.getMessage());
         }
-
-        request.getRequestDispatcher("/Vistas/Piso/menuPiso.jsp").forward(request, response);
     }
 
     private void registrarPiso(HttpServletRequest request, UsuarioDao usuarioDao, BloqueDao bloqueDao, PisoDao pisoDao) {
@@ -110,19 +114,87 @@ public class PisoServlet extends HttpServlet {
     }
 
     private void eliminarPiso(HttpServletRequest request, UsuarioDao usuarioDao, PisoDao pisoDao) {
-        int idPiso = Integer.parseInt(request.getParameter("idPiso"));
-        String cedulaUsuario = request.getParameter("cedulaUsuario");
+        String mensaje;
+        try {
+            int idPiso = Integer.parseInt(request.getParameter("idPiso"));
+            String cedulaUsuario = request.getParameter("cedulaUsuario");
 
-        Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
-        if (idUsuario == null) {
-            throw new IllegalArgumentException("La cédula del usuario no existe.");
+            Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
+            if (idUsuario == null) {
+                mensaje = "La cédula ingresada no existe.";
+            } else {
+                Piso piso = pisoDao.obtenerPorId(idPiso);
+                if (piso == null) {
+                    mensaje = "El piso no existe.";
+                } else if (pisoDao.estaEnUso(idPiso)) {
+                    mensaje = "No se puede eliminar el piso porque está siendo usado por aulas.";
+                } else {
+                    pisoDao.eliminar(idPiso);
+                    mensaje = "Piso eliminado correctamente.";
+                }
+            }
+        } catch (NumberFormatException e) {
+            mensaje = "El ID del piso no es válido.";
+        } catch (Exception e) {
+            e.printStackTrace();
+            mensaje = "Error al eliminar el piso. Intenta nuevamente.";
         }
 
-        Piso piso = pisoDao.obtenerPorId(idPiso);
-        if (piso == null) {
-            throw new IllegalArgumentException("El piso no existe.");
-        }
-
-        pisoDao.eliminar(idPiso);
+        request.setAttribute("mensaje", mensaje);
     }
+
+    private void cargarFormularioActualizar(HttpServletRequest request, HttpServletResponse response, PisoDao pisoDao) throws ServletException, IOException {
+        String idParam = request.getParameter("id_piso");
+
+        if (idParam == null || idParam.trim().isEmpty()) {
+            enviarMensaje(request, response, "ID del piso requerido.", "Vistas/Piso/menuPiso.jsp");
+            return;
+        }
+
+        try {
+            int idPiso = Integer.parseInt(idParam);
+            Piso piso = pisoDao.obtenerPorId(idPiso);
+
+            if (piso == null) {
+                enviarMensaje(request, response, "Piso no encontrado.", "Vistas/Piso/menuPiso.jsp");
+                return;
+            }
+
+            request.setAttribute("piso", piso);
+            request.getRequestDispatcher("Vistas/Piso/actualizarPiso.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            enviarMensaje(request, response, "ID inválido.", "Vistas/Piso/menuPiso.jsp");
+        }
+    }
+
+    private void mostrarFormularioEliminar(HttpServletRequest request, HttpServletResponse response, PisoDao pisoDao) throws ServletException, IOException {
+        String idParam = request.getParameter("id_piso");
+
+        if (idParam == null || idParam.trim().isEmpty()) {
+            enviarMensaje(request, response, "ID del piso requerido.", "Vistas/Piso/menuPiso.jsp");
+            return;
+        }
+
+        try {
+            int idPiso = Integer.parseInt(idParam);
+            Piso piso = pisoDao.obtenerPorId(idPiso);
+
+            if (piso == null) {
+                enviarMensaje(request, response, "Piso no encontrado.", "Vistas/Piso/menuPiso.jsp");
+                return;
+            }
+
+            request.setAttribute("piso", piso);
+            request.getRequestDispatcher("Vistas/Piso/eliminarPiso.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            enviarMensaje(request, response, "ID inválido.", "Vistas/Piso/menuPiso.jsp");
+        }
+    }
+
+    private void enviarMensaje(HttpServletRequest request, HttpServletResponse response, String id_del_piso_requerido, String vistasPisomenuPisojsp) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

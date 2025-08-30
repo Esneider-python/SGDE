@@ -1,5 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="paquete.modelo.Usuario" %>
+
+
+<% 
+    String mensaje = request.getParameter("mensaje");
+    if (mensaje != null) {
+%>
+    <div style="color:green;"><%= mensaje %></div>
+<% 
+    } 
+%>
+
+
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
     if (usuario == null) {

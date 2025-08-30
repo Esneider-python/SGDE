@@ -71,10 +71,10 @@ public class RegistrarUsuarioServlet extends HttpServlet {
             } else {
                 boolean registrado = usuarioDao.insertarUsuario(usuario);
                 if (registrado) {
-                    System.out.println("Usuario registrado con éxito.");
-                    response.sendRedirect(request.getContextPath() + "/Vistas/Login/login.jsp");
+                    request.getSession().setAttribute("mensajeRegistro", "Usuario registrado correctamente");
+                    response.sendRedirect(request.getContextPath() + "/Index.jsp");
+
                 } else {
-                    System.out.println("Error al registrar el usuario.");
                     request.setAttribute("errorRegistro", "No se pudo registrar el usuario.");
                     request.getRequestDispatcher("Vistas/Login/registro.jsp").forward(request, response);
                 }

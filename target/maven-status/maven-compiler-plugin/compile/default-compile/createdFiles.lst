@@ -2,12 +2,12 @@ paquete\controlador\ElementoEliminadoServlet.class
 paquete\dao\HistorialMovimientoDao.class
 paquete\dao\ColegioDao.class
 paquete\dao\ElementoTecnologicoDao.class
-paquete\controlador\VerificarCodigoServlet.class
 paquete\dao\ReporteDao.class
 paquete\modelo\CambioIdentificador.class
 paquete\modelo\ElementosMobiliarios.class
 paquete\controlador\RolServlet.class
 paquete\controlador\UsuarioServlet.class
+paquete\controlador\RecuperarContrasenaServlet.class
 paquete\modelo\Elemento.class
 paquete\modelo\Bloque.class
 paquete\dao\BloqueDao.class
@@ -41,7 +41,6 @@ paquete\dao\ElementoEliminadoDao.class
 paquete\modelo\Colegio.class
 paquete\dao\RolDao.class
 paquete\modelo\Usuario.class
-paquete\controlador\EnviarCodigoServlet.class
 paquete\controlador\SedeServlet.class
 paquete\modelo\Aula.class
 paquete\modelo\Sede.class
@@ -49,7 +48,6 @@ paquete\dao\InformeDao.class
 paquete\util\ConexionListener.class
 paquete\dao\ElementoMobiliarioDao.class
 paquete\modelo\ElementoEliminado.class
-paquete\controlador\CambiarContrasenaServlet.class
 paquete\controlador\CerrarSesionServlet.class
 paquete\dao\SedeDao.class
 paquete\controlador\RegistrarUsuarioServlet.class

@@ -57,7 +57,6 @@ public class SedeDao {
                                 colegio,
                                 usuario);
                     } else {
-                        // Manejar el caso en que no se encuentra el colegio o usuario
                         System.err.println("No se encontró el colegio o usuario relacionado.");
                     }
                 }

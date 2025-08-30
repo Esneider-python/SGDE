@@ -21,7 +21,6 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +137,7 @@ public class ElementoServlet extends HttpServlet {
         String identificador = request.getParameter("identificadorUnico");
         String tipoIdentificador = request.getParameter("tipoIdentificador");
         String marca = request.getParameter("marca");
-        String serie = request.getParameter("serie");
+        String serie = request.getParameter("serie");   
         int idAula = Integer.parseInt(request.getParameter("idAula"));
         String cedulaUsuario = request.getParameter("cedulaUsuario");
 
@@ -486,7 +485,6 @@ public class ElementoServlet extends HttpServlet {
             String tipoElemento = request.getParameter("tipoElemento"); // Puede omitirse si no se usa
             String nuevoIdentificador = request.getParameter("identificadorNuevo");
             String cedulaUsuario = request.getParameter("cedulaUsuario");
-            System.out.println("Cédula recibida: '" + cedulaUsuario + "'");
             String tipoIdentificadorAnterior = request.getParameter("tipoIdentificadorAnterior");
             String tipoIdentificadorNuevo = request.getParameter("tipoIdentificadorNuevo");
             String identificadorAnterior = request.getParameter("identificadorActual");
@@ -566,7 +564,7 @@ public class ElementoServlet extends HttpServlet {
             request.setAttribute("mensaje", "No se proporcionó un ID de elemento válido.");
             request.getRequestDispatcher("/Vistas/Elemento/listarElementos.jsp").forward(request, response);
             return;
-        }
+            }
         request.setAttribute("elementoId", elementoId);
         request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
     } 
@@ -586,7 +584,7 @@ public class ElementoServlet extends HttpServlet {
         String elementoIdStr = request.getParameter("elementoId").trim();
         String descripcion = request.getParameter("descripcion").trim();
         String cedula = request.getParameter("cedula").trim();
-        String nuevoEstado = request.getParameter("estado").trim();
+        String nuevoEstado = request.getParameter("estado").trim(); 
 
         // Validar que no se envíen datos vacíos
         if (elementoIdStr.isEmpty() || descripcion.isEmpty() || cedula.isEmpty() || nuevoEstado.isEmpty()) {
@@ -653,7 +651,7 @@ public class ElementoServlet extends HttpServlet {
         // Validar que no se envíen datos vacíos
         if (elementoIdStr.isEmpty() || cedula.isEmpty() || nuevoEstado.isEmpty()) {
             request.setAttribute("mensaje", "Por favor, complete todos los campos antes de enviar el reporte.");
-            request.getRequestDispatcher("/Vistas/Elemento/Acciones/reportarElemento.jsp").forward(request, response);
+            request.getRequestDispatcher("/Vistas/ElFemento/Acciones/reportarElemento.jsp").forward(request, response);
             return;
         }
 

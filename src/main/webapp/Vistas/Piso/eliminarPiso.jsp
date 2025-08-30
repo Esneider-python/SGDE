@@ -12,7 +12,7 @@
                 <input type="hidden" name="accion" value="eliminar">
 
                 <label>ID del piso a eliminar:</label>
-                <input type="number" name="idPiso" required><br>
+                <input type="number" name="idPiso"   value="<%= request.getParameter("id_piso") != null ? request.getParameter("id_piso") : ""%>" required><br>
 
                 <label>Cédula del usuario:</label>
                 <input type="text" name="cedulaUsuario" required><br>

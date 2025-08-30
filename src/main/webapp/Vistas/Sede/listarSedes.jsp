@@ -27,7 +27,7 @@
                     <th>ID</th>
                     <th>Nombre Sede</th>
                     <th>ID Colegio</th>
-                    <th>ID Usuario</th>
+                    <th>Usuario registra</th>
                     <th>Accion</th>
                 </tr>
                 <%

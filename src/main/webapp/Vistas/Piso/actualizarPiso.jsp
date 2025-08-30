@@ -12,12 +12,12 @@
                 <input type="hidden" name="accion" value="actualizar">
 
                 <label>ID del piso:</label>
-                <input type="number" name="idPiso" required><br>
+                <input type="number" name="idPiso" disabled value="<%= request.getParameter("id_piso") != null ? request.getParameter("id_piso") : ""%>" required><br>
 
                 <label>Nuevo número de piso:</label>
                 <input type="number" name="numeroPiso" required><br>
 
-                <label>Nuevo ID de bloque:</label>
+                <label>Numero bloque:</label>
                 <input type="number" name="idBloque" required><br>
 
                 <label>Nueva cédula de usuario:</label>

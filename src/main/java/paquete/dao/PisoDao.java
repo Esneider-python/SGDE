@@ -1,4 +1,3 @@
-
 package paquete.dao;
 
 import paquete.modelo.Piso;
@@ -15,8 +14,7 @@ public class PisoDao {
     // Método para insertar un piso y recuperar su ID autogenerado
     public void insertar(Piso piso) {
         String sql = "INSERT INTO pisos (numero_piso, bloque_id, usuario_id) VALUES (?, ?, ?)";
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, piso.getNumeroPiso());
             stmt.setInt(2, piso.getBloque().getId());
@@ -39,8 +37,7 @@ public class PisoDao {
         String sql = "SELECT * FROM pisos WHERE id_piso = ?";
         Piso piso = null;
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -48,10 +45,10 @@ public class PisoDao {
                     Bloque bloque = new BloqueDao().obtenerPorId(rs.getInt("bloque_id"));
                     Usuario usuario = obtenerUsuarioPorId(rs.getInt("usuario_id"));
                     piso = new Piso(
-                        rs.getInt("id_piso"),
-                        rs.getInt("numero_piso"),
-                        bloque,
-                        usuario
+                            rs.getInt("id_piso"),
+                            rs.getInt("numero_piso"),
+                            bloque,
+                            usuario
                     );
                 }
             }
@@ -68,18 +65,16 @@ public class PisoDao {
         String sql = "SELECT * FROM pisos";
         List<Piso> pisos = new ArrayList<>();
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Bloque bloque = new BloqueDao().obtenerPorId(rs.getInt("bloque_id"));
                 Usuario usuario = obtenerUsuarioPorId(rs.getInt("usuario_id"));
                 Piso piso = new Piso(
-                    rs.getInt("id_piso"),
-                    rs.getInt("numero_piso"),
-                    bloque,
-                    usuario
+                        rs.getInt("id_piso"),
+                        rs.getInt("numero_piso"),
+                        bloque,
+                        usuario
                 );
                 pisos.add(piso);
             }
@@ -95,8 +90,7 @@ public class PisoDao {
     public void actualizar(Piso piso) {
         String sql = "UPDATE pisos SET numero_piso = ?, bloque_id = ?, usuario_id = ? WHERE id_piso = ?";
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, piso.getNumeroPiso());
             stmt.setInt(2, piso.getBloque().getId());
@@ -109,18 +103,14 @@ public class PisoDao {
         }
     }
 
-    // Método para eliminar un piso por su ID
-    public void eliminar(int id) {
+    //Eliminar piso
+    public void eliminar(int id) throws SQLException {
         String sql = "DELETE FROM pisos WHERE id_piso = ?";
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
@@ -129,22 +119,21 @@ public class PisoDao {
         String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
         Usuario usuario = null;
 
-        try (Connection conn = Conexion.getConexion();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, usuarioId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     usuario = new Usuario(
-                        rs.getInt("id_usuario"),
-                        rs.getString("nombres"),
-                        rs.getString("apellidos"),
-                        rs.getString("telefono"),
-                        rs.getString("correo"),
-                        rs.getString("cedula"),
-                        rs.getString("contrasena"),
-                        rs.getInt("rol_id"),
-                        null
+                            rs.getInt("id_usuario"),
+                            rs.getString("nombres"),
+                            rs.getString("apellidos"),
+                            rs.getString("telefono"),
+                            rs.getString("correo"),
+                            rs.getString("cedula"),
+                            rs.getString("contrasena"),
+                            rs.getInt("rol_id"),
+                            null
                     );
                 }
             }
@@ -155,5 +144,20 @@ public class PisoDao {
 
         return usuario;
     }
-}
 
+    public boolean estaEnUso(int id) {
+        String sql = "SELECT COUNT(*) FROM aulas WHERE piso_id = ?";
+        try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int cantidad = rs.getInt(1);
+                return cantidad > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+}

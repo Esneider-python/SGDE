@@ -11,7 +11,6 @@ C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\Aula.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\Usuario.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\ColegioServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\Piso.java
-C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\CambiarContrasenaServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\SedeServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\ElementoEliminadoServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\ElementosMobiliarios.java
@@ -23,12 +22,12 @@ C:\NetBeansProjects\SGDE\src\main\java\com\mycompany\sgde\JakartaRestConfigurati
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\Bloque.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\ElementoTecnologico.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\HistorialMovimientoServlet.java
-C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\EnviarCodigoServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\Rol.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\CambioIdentificador.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\dao\DocenteAulaDao.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\LoginServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\Informe.java
+C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\RecuperarContrasenaServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\RegistrarUsuarioServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\RolServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\dao\ElementoEliminadoDao.java
@@ -53,4 +52,3 @@ C:\NetBeansProjects\SGDE\src\main\java\paquete\dao\ElementoDao.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\HistorialMovimiento.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\ReporteServlet.java
 C:\NetBeansProjects\SGDE\src\main\java\paquete\modelo\DocenteAula.java
-C:\NetBeansProjects\SGDE\src\main\java\paquete\controlador\VerificarCodigoServlet.java

@@ -1,8 +1,7 @@
 package paquete.controlador;
 
-import paquete.modelo.DocenteAula;
+
 import paquete.modelo.Usuario;
-import paquete.dao.DocenteAulaDao;
 import paquete.dao.UsuarioDao;
 import paquete.util.Conexion;
 import jakarta.servlet.ServletException;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalTime;
 import java.util.List;
 
 @WebServlet("/UsuarioServlet")

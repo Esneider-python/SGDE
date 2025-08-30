@@ -9,12 +9,35 @@
         <div class="contenedor">
             <h2>¿Olvidaste tu contraseña?</h2>
 
-            <form action="${pageContext.request.contextPath}/EnviarCodigoServlet" method="post">
+            <form action="${pageContext.request.contextPath}/RecuperarContrasenaServlet" method="post">
                 <label for="correo">Ingresa tu correo electrónico:</label>
+                <input type="hidden" name="action" value="enviarCodigo">
                 <input type="email" name="correo" id="correo" required placeholder="Correo electrónico">
-
                 <button type="submit">Enviar código</button>
             </form>
+            <div>
+                <%
+                    String mensajeExito = (String) session.getAttribute("mensajeExito");
+                    if (mensajeExito != null) {
+                %>
+                <div style="color:green; font-size:18px; margin-bottom:200px;  font-family:Arial, sans-serif;"><%= mensajeExito%></div>
+                <%
+                        session.removeAttribute("mensajeExito"); // para que solo se muestre una vez
+                    }
+                %>
+            </div>
+
+            <div>
+                <%
+                    String mensajeError = (String) session.getAttribute("mensajeError");
+                    if (mensajeError != null) {
+                %>
+                <div style="color:red; font-size:18px; margin-bottom:200px;  font-family:Arial, sans-serif;"><%= mensajeError%></div>
+                <%
+                        session.removeAttribute("mensajeError"); // mostrar una vez
+                    }
+                %>
+            </div>
 
             <div class="mensaje">
                 <c:if test="${not empty mensajeError}">
@@ -25,9 +48,12 @@
                 </c:if>
             </div>
 
-            <div class="links">
-                <a href="${pageContext.request.contextPath}/Vistas/Login/login.jsp">Volver al login</a>
+            <div class="volver-menu">
+                <form action="${pageContext.request.contextPath}/Vistas/Login/login.jsp" method="get">
+                    <button type="submit"> Cancelar</button>
+                </form>
             </div>
+
         </div>
     </body>
 </html>
