@@ -30,8 +30,7 @@ public class LoginServlet extends HttpServlet {
             if (usuario != null) {
                 HttpSession sesion = request.getSession();
                 sesion.setAttribute("usuarioLogueado", usuario);
-                
-                
+
                 //Obtener el nombre del rol usando el método del DAO
                 String rolUsuario = usuarioDao.obtenerNombreRolPorId(usuario.getRolId());
                 if (rolUsuario != null) {
@@ -41,9 +40,8 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("Vistas/MenuPrincipal/menuPrincipal.jsp");
             } else {
                 // Si las credenciales son incorrectas, mostramos un mensaje
-                request.setAttribute("errorLogin", "Correo o contraseña incorrectos.");
-                request.setAttribute("correoIngresado", correo); // Para mantener el correo en el input
-                request.getRequestDispatcher("Index.jsp").forward(request, response);
+                request.setAttribute("mensaje", "Correo o contraseña incorrectos.");
+                request.getRequestDispatcher("/Vistas/Login/login.jsp").forward(request, response);
             }
 
         } catch (ServletException | IOException | SQLException e) {

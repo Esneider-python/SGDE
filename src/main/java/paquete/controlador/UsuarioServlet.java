@@ -1,6 +1,5 @@
 package paquete.controlador;
 
-
 import paquete.modelo.Usuario;
 import paquete.dao.UsuarioDao;
 import paquete.util.Conexion;
@@ -193,12 +192,24 @@ public class UsuarioServlet extends HttpServlet {
             } catch (SQLIntegrityConstraintViolationException e) {
                 // Manejo de errores de integridad referencial
                 con.rollback();
-                String errorMsg = "Error de integridad de datos.";
+                String errorMsg = "La cedula o correo ya estan siendo usados por otro usuario.";
                 if (e.getMessage().contains("correo_UNIQUE")) {
                     errorMsg = "El correo ya está en uso.";
-                } else if (e.getMessage().contains("cedula_UNIQUE")) {
+                }
+                if (e.getMessage().contains("cedula_UNIQUE")) {
                     errorMsg = "La cédula ya está en uso.";
                 }
+
+                // Recuperamos el usuario para que el JSP lo encuentre
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(idUsuario);
+                usuario.setNombres(request.getParameter("nombres"));
+                usuario.setApellidos(request.getParameter("apellidos"));
+                usuario.setTelefono(request.getParameter("telefono"));
+                usuario.setCorreo(request.getParameter("correo"));
+                usuario.setCedula(request.getParameter("cedula"));
+
+                request.setAttribute("usuario", usuario);
                 request.setAttribute("mensaje", errorMsg);
                 request.getRequestDispatcher("/Vistas/Usuario/actualizarUsuario.jsp?id=" + idUsuario).forward(request, response);
                 return;
@@ -280,7 +291,6 @@ public class UsuarioServlet extends HttpServlet {
         request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp").forward(request, response);
     }
 
-   
     // GET
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

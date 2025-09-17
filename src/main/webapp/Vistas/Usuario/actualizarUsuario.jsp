@@ -13,12 +13,16 @@
         <div class="conta">
             <h1>Actualizar Usuario</h1>
 
-            <!-- Mensaje de éxito o error -->
-            <c:if test="${not empty mensaje}">
-                <div class="${mensaje == 'Usuario actualizado correctamente.' ? 'alert-success' : 'alert-error'}">
-                    ${mensaje}
-                </div>
-            </c:if>
+            <div class="message">
+                <%
+                    String mensaje = (String) request.getAttribute("mensaje");
+                    if (mensaje != null && !mensaje.trim().isEmpty()) {
+                %>
+                <p class="info"><%= mensaje%></p>
+                <%
+                    }
+                %>
+            </div>
 
             <!-- Verificar si el usuario fue cargado correctamente -->
             <c:if test="${not empty usuario}">
