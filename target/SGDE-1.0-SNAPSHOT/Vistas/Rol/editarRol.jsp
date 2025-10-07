@@ -24,7 +24,7 @@
 
                 <div style="margin-bottom: 10px;">
                     <label for="idRol">ID del rol:</label>
-                    <input type="number" id="idRol" name="idRol" placeholder="ID del rol" required>
+                    <input type="number" id="idRol" name="idRol"  value="${param.idRol}" placeholder="ID del rol" required>
                 </div>
 
                 <div style="margin-bottom: 10px;">

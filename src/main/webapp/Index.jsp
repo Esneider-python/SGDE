@@ -26,10 +26,14 @@
         </div>
         <form action="Vistas/Login/login.jsp" method="get">
             <input type="submit" value="Iniciar Sesión">
-        </form>
 
-        <form action="Vistas/Login/registro.jsp" method="get">
+        </form>
+        
+        <form action="${pageContext.request.contextPath}/IndexServlet" method="get">
             <input type="submit" value="Registrarse">
         </form>
+
+
+
     </body>
 </html>

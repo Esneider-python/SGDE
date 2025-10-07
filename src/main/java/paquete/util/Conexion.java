@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Conexion {
     private static final String URL = "jdbc:mysql://localhost:3306/databaselapaz?serverTimezone=UTC";
-    private static final String USUARIO = "root"; // Cambiar por tu usuario real
+    private static final String USUARIO = "root"; 
     private static final String CLAVE = "1004921685"; // Cambiar por tu contraseña real
 
     public static Connection getConexion() {
