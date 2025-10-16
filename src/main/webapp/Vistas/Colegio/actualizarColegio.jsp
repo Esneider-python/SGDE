@@ -22,7 +22,7 @@
             <input type="number" name="id_colegio" value="<%= colegio != null ? colegio.getId() : "" %>" readonly><br><br>
 
             <label>Nombre del Colegio:</label><br>
-            <input type="text" name="nombre_colegio" value="<%= colegio != null ? colegio.getNombre() : "" %>" required><br><br>
+            <input type="text" name="nombre_colegio"  required><br><br>
 
             <label>Cédula del Usuario que Actualiza:</label><br>
             <input type="text" name="cedula_usuario" required><br><br>

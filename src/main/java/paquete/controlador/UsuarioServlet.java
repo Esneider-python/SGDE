@@ -34,7 +34,6 @@ public class UsuarioServlet extends HttpServlet {
                 request.getRequestDispatcher("/Vistas/Usuario/menuUsuario.jsp").forward(request, response);
                 return;
             }
-
             con.setAutoCommit(false);
 
             switch (action) {

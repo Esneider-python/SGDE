@@ -9,7 +9,7 @@
     </head>
     <body>
 
-        <h1>Listado de Colegios Registrados</h1>
+        <h1>Colegios Registrados</h1>
 
         <div class="container">
             <form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
@@ -39,14 +39,14 @@
                         <form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
                             <input type="hidden" name="accion" value="cargarFormularioActualizar">
                             <input type="hidden" name="id_colegio" value="<%= colegio.getId()%>">
-                            <button type="submit">Actualizar</button>
+                            <button  id="azul" type="submit">Actualizar</button>
                         </form>
 
                         <!-- Botón Eliminar -->
                         <form action="${pageContext.request.contextPath}/ColegioServlet" method="post">
                             <input type="hidden" name="accion" value="cargarFormularioEliminar">
                             <input type="hidden" name="id_colegio" value="<%= colegio.getId()%>">
-                            <button type="submit">Eliminar</button>
+                            <button id="rojo" type="submit">Eliminar</button>
                         </form>
 
                     </td>

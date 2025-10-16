@@ -17,13 +17,13 @@
                 <input type="hidden" name="accion" value="actualizar">
 
                 <label>ID Sede:</label>
-                <input type="number" name="idSede" required  value="<%= sede.getId() %>" readonly><br>
+                <input type="number" name="idSede" required  value="<%= sede.getId()%>" readonly><br>
 
                 <label>Nuevo Nombre de la Sede:</label>
-                <input type="text" name="nombre" required value="<%= sede.getNombre() %>"><br>
+                <input type="text" name="nombre" required><br>
 
-                <label>ID Colegio:</label>
-                <input type="text" name="colegio_id" required value="<%= sede.getColegio().getId() %>" readonly><br>
+                <label>Nombre Colegio:</label>
+                <input type="text" name="colegio_name" required value="<%= sede.getColegio().getNombre()%>" readonly><br>
 
                 <label>Nueva cedula Usuario que registra:</label>
                 <input type="text" name="cedulaUsuario" required><br>

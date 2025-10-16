@@ -47,6 +47,12 @@ button {
     font-size: 16px;
     margin-top: 5px;
 }
+#azul {
+    background: #007bff
+}
+#rojo {
+    background: red;
+}
 
 button:hover {
     background-color: #3399ff; /* azul un poco más fuerte al pasar el mouse */

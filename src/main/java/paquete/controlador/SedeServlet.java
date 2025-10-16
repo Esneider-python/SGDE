@@ -37,7 +37,7 @@ public class SedeServlet extends HttpServlet {
                 cargarFormularioActualizarSede(request, response);
                 break;
             case "cargarFormularioEliminarSede":
-                cargarFormularioEliminarSede(request,response);
+                cargarFormularioEliminarSede(request, response);
             default:
                 response.sendRedirect("Vistas/Sede/menuSede.jsp");
         }
@@ -85,50 +85,53 @@ public class SedeServlet extends HttpServlet {
     }
 
     // Método para actualizar una sede
-   private void actualizarSede(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    int idSede = Integer.parseInt(request.getParameter("idSede"));
-    String nuevoNombre = request.getParameter("nombre");
-    String idColegio = request.getParameter("colegio_id");
-    String cedulaUsuario = request.getParameter("cedulaUsuario");
+    private void actualizarSede(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idSede = Integer.parseInt(request.getParameter("idSede"));
+        String nuevoNombre = request.getParameter("nombre");
+        String nameColegio = request.getParameter("colegio_name");
+        String cedulaUsuario = request.getParameter("cedulaUsuario");
 
-    try (Connection conn = Conexion.getConexion()) {
-        UsuarioDao usuarioDao = new UsuarioDao(conn);
-        ColegioDao colegioDao = new ColegioDao(conn);
-        SedeDao sedeDao = new SedeDao();
+        try (Connection conn = Conexion.getConexion()) {
+            UsuarioDao usuarioDao = new UsuarioDao(conn);
+            ColegioDao colegioDao = new ColegioDao(conn);
+            SedeDao sedeDao = new SedeDao();
 
-        if (sedeDao.existeSede(idSede)) {
-            Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
+            if (sedeDao.existeSede(idSede)) {
+                //recuperar id usuario
+                Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
+                //recuperar idColegio
+                Integer idColegio = colegioDao.obtenerIdPorNombre(nameColegio);
 
-            if (idUsuario != null && idColegio != null) {
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(idUsuario);
+                if (idUsuario != null && idColegio != null) {
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(idUsuario);
 
-                Colegio colegio = new Colegio();
-                colegio.setId(Integer.parseInt(idColegio)); // ✅ importante
+                    Colegio colegio = new Colegio();
+                    colegio.setId(idColegio);
 
-                Sede sedeActualizada = new Sede();
-                sedeActualizada.setId(idSede);
-                sedeActualizada.setNombre(nuevoNombre);
-                sedeActualizada.setColegio(colegio);
-                sedeActualizada.setUsuarioRegistra(usuario);
+                    Sede sedeActualizada = new Sede();
+                    sedeActualizada.setId(idSede);
+                    sedeActualizada.setNombre(nuevoNombre);
+                    sedeActualizada.setColegio(colegio);
+                    sedeActualizada.setUsuarioRegistra(usuario);
 
-                sedeDao.actualizar(sedeActualizada); 
+                    sedeDao.actualizar(sedeActualizada);
 
-                request.setAttribute("mensaje", "Sede actualizada exitosamente.");
+                    request.setAttribute("mensaje", "Sede actualizada exitosamente.");
+                } else {
+                    request.setAttribute("mensaje", "Error: Usuario o Colegio no encontrados para actualizar la sede.");
+                }
             } else {
-                request.setAttribute("mensaje", "Error: Usuario o Colegio no encontrados para actualizar la sede.");
+                request.setAttribute("mensaje", "Error: La sede con ID " + idSede + " no existe.");
             }
-        } else {
-            request.setAttribute("mensaje", "Error: La sede con ID " + idSede + " no existe.");
+
+            request.getRequestDispatcher("Vistas/Sede/menuSede.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            request.setAttribute("mensaje", "Error inesperado: " + e.getMessage());
+            request.getRequestDispatcher("Vistas/Sede/menuSede.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("Vistas/Sede/menuSede.jsp").forward(request, response);
-
-    } catch (Exception e) {
-        request.setAttribute("mensaje", "Error inesperado: " + e.getMessage());
-        request.getRequestDispatcher("Vistas/Sede/menuSede.jsp").forward(request, response);
     }
-}
 
     // Método para eliminar una sede
     private void eliminarSede(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -157,7 +160,7 @@ public class SedeServlet extends HttpServlet {
         request.getRequestDispatcher("Vistas/Sede/menuSede.jsp").forward(request, response);
     }
 
-        //mostrar formulario actualizar
+    //mostrar formulario actualizar
     private void cargarFormularioActualizarSede(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id_sede");
 
@@ -167,9 +170,14 @@ public class SedeServlet extends HttpServlet {
         }
 
         try {
+            //obtener id sede ingresado en el formulario
             int idSede = Integer.parseInt(idParam);
+
+            //creamos un objeto de sede
             SedeDao sedeDao = new SedeDao();
+            //obtenemos un objeto de la DB relacionado con un id sede
             Sede sede = sedeDao.obtenerPorId(idSede);
+            Sede nombreColegio = sedeDao.obtenerPorId(idSede);
 
             if (sede == null) {
                 enviarMensaje(request, response, "Colegio no encontrado.", "Vistas/Sede/menuSede.jsp");
@@ -177,15 +185,16 @@ public class SedeServlet extends HttpServlet {
             }
 
             request.setAttribute("sede", sede);
+            request.setAttribute("colegio_name", nombreColegio);
             request.getRequestDispatcher("Vistas/Sede/actualizarSede.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
             enviarMensaje(request, response, "ID inválido.", "Vistas/Sede/menuSede.jsp");
         }
     }
-    
+
     //Mostrar fomulario para eliminar
-     private void cargarFormularioEliminarSede(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void cargarFormularioEliminarSede(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id_sede");
 
         if (idParam == null || idParam.trim().isEmpty()) {

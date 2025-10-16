@@ -39,18 +39,18 @@
                     <td><%= sede.getColegio().getId()%></td>
                     <td><%= sede.getUsuarioRegistra().getIdUsuario()%></td>
                     <<td>
-                         <!-- Botón Actualizar -->
+                        <!-- Botón Actualizar -->
                         <form action="${pageContext.request.contextPath}/SedeServlet" method="post">
                             <input type="hidden" name="accion" value="cargarFormularioActualizarSede">
                             <input type="hidden" name="id_sede" value="<%= sede.getId()%>">
-                            <button type="submit">Actualizar</button>
+                            <button id="azul" type="submit">Actualizar</button>
                         </form>
 
                         <!-- Botón Eliminar -->
                         <form action="${pageContext.request.contextPath}/SedeServlet" method="post">
                             <input type="hidden" name="accion" value="cargarFormularioEliminarSede">
                             <input type="hidden" name="id_sede" value="<%= sede.getId()%>">
-                            <button type="submit">Eliminar</button>
+                            <button id="rojo" type="submit">Eliminar</button>
                         </form>
                     </td>>
                 </tr>

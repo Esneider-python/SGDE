@@ -153,3 +153,7 @@ public class BloqueDao {
         return usuario;
     }
 }
+
+
+
+// para registrar una sede no debe requerirse ningun id solo el nombre

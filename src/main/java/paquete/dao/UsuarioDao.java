@@ -26,8 +26,6 @@ public class UsuarioDao {
             ps.setString(6, usuario.getContrasena());
             ps.setInt(7, usuario.getRolId());
 
-            System.out.println("Insertando usuario: " + usuario.getCorreo());
-
             int filasInsertadas = ps.executeUpdate();
 
             if (filasInsertadas > 0) {
@@ -36,7 +34,6 @@ public class UsuarioDao {
                     if (rs.next()) {
                         int idGenerado = rs.getInt(1);
                         usuario.setIdUsuario(idGenerado); // Guarda el ID en el modelo si es necesario
-                        System.out.println("ID generado del nuevo usuario: " + idGenerado);
                     }
                 }
                 return true;
