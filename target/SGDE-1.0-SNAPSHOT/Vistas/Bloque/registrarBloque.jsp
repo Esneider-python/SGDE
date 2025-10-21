@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Registrar Bloque</title>
@@ -14,9 +15,13 @@
                 <label>Número de bloque:</label>
                 <input type="number" name="numeroBloque" required><br>
 
-                <label>Número de sede:</label>
-                <input type="number" name="idSede" required><br>
-
+                <label>Sede:</label>
+                <select name="idSede" required>
+                    <option value="">Selecciona una sede</option>
+                    <c:forEach var="sede" items="${listaSedes}">
+                        <option value="${sede.id}">${sede.nombre}</option>
+                    </c:forEach>
+                </select>
                 <label>Cédula del usuario:</label>
                 <input type="text" name="cedulaUsuario" required><br>
 

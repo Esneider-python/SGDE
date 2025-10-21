@@ -8,33 +8,49 @@
     <body>
         <div class="container">
             <h2>Listado de Bloques</h2>
+            <!-- Mensaje de éxito -->
+            <c:if test="${not empty mensaje}">
+                <div style="color: green; font-weight: bold; margin-bottom: 10px;">
+                    ${mensaje}
+                </div>
+            </c:if>
 
-            <form action="${pageContext.request.contextPath}/BloqueServlet" method="post">
-                <input type="hidden" name="accion" value="listar">
-                <button type="submit">Listar Bloques</button>
-            </form>
+            <!-- Mensaje de error -->
+            <c:if test="${not empty error}">
+                <div style="color: red; font-weight: bold; margin-bottom: 10px;">
+                    ${error}
+                </div>
+            </c:if>
+
+            <c:if test="${not empty mensajeVacio}">
+                <div style="color: red; font-weight: bold; margin-bottom: 10px;">
+                    ${mensajeVacio}
+                </div>
+            </c:if>
 
             <c:if test="${not empty listaBloques}">
                 <table border="1">
                     <tr>
                         <th>ID</th>
                         <th>Número de Bloque</th>
-                        <th>ID Sede</th>
-                        <th>ID Usuario</th>
+                        <th>Sede</th>
+                        <th>Usuario</th>
                         <th>Acciones</th>
                     </tr>
                     <c:forEach var="bloque" items="${listaBloques}">
                         <tr>
                             <td>${bloque.id}</td>
                             <td>${bloque.numeroBloque}</td>
-                            <td>${bloque.sede.id}</td>
-                            <td>${bloque.usuarioRegistra.idUsuario}</td>
+                            <td>${bloque.sede.nombre}</td>
+                            <td>${bloque.usuarioRegistra.cedula}</td>
                             <td>
                                 <!-- Botón para ir a actualizarBloque.jsp con parámetros -->
-                                <form action="${pageContext.request.contextPath}/Vistas/Bloque/actualizarBloque.jsp" method="get" style="display:inline;">
+                                <form action="${pageContext.request.contextPath}/BloqueServlet" method="get" style="display:inline;">
+                                    <input type="hidden" name="accion" value="showFormUpdate">
                                     <input type="hidden" name="idBloque" value="${bloque.id}">
                                     <input type="hidden" name="numeroBloque" value="${bloque.numeroBloque}">
                                     <input type="hidden" name="idSede" value="${bloque.sede.id}">
+                                    
                                     <button type="submit">Actualizar</button>
                                 </form>
 

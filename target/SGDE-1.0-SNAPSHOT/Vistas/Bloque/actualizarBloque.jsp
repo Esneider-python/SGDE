@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Actualizar Bloque</title>
@@ -20,9 +21,13 @@
                 <input type="number" name="numeroBloque" required
                        value="<%= request.getParameter("numeroBloque") != null ? request.getParameter("numeroBloque") : ""%>"><br>
 
-                <label>Nuevo número de sede:</label>
-                <input type="number" name="idSede" required
-                       value="<%= request.getParameter("idSede") != null ? request.getParameter("idSede") : ""%>"><br>
+                <label>Nueva sede:</label>
+                <select name="idSede" required>
+                    <option value="">Selecciona una sede</option>
+                    <c:forEach var="sede" items="${listaSedes}">
+                        <option value="${sede.id}">${sede.nombre}</option>
+                    </c:forEach>
+                </select>
 
                 <label>Nueva cédula del usuario:</label>
                 <input type="text" name="cedulaUsuario" required

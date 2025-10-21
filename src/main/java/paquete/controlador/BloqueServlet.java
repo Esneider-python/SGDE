@@ -15,11 +15,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/BloqueServlet")
 public class BloqueServlet extends HttpServlet {
 
+    //DO POST
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accion = request.getParameter("accion");
         Connection conn = Conexion.getConexion();
@@ -37,25 +41,21 @@ public class BloqueServlet extends HttpServlet {
         try {
             switch (accion) {
                 case "registrar":
-                    registrarBloque(request, usuarioDao, sedeDao, bloqueDao);
-                    request.setAttribute("mensaje", "Bloque registrado correctamente.");
+                    registrarBloque(request, response, usuarioDao, sedeDao, bloqueDao);
                     break;
 
                 case "actualizar":
-                    actualizarBloque(request, usuarioDao, sedeDao, bloqueDao);
-                    request.setAttribute("mensaje", "Bloque actualizado correctamente.");
+                    actualizarBloque(request, response, usuarioDao, sedeDao, bloqueDao);
                     break;
 
                 case "eliminar":
-                    eliminarBloque(request, usuarioDao, bloqueDao);
-                    request.setAttribute("mensaje", "Bloque eliminado correctamente.");
-                    break;
+                    try {
+                        eliminarBloque(request, response, usuarioDao, bloqueDao);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(BloqueServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-                case "listar":
-                    List<Bloque> lista = bloqueDao.obtenerTodos();
-                    request.setAttribute("listaBloques", lista);
-                    request.getRequestDispatcher("/Vistas/Bloque/listarBloques.jsp").forward(request, response);
-                    return;
+                    break;
 
                 default:
                     request.setAttribute("error", "Acción no reconocida.");
@@ -64,11 +64,36 @@ public class BloqueServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("error", "Error: " + e.getMessage());
         }
-
-        request.getRequestDispatcher("/Vistas/Bloque/menuBloque.jsp").forward(request, response);
     }
 
-    private void registrarBloque(HttpServletRequest request, UsuarioDao usuarioDao, SedeDao sedeDao, BloqueDao bloqueDao) {
+    // Mostrar formulario para registrar bloques
+    private void showFormRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        SedeDao sedeDao = new SedeDao();
+        try {
+            //lista de sedes para mostrar en el form
+            List<Sede> listaSedes = sedeDao.obtenerTodos();
+            request.setAttribute("listaSedes", listaSedes);
+            request.getRequestDispatcher("/Vistas/Bloque/registrarBloque.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void showFormUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        SedeDao sedeDao = new SedeDao();
+        try {
+            //lista de sedes para mostrar en el form
+            List<Sede> listaSedes = sedeDao.obtenerTodos();
+            request.setAttribute("listaSedes", listaSedes);
+            request.getRequestDispatcher("/Vistas/Bloque/actualizarBloque.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void registrarBloque(HttpServletRequest request, HttpServletResponse response, UsuarioDao usuarioDao, SedeDao sedeDao, BloqueDao bloqueDao) throws ServletException, IOException, SQLException {
         int numeroBloque = Integer.parseInt(request.getParameter("numeroBloque"));
         int idSede = Integer.parseInt(request.getParameter("idSede"));
         String cedulaUsuario = request.getParameter("cedulaUsuario");
@@ -88,10 +113,16 @@ public class BloqueServlet extends HttpServlet {
         usuario.setIdUsuario(idUsuario);
 
         Bloque bloque = new Bloque(0, numeroBloque, sede, usuario);
-        bloqueDao.insertar(bloque);
+        boolean exito = bloqueDao.insertar(bloque);
+
+        if (exito) {
+            listarBloques(request, response, "Bloque registrado correctamente", true);
+        } else {
+            listarBloques(request, response, "Error al registrar bloque", false);
+        }
     }
 
-    private void actualizarBloque(HttpServletRequest request, UsuarioDao usuarioDao, SedeDao sedeDao, BloqueDao bloqueDao) {
+    private void actualizarBloque(HttpServletRequest request, HttpServletResponse response, UsuarioDao usuarioDao, SedeDao sedeDao, BloqueDao bloqueDao) throws ServletException, IOException, SQLException {
         int idBloque = Integer.parseInt(request.getParameter("idBloque"));
         int numeroBloque = Integer.parseInt(request.getParameter("numeroBloque"));
         int idSede = Integer.parseInt(request.getParameter("idSede"));
@@ -112,16 +143,26 @@ public class BloqueServlet extends HttpServlet {
         usuario.setIdUsuario(idUsuario);
 
         Bloque bloque = new Bloque(idBloque, numeroBloque, sede, usuario);
-        bloqueDao.actualizar(bloque);
+        boolean exito = bloqueDao.actualizar(bloque);
+        if (exito) {
+            listarBloques(request, response, "Bloque actualizado correctamente", true);
+        } else {
+            listarBloques(request, response, "Error al actualizar bloque", true);
+        }
+
     }
 
-    private void eliminarBloque(HttpServletRequest request, UsuarioDao usuarioDao, BloqueDao bloqueDao) {
+    private void eliminarBloque(HttpServletRequest request, HttpServletResponse response,
+            UsuarioDao usuarioDao, BloqueDao bloqueDao)
+            throws ServletException, IOException, SQLException {
+
         int numeroBloque = Integer.parseInt(request.getParameter("numeroBloque"));
         String cedulaUsuario = request.getParameter("cedulaUsuario");
 
         Integer idUsuario = usuarioDao.obtenerIdPorCedula(cedulaUsuario);
         if (idUsuario == null) {
-            throw new IllegalArgumentException("La cédula ingresada no corresponde a ningún usuario.");
+            listarBloques(request, response, "La cédula ingresada no corresponde a ningún usuario.", false);
+            return;
         }
 
         List<Bloque> bloques = bloqueDao.obtenerTodos();
@@ -131,9 +172,92 @@ public class BloqueServlet extends HttpServlet {
                 .orElse(null);
 
         if (bloqueAEliminar == null) {
-            throw new IllegalArgumentException("No se encontró ningún bloque con el número especificado.");
+            listarBloques(request, response, "No se encontró ningún bloque con el número especificado.", false);
+            return;
         }
 
-        bloqueDao.eliminar(bloqueAEliminar.getId());
+        boolean eliminado = bloqueDao.eliminar(bloqueAEliminar.getId());
+        if (eliminado) {
+            listarBloques(request, response, "Bloque eliminado.", true);
+        } else {
+            listarBloques(request, response, "No se pudo eliminar el bloque. Puede estar referenciado en otra tabla.", false);
+        }
     }
+
+    // DO GET
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String accion = request.getParameter("accion");
+        try {
+            switch (accion) {
+                case "showFormRegister":
+                    showFormRegister(request, response);
+                    break;
+                case "showFormUpdate":
+                    showFormUpdate(request, response);
+                    break;
+                case "listar":
+                    try {
+                        listarBloques(request, response, "", true);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(BloqueServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                default:
+                    response.sendRedirect("Vistas/Bloque/menuBloque.jsp");
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error: " + e.getMessage());
+            request.getRequestDispatcher("/Vistas/Bloque/menuBloque.jsp").forward(request, response);
+        }
+    }
+
+    // Metodo para listar bloques 
+    private void listarBloques(HttpServletRequest request, HttpServletResponse response, String mensaje, boolean exito) throws ServletException, IOException, SQLException {
+        System.out.println("Entró a listar Bloques");
+        //Conexion 
+        Connection con = Conexion.getConexion();
+        try {
+            // Instancias de clases 
+            BloqueDao bloqueDao = new BloqueDao();
+            SedeDao sedeDao = new SedeDao();
+            UsuarioDao usuarioDao = new UsuarioDao(con);
+
+            List<Bloque> lista = bloqueDao.obtenerTodos();
+            if (lista == null || lista.isEmpty()) {
+                request.setAttribute("mensajeVacio", "No hay bloques registrados en el sistema.");
+            } else {
+                System.out.println("cantidad de registros recuperados:  " + lista.size());
+
+                for (Bloque bloque : lista) {
+                    int idSede = bloque.getSede().getId();
+                    int idUsuario = bloque.getUsuarioRegistra().getIdUsuario();
+                    System.out.println("id sede: " + idSede);
+                    System.out.println("id sede: " + idUsuario);
+
+                    bloque.setSede(sedeDao.obtenerPorId(idSede));
+                    bloque.setUsuarioRegistra(usuarioDao.obtenerUsuarioPorId(idUsuario));
+                }
+                request.setAttribute("listaBloques", lista);
+            }
+            if (mensaje != null) {
+                if (exito) {
+                    request.setAttribute("mensaje", mensaje);
+                } else {
+                    request.setAttribute("error", mensaje);
+                }
+            } else {
+
+            }
+
+            request.getRequestDispatcher("/Vistas/Bloque/listarBloques.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            throw new ServletException("Error al listar bloques", e);
+        }
+
+    }
+
 }

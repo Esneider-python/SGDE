@@ -10,12 +10,13 @@
         <h2>Menú Principal de Bloques</h2>
 
         <!-- Botón para registrar bloque -->
-        <form action="${pageContext.request.contextPath}/Vistas/Bloque/registrarBloque.jsp" method="get">
+        <form action="${pageContext.request.contextPath}/BloqueServlet" method="get">
+            <input type="hidden" name="accion" value="showFormRegister">
             <button type="submit">Registrar Bloque</button>
         </form>
 
         <!-- Botón para ver/listar bloques -->
-        <form action="${pageContext.request.contextPath}/BloqueServlet" method="post">
+        <form action="${pageContext.request.contextPath}/BloqueServlet" method="get">
             <input type="hidden" name="accion" value="listar">
             <button type="submit">Ver Bloques</button>
         </form>

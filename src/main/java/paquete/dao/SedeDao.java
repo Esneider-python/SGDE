@@ -106,7 +106,7 @@ public class SedeDao {
             return false;
         }
     }
-    // OBTENER TODAS LAS SEDES
+    // ENER TODAS LAS SEDES
 
     public List<Sede> obtenerTodos() {
         List<Sede> sedes = new ArrayList<>();
