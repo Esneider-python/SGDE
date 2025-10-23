@@ -28,6 +28,7 @@ paquete\modelo\ElementoTecnologico.class
 paquete\controlador\ElementoServlet.class
 paquete\controlador\AsignarDocenteAulaServlet.class
 paquete\dao\AulaDao.class
+com\mycompany\sgde\JakartaRestConfiguration.class
 paquete\util\CorreoUtil.class
 paquete\controlador\AulaServlet.class
 paquete\modelo\Informe.class

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
 <%@ page import="paquete.modelo.Sede" %>
 <!DOCTYPE html>
@@ -11,10 +12,19 @@
         <div class="conta">
             <h1>Listado de Sedes</h1>
 
-            <form action="${pageContext.request.contextPath}/SedeServlet" method="get">
-                <input type="hidden" name="accion" value="listar">
-                <button type="submit">Listar Sedes</button>
-            </form>
+            <!-- Mensaje de éxito -->
+            <c:if test="${not empty mensaje}">
+                <div style="color: green; font-weight: bold; margin-bottom: 10px;">
+                    ${mensaje}
+                </div>
+            </c:if>
+
+            <!-- Mensaje de error -->
+            <c:if test="${not empty error}">
+                <div style="color: red; font-weight: bold; margin-bottom: 10px;">
+                    ${error}
+                </div>
+            </c:if>
 
             <br>
 
@@ -26,7 +36,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre Sede</th>
-                    <th>ID Colegio</th>
+                    <th>Colegio</th>
                     <th>Usuario registra</th>
                     <th>Accion</th>
                 </tr>
@@ -36,9 +46,9 @@
                 <tr>
                     <td><%= sede.getId()%></td>
                     <td><%= sede.getNombre()%></td>
-                    <td><%= sede.getColegio().getId()%></td>
-                    <td><%= sede.getUsuarioRegistra().getIdUsuario()%></td>
-                    <<td>
+                    <td><%= sede.getColegio().getNombre()%></td>
+                    <td><%= sede.getUsuarioRegistra().getCedula()%></td>
+                    <td>
                         <!-- Botón Actualizar -->
                         <form action="${pageContext.request.contextPath}/SedeServlet" method="post">
                             <input type="hidden" name="accion" value="cargarFormularioActualizarSede">
@@ -52,7 +62,7 @@
                             <input type="hidden" name="id_sede" value="<%= sede.getId()%>">
                             <button id="rojo" type="submit">Eliminar</button>
                         </form>
-                    </td>>
+                    </td>
                 </tr>
                 <% } %>
             </table>

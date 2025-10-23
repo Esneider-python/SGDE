@@ -216,7 +216,6 @@ public class BloqueServlet extends HttpServlet {
 
     // Metodo para listar bloques 
     private void listarBloques(HttpServletRequest request, HttpServletResponse response, String mensaje, boolean exito) throws ServletException, IOException, SQLException {
-        System.out.println("Entró a listar Bloques");
         //Conexion 
         Connection con = Conexion.getConexion();
         try {
@@ -229,14 +228,9 @@ public class BloqueServlet extends HttpServlet {
             if (lista == null || lista.isEmpty()) {
                 request.setAttribute("mensajeVacio", "No hay bloques registrados en el sistema.");
             } else {
-                System.out.println("cantidad de registros recuperados:  " + lista.size());
-
                 for (Bloque bloque : lista) {
                     int idSede = bloque.getSede().getId();
                     int idUsuario = bloque.getUsuarioRegistra().getIdUsuario();
-                    System.out.println("id sede: " + idSede);
-                    System.out.println("id sede: " + idUsuario);
-
                     bloque.setSede(sedeDao.obtenerPorId(idSede));
                     bloque.setUsuarioRegistra(usuarioDao.obtenerUsuarioPorId(idUsuario));
                 }

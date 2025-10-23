@@ -12,7 +12,7 @@ import java.sql.*;
 public class SedeDao {
 
     // INSERTAR SEDE
-    public void insertar(Sede sede) {
+    public boolean insertar(Sede sede) {
         String sql = "INSERT INTO sede (nombre_sede, colegio_id, usuario_id) VALUES (?, ?, ?)";
         try (Connection conn = Conexion.getConexion(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -20,19 +20,21 @@ public class SedeDao {
             stmt.setInt(2, sede.getColegio().getId());
             stmt.setInt(3, sede.getUsuarioRegistra().getIdUsuario());
             stmt.executeUpdate();
-
-            try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    sede.setId(rs.getInt(1));
+            int filas = stmt.executeUpdate();
+            if (filas > 0) {
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        sede.setId(rs.getInt(1));
+                    }
+                    return true;
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
-    
-    
 
     // OBTENER SEDE POR ID
     public Sede obtenerPorId(int id) {

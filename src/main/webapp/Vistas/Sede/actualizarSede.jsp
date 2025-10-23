@@ -1,5 +1,6 @@
 <%@page import="paquete.modelo.Sede"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     Sede sede = (Sede) request.getAttribute("sede");
 %>
@@ -19,11 +20,16 @@
                 <label>ID Sede:</label>
                 <input type="number" name="idSede" required  value="<%= sede.getId()%>" readonly><br>
 
-                <label>Nuevo Nombre de la Sede:</label>
+                <label>Nuevo nombre de sede:</label>
                 <input type="text" name="nombre" required><br>
 
                 <label>Nombre Colegio:</label>
-                <input type="text" name="colegio_name" required value="<%= sede.getColegio().getNombre()%>" readonly><br>
+                <select name="colegio_name" required>
+                    <option value="">Selecciona un colegio</option>
+                    <c:forEach var="colegio" items="${listaColegios}">
+                        <option value="${colegio.nombre}">${colegio.nombre}</option>
+                    </c:forEach>
+                </select>
 
                 <label>Nueva cedula Usuario que registra:</label>
                 <input type="text" name="cedulaUsuario" required><br>

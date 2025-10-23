@@ -18,16 +18,16 @@
         <%
             }
         %>
-
         <div class="container">
             <h1>Gestión de Sedes</h1>
             <div class="menu-container">
-                <form action="${pageContext.request.contextPath}/Vistas/Sede/registrarSede.jsp">
+                <form action="${pageContext.request.contextPath}/SedeServlet" method="get">
+                    <input type="hidden" name="accion" value="showFormRegister">
                     <button type="submit">Registrar Sede</button>
                 </form>
                 <br>
-
-                <form action="${pageContext.request.contextPath}/Vistas/Sede/listarSedes.jsp">
+                <form action="${pageContext.request.contextPath}/SedeServlet" method="get">
+                    <input type="hidden" name="accion" value="listar">
                     <button type="submit">Listar Sedes</button>
                 </form>
                 <br>

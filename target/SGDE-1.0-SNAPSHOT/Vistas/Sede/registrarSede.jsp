@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,9 +17,14 @@
                 <input type="text" name="nombre" required><br>
 
                 <label>Nombre Colegio:</label>
-                <input type="text" name="colegioNombre" required><br>
+                 <select name="colegioNombre" required>
+                    <option value="">Selecciona un colegio</option>
+                    <c:forEach var="colegio" items="${listaColegios}">
+                        <option value="${colegio.nombre}">${colegio.nombre}</option>
+                    </c:forEach>
+                </select>
 
-                <label>ID Usuario que registra:</label>
+                <label>Usuario que registra:</label>
                 <input type="number" name="cedulaUsuario" required><br>
 
                 <button type="submit">Registrar</button>
